@@ -1,0 +1,50 @@
+/* 首页 */
+.bg-index{background: url('../images/index-bg.jpg')no-repeat; background-size: 100%;height: 14.38rem;overflow: hidden;}
+.ac-img{width: 1.60rem;height: 0.8rem; position: relative; top: 0.2rem;left:6rem;}
+.inquire{width: 6.6rem;height: 0.9rem;background-color: #fff;position: relative;top:9rem;  margin: 0 auto ;font-size: 0.3rem;color: #999;line-height: 0.9rem;}
+.inquire b {width: 1.3rem; display: inline-block;border-right: 1px solid  #999; }
+.inquire input{height: 0.85rem; width: 3.7rem;text-align: center;border: none;font-size: 0.3rem;}
+.pg-btn{width: 6.35rem;height: 1.02rem;margin:9.45rem auto 0}
+.index-footer{font-size: 0.26rem;color: #fff;margin-top: 1.3rem;text-align: center;line-height: 0.35rem;font-weight: bold;}
+/* 验证页面 */
+.bg-vcation{background: url('../images/verification-bg.jpg')no-repeat; background-size: 100%;height: 14.38rem;overflow: hidden;}
+.vct-number{padding-left: 0.1rem;width: 5.6rem;height: 0.8rem; font-size: 0.3rem;color: #666; position: relative; top: 1.65rem; left: 0; }
+.vct-hqbtn{ margin:2rem auto 0; width: 5.65rem; }
+.vct-import{font-size: 0.3rem;width: 3.45rem;height: 0.85rem;  float: left; padding-left: 0.1rem;border:1px solid #666;}
+.vct-btn{ width: 1.91rem;height: 0.85rem;background-color: red; font-size: 0.3rem;color: #fff;line-height: 0.85rem; float: left; margin-left: 0.29rem;  }
+.vct-p{font-size: 0.24rem;color: #323637;margin-top: 8.2rem;}
+/* 刮红包 */
+.bg-packet{background: url('../images/packet.jpg')no-repeat; background-size: 100%;height: 19.9rem;overflow: hidden;}
+.pckt-pj{width: 6.9rem; height: 4.6rem; margin: auto;padding-top: 0.43rem;}
+.pckt-pj h1{color: #323637;font-size: 0.58rem; line-height:1.45rem; }
+.pckt-pj p{color: #323637;font-size: 0.3rem; width: 5.5rem; margin:0.1rem auto 0; line-height: 0.4rem;}
+.pckt-pj h2{font-size: 0.52rem;color: #fa5859; line-height: 1.4rem;}
+.vction-btn{width: 5.65rem;height: 1.05rem; margin:3.2rem auto 0;}
+/*刮奖*/
+#card {height: 100%;font-weight: bold;font-size: 0.4rem;line-height: 1rem;text-align: center;background: #FAFAFA; background: url('../images/gua.jpg')no-repeat; background-size: 100%;}
+#scratch {width: 6.95rem;height: 3.47rem;margin: 3.4rem auto 0; }
+#card span{color: #ffe557;font-size: 0.4rem; line-height: 2rem;}
+#card span p{font-size: 0.6rem;}
+#cover{width: 6.48rem;height: 2.8rem; top: 19px;left: 11px;}
+#scratch{ position: relative;}
+#cover{ position: absolute; top: 0.35rem;left: 0.2rem;}
+#card{ -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+.go-lj{width: 6.4rem;height: 1.1rem; margin:0.3rem auto;}
+/* 中奖名单 */
+.pct-list li{ float: left; text-align: center;margin:0.45rem auto 0;} 
+#scrollBox{height:3rem;width:6.85rem;margin:2rem auto;overflow:hidden;padding-left: 0.5rem;}
+#scrollBox li{height:15px;line-height:15px;text-align:center;}
+.pck-p{margin-top: -0.5rem; font-size: 0.24rem;color: #fff;}
+ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
+#scrollBox{width: 6rem;;margin:2.6rem auto;overflow:hidden;    margin-left: 0.5rem;}
+#scrollBox #con1,#con2{width: 6rem;float:left;}
+#scrollBox li{line-height:0.1rem;text-align:center;}
+#scrollBox li span{padding-left: 69px;}
+
+/* 领奖步骤 */
+.bg-award{background: url('../images/award-bg.jpg')no-repeat; background-size: 100%;height: 14.38rem;overflow: hidden;}
+.award-btn{width: 5.65rem;height: 1.05rem;margin: 8.4rem auto;}
+.award-ewm{width: 3.5rem;height: 3.5rem;margin: 0 auto; position: relative; top: 3rem;}
+/* 领取方式 */
+.getway{background: url('../images/getway-bg.jpg')no-repeat; background-size: 100%;height: 50.15rem;overflow: hidden;}
+.getway-ewm{width: 2.65rem;height: 2.65rem;margin: 0 auto;position: relative;top:44.87rem; }

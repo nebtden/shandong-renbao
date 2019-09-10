@@ -1,0 +1,23 @@
+/*reset*/
+::-webkit-input-placeholder {color: #999; }
+input[type="text"],input[type="password"],select {-webkit-appearance: none;appearance: none;outline: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);border-radius: 0;font-family:
+'\5FAE\8F6F\96C5\9ED1';box-sizing: border-box;}
+html,body,div,p,ul,li,dl,dt,dd,em,i,span,a,img,input,h1,h2,h3,h4,h5 {margin: 0;padding: 0; line-height: 1;}
+img {border: 0;display: block; }
+a,button,input {-webkit-tap-highlight-color: rgba(255, 0, 0, 0);}
+ol,ul {list-style: none;}
+table { border-collapse: collapse;border-spacing: 0;}
+html {-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;font-size: 100px;background: #fa5859;}
+body,html {-webkit-tap-highlight-color: transparent;-webkit-user-select: none;width: 100%;font-size:0.18rem;color: #fff;text-align: center;}
+.c:after { content: '\20'; display: block; height: 0; line-height: 0; visibility: hidden;clear: both;}
+.hide {display: none;height: 0;font-size: 0;line-height: 0;visibility: hidden;overflow: hidden;}
+
+a{text-decoration: none;display: block;}
+a:focus { outline: none}
+.fl {float: left;}
+.fr {float: right;}
+.pr { position: relative;}
+.pa {position: absolute;}
+.t { text-indent: -9999rem; display: block;}
+#afooter {color: #d1cfcf;font-size: 0.18rem;background: #000;line-height: 0.25rem;text-align: center;padding:
+0.12rem 0;width: 100%;}
