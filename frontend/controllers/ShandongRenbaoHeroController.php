@@ -3,7 +3,7 @@ namespace frontend\controllers;
 
 use common\models\Settings;
 use common\models\ShandongRenbaoRepeat;
-use common\models\ShandongRenbaoWish;
+use common\models\ShandongRenbaoHero;
 use Yii;
 use frontend\util\PController;
 use common\components\W;
@@ -32,10 +32,22 @@ class ShandongRenbaoHeroController extends PController {
         Yii::$app->session['shandong_renbao_parent_id'] = $id;
         Yii::$app->session['shandong_renbao_group_id']  = $group_id;
 
-        $total = ShandongRenbaoWish::find()->count();
+        $total = ShandongRenbaoHero::find()->count();
         $total = 1234+2*$total;
+
+
         return $this->render('index',[
             'total'=>$total
+        ]);
+    }
+
+    public function actionQuestions(){
+        $request = Yii::$app->request;
+        $id = $request->get('id',0);
+
+        
+        return $this->render('index',[
+//            'total'=>$total
         ]);
     }
 
@@ -92,7 +104,7 @@ class ShandongRenbaoHeroController extends PController {
         if (!$mobile) return $this->json(0, '请输入手机号码');
 
         //检测手机号码是否发送过
-        $car = ShandongRenbaoWish::find()->where([
+        $car = ShandongRenbaoHero::find()->where([
             'mobile'=>$mobile
         ])->one();
         if($car){
@@ -114,7 +126,7 @@ class ShandongRenbaoHeroController extends PController {
 
         $request = Yii::$app->request;
         $id = $request->get('id');
-        $object = ShandongRenbaoWish::find()->where([
+        $object = ShandongRenbaoHero::find()->where([
             'id'=>$id
         ])->one();
 
@@ -140,7 +152,7 @@ class ShandongRenbaoHeroController extends PController {
         $group_id = Yii::$app->session['shandong_renbao_group_id'];
         $group_id = intval($group_id);
         if($group_id==0){
-            $parent = ShandongRenbaoWish::find()->where([
+            $parent = ShandongRenbaoHero::find()->where([
                 'id'=>$parent_id
             ])->one();
             $group_id = $parent->group_id;
@@ -150,7 +162,7 @@ class ShandongRenbaoHeroController extends PController {
 
         try{
             //检测手机是否用过
-            $object = ShandongRenbaoWish::find()->where([
+            $object = ShandongRenbaoHero::find()->where([
                 'mobile'=>$mobile
             ])->one();
             if($object){
@@ -172,7 +184,7 @@ class ShandongRenbaoHeroController extends PController {
 
 
             $rewards_id = $this->getRewards($mobile);
-            $object = new ShandongRenbaoWish();
+            $object = new ShandongRenbaoHero();
             $object->mobile = $mobile;
             $object->rewards_id = $rewards_id;
             $object->group_id   = $group_id;
@@ -203,7 +215,7 @@ class ShandongRenbaoHeroController extends PController {
     public function actionSend(){
         $request = Yii::$app->request;
         $id = $request->post('id');
-        $car = ShandongRenbaoWish::find()->where([
+        $car = ShandongRenbaoHero::find()->where([
             'id'=>$id
         ])->one();
         $is_reward = $car->is_reward;
@@ -252,13 +264,13 @@ class ShandongRenbaoHeroController extends PController {
 
 
 
-        $total1 = ShandongRenbaoWish::find()->where([
+        $total1 = ShandongRenbaoHero::find()->where([
             'rewards_id'=>1
         ])->count();
-        $total2 = ShandongRenbaoWish::find()->where([
+        $total2 = ShandongRenbaoHero::find()->where([
             'rewards_id'=>2
         ])->count();
-        $total3 = ShandongRenbaoWish::find()->where([
+        $total3 = ShandongRenbaoHero::find()->where([
             'rewards_id'=>3
         ])->count();
 
@@ -304,7 +316,7 @@ class ShandongRenbaoHeroController extends PController {
     {
         $request = Yii::$app->request;
         $mobile = $request->get('mobile');
-        $car = ShandongRenbaoWish::deleteAll([
+        $car = ShandongRenbaoHero::deleteAll([
             'mobile'=>$mobile
         ]);
         echo '删除成功';
@@ -314,7 +326,7 @@ class ShandongRenbaoHeroController extends PController {
 
     public function actionApi(){
         $this->layout =false;
-        $cars = ShandongRenbaoWish::find()->all();
+        $cars = ShandongRenbaoHero::find()->all();
 
         return $this->render('api',[
             'cars'=>$cars
@@ -322,16 +334,16 @@ class ShandongRenbaoHeroController extends PController {
     }
 	
 	public function actionTotal(){
-		$total0 = ShandongRenbaoWish::find()->where([
+		$total0 = ShandongRenbaoHero::find()->where([
             'rewards_id'=>0
         ])->count();
-		$total1 = ShandongRenbaoWish::find()->where([
+		$total1 = ShandongRenbaoHero::find()->where([
             'rewards_id'=>1
         ])->count();
-        $total2 = ShandongRenbaoWish::find()->where([
+        $total2 = ShandongRenbaoHero::find()->where([
             'rewards_id'=>2
         ])->count();
-        $total3 = ShandongRenbaoWish::find()->where([
+        $total3 = ShandongRenbaoHero::find()->where([
             'rewards_id'=>3
         ])->count();
         echo '总参加人数：';
@@ -351,7 +363,7 @@ class ShandongRenbaoHeroController extends PController {
 	
 	
 	public function actionGroupTotal(){
-		$totals = ShandongRenbaoWish::find()->select(['group_id', 'counted' => 'count(*)']) ->groupBy('group_id')->asArray()->all();
+		$totals = ShandongRenbaoHero::find()->select(['group_id', 'counted' => 'count(*)']) ->groupBy('group_id')->asArray()->all();
         foreach($totals as $total){
 			echo $total['group_id']."->".$total['counted'];
 			echo "<br>";
