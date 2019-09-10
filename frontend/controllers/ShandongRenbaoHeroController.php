@@ -2,6 +2,8 @@
 namespace frontend\controllers;
 
 use common\models\Settings;
+use common\models\ShandongRenbaoHeroAnswers;
+use common\models\ShandongRenbaoHeroQuestion;
 use common\models\ShandongRenbaoRepeat;
 use common\models\ShandongRenbaoHero;
 use Yii;
@@ -41,21 +43,41 @@ class ShandongRenbaoHeroController extends PController {
         ]);
     }
 
-    public function actionQuestions(){
+    public function actionQuestion(){
         $request = Yii::$app->request;
         $id = $request->get('id',0);
 
+
+        $question = ShandongRenbaoHeroQuestion::find()->where([
+            'id'=>$id
+        ])->asArray()->one();
+        $answers = ShandongRenbaoHeroAnswers::find()->where([
+            'question_id'=>$id
+        ])->asArray()->all();
+
         
-        return $this->render('index',[
-//            'total'=>$total
+        return $this->render('question',[
+            'question'=>$question,
+            'answers'=>$answers,
         ]);
     }
 
 
-    public function actionBlessing() {
-        return $this->render('blessing',[
+    public function actionAnswer() {
+        $request = Yii::$app->request;
+        $answer = $request->post('answer', 0);
+        $question_id = $request->post('question_id', 0);
+        //查看是否有下一题
+        $question = ShandongRenbaoHeroQuestion::find()->where([
+            'id'=>$question_id+1
+        ])->asArray()->one();
+        if($question){
+            return $this->json(1, '验证码发送失败，请重试！',['id'=>$question['id']]);
+        }
 
-        ]);
+
+
+
     }
 
     public function actionLetter() {
