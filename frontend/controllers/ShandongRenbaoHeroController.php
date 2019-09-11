@@ -22,7 +22,8 @@ class ShandongRenbaoHeroController extends PController {
         1=>'200元电商优惠券',
         2=>'单次免费洗车',
         3=>'单次浪漫鲜花',
-//        电商60%；洗车30%；鲜花10%
+        4=>'九阳开水煲',
+        5=>'阳澄湖蟹将军提货券',
     ];
 
 
@@ -33,6 +34,11 @@ class ShandongRenbaoHeroController extends PController {
         $group_id = $request->get('group_id',0);
         Yii::$app->session['shandong_renbao_parent_id'] = $id;
         Yii::$app->session['shandong_renbao_group_id']  = $group_id;
+
+        //分数清零，开始答题
+        Yii::$app->session['shandong_renbao_question_ids'] = [];
+        Yii::$app->session['shandong_renbao_scores'] = [];
+
 
         $total = ShandongRenbaoHero::find()->count();
         $total = 1234+2*$total;
@@ -66,13 +72,35 @@ class ShandongRenbaoHeroController extends PController {
     public function actionAnswer() {
         $request = Yii::$app->request;
         $answer = $request->post('answer', 0);
+
+        $answers = Yii::$app->session['shandong_renbao_question_ids'];
+        //answer 存入session
+        Yii::$app->session['shandong_renbao_question_ids']= array_push($answers,$answer);
+
         $question_id = $request->post('question_id', 0);
+
+        //查看正确答案
+
+        $question = ShandongRenbaoHeroQuestion::find()->where([
+            'id'=>$question_id
+        ])->asArray()->one();
+        if($question['correct_answer_id']==$answer){
+            $scores = Yii::$app->session['shandong_renbao_scores'];
+            Yii::$app->session['shandong_renbao_scores']= $scores+10;
+        }
+
         //查看是否有下一题
         $question = ShandongRenbaoHeroQuestion::find()->where([
             'id'=>$question_id+1
         ])->asArray()->one();
         if($question){
-            return $this->json(1, '验证码发送失败，请重试！',['id'=>$question['id']]);
+            return $this->json(1, '',['id'=>$question['id']]);
+        }else{
+            //把结果拿出来，计算分数
+
+
+            return $this->json(0, '');
+
         }
 
 
@@ -80,11 +108,12 @@ class ShandongRenbaoHeroController extends PController {
 
     }
 
-    public function actionLetter() {
-        $request = Yii::$app->request;
-        $id = $request->get('id');
-        return $this->render('letter',[
-            'id'=>$id
+    public function actionLast() {
+        $scores = Yii::$app->session['shandong_renbao_scores'];
+
+
+        return $this->render('last',[
+            'scores'=>$scores
         ]);
     }
 

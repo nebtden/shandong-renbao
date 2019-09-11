@@ -33,6 +33,16 @@
 
 <script src="/frontend/web/shandong-renbao-wish/js/show.js"></script>
 <script src="/frontend/web/shandong-renbao-wish/js/tc.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?5f06545547077824d8b7eb47e0ac761f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
 </body>
 </html>
 <?php $this->endPage() ?>

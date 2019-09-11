@@ -3,17 +3,10 @@
 use yii\helpers\Url;
 
 ?>
-<div class="bg-index">
-    <img src="/frontend/web/shandong-renbao/images/active.png" alt="" class="ac-img" style="display: none">
-    <!-- 车牌查询 -->
+<div class="">
 
-    <div class="inquire">
-        <b>鲁</b>
-        <b>Q</b>
-        <input type="text" placeholder="输入车牌号" name="license_plate" class="license_plate">
-    </div>
-    <a href="#" class="check">
-        <img src="/frontend/web/shandong-renbao/images/pg-btn.png" alt="评估按钮" class="pg-btn">
+    <a href="question.html?id=1" class="check">
+         开始测试
     </a>
 
     <p class="index-footer">已有<?= $total ?>人参与<br/>

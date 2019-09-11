@@ -385,14 +385,21 @@ class ShandongRenbaoWishController extends PController {
     }
 
     public function actionTest(){
-        $setting = Settings::find()->where([
-            'key'=>'winning_probability'
-        ])->one();
-        $probalility = $setting->setting_value;
-        $rand = rand(0,99);
-        var_dump($rand<$probalility);
+        $array = [];
+        $total = 0;
+        for($i=0;$i<=10000;$i++){
+            $rand = rand(0,99);
+            $array[$rand]++;
+            if($rand>=90){
+                $total = $total+1;
+            }
+        }
 
+        echo $total;
+
+        var_dump($array);
         die();
+
 
 
         $rand = rand(0,9);
