@@ -3,28 +3,68 @@
 use yii\helpers\Url;
 
 ?>
-<div class="">
+<div class="index-bg">
+    <h1 class="hide">猜英雄赢大奖</h1>
+    <div class="idx-szf">
 
-    <a href="question.html?id=1" class="check">
-         开始测试
-    </a>
+        <a href="question.html?id=1">
+            <img src="./images/cs-btn.png" alt="" class="cs-btn">
+        </a>
+    </div>
+    <!-- 中奖名单 -->
+    <div class="pct-list" id="scrollBox">
+        <ul id="con1">
+            <li>
+                <b>131****3658</b>
+                <span>单次免费洗车</span>
+            </li>
+            <li>
+                <b>137****6106</b>
+                <span>单次浪漫鲜花</span>
+            </li>
+            <li>
+                <b>135****5930</b>
+                <span>电商优惠券</span>
+            </li>
+            <li>
+                <b>138****1817</b>
+                <span>单次免费洗车</span>
+            </li>
+            <li>
+                <b>135****5506</b>
+                <span>单次浪漫鲜花</span>
+            </li>
+            <li>
+                <b>130****4785</b>
+                <span>电商优惠券</span>
+            </li>
+            <li>
+                <b>177****4871</b>
+                <span>电商优惠券</span>
+            </li>
+            <li>
+                <b>189****5506</b>
+                <span>单次免费洗车</span>
+            </li>
+            <li>
+                <b>130****7575</b>
+                <span>九阳免安装洗碗机</span>
+            </li>
+            <li>
+                <b>152****6421</b>
+                <span>九阳破壁免滤豆浆机</span>
+            </li>
+        </ul>
+        <ul id="con2"></ul>
 
-    <p class="index-footer">已有<?= $total ?>人参与<br/>
+    </div>
+    <p class="idx-sm">已有<?= $total ?>人参与<br/>
         最终解释权归临沂人保财险所有</p>
-</div>
-<script>
-    $(function () {
-        $('.check').click(function () {
-            var license_plate = $('.license_plate').val();
-            var re =  /^[0-9a-zA-Z]*$/g;  //判断字符串是否为数字和字母组合     //判断正整数 /^[1-9]+[0-9]*]*$/
 
-            if(!re.test(license_plate) || license_plate.length!=5){
-                alert('车牌格式不正确！');
-            }else{
-                window.location.href = 'mobile.html?license_plate='+license_plate;
-            }
-        });
-    });
+</div>
+
+<script>
+
 
 
 </script>

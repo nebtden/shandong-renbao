@@ -1,0 +1,16 @@
+/* 首页 */
+.index-bg{background: url('../images/images.jpg')no-repeat;background-size: contain;height: 16.98rem;}
+.cs-btn{width: 3.4rem;height: 1rem;margin: 5.4rem auto;}
+/* 中奖名单 */
+.pct-list li{ float: left; text-align: center;margin:0.45rem auto 0;} 
+#scrollBox{height:2.9rem;width:6.85rem;margin:2rem auto;overflow:hidden;padding-left: 0.5rem;}
+#scrollBox li{height:15px;line-height:15px;text-align:center;}
+.pck-p{margin-top: -0.5rem; font-size: 0.24rem;color:#fff;}
+ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
+#scrollBox{width: 6rem;;margin:6rem auto 0;overflow:hidden;    margin-left: 0.65rem;overflow: hidden;}
+#scrollBox #con1,#con2{width: 6rem;float:left;}
+#scrollBox li{line-height:0.1rem;text-align:center;}
+#scrollBox li span{padding-left: 69px;}
+/* 底部声明 */
+.idx-sm{color:0.24rem;color: #f4f0b4;margin-top:0.2rem;font-weight: bold;line-height: 0.3rem; }
+
