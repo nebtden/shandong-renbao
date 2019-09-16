@@ -37,7 +37,7 @@ class ShandongRenbaoHeroController extends PController {
 
         //分数清零，开始答题
         Yii::$app->session['shandong_renbao_question_ids'] = [];
-        Yii::$app->session['shandong_renbao_scores'] = [];
+        Yii::$app->session['shandong_renbao_scores'] = 0;
 
 
         $total = ShandongRenbaoHero::find()->count();
@@ -84,9 +84,10 @@ class ShandongRenbaoHeroController extends PController {
         $question = ShandongRenbaoHeroQuestion::find()->where([
             'id'=>$question_id
         ])->asArray()->one();
+        $scores = Yii::$app->session['shandong_renbao_scores'];
         if($question['correct_answer_id']==$answer){
-            $scores = Yii::$app->session['shandong_renbao_scores'];
-            Yii::$app->session['shandong_renbao_scores']= $scores+10;
+            $scores = $scores+10;
+            Yii::$app->session['shandong_renbao_scores']= $scores;
         }
 
         //查看是否有下一题
@@ -98,8 +99,7 @@ class ShandongRenbaoHeroController extends PController {
         }else{
             //把结果拿出来，计算分数
 
-
-            return $this->json(0, '');
+            return $this->json(0, '',['scores'=>$scores]);
 
         }
 
@@ -109,11 +109,16 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionLast() {
-        $scores = Yii::$app->session['shandong_renbao_scores'];
+        $request = Yii::$app->request;
+        $scores = $request->get('scores', 0);
 
+//        $scores = Yii::$app->session['shandong_renbao_scores'];
+        $total = ShandongRenbaoHero::find()->count();
+        $total = 1234+2*$total;
 
         return $this->render('last',[
-            'scores'=>$scores
+            'scores'=>$scores,
+            'total'=>$total,
         ]);
     }
 
@@ -161,7 +166,6 @@ class ShandongRenbaoHeroController extends PController {
         if($car){
 
             return $this->json(-1, '您已经抽过奖，点击确定跳转到中奖页面！',['id'=>$car->id]);
-//            return \GuzzleHttp\json_encode($return);
         }
 
 
@@ -452,7 +456,7 @@ class ShandongRenbaoHeroController extends PController {
         );
         if($is_code){
             $code = rand(100000, 999999);
-            $content = '【云车驾到】您的绑定验证码是：' . $code . ',有效时间3分钟，请验证后立即删除，不要泄露。';
+            $content = '【云车驾到】您参与山东临沂抽奖活动的验证码是：' . $code . ',有效时间1分钟，请注意';
         }
 
         $postArr = array(

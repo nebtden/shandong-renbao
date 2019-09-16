@@ -8,7 +8,7 @@ use yii\helpers\Url;
     <div class="idx-szf">
 
         <a href="question.html?id=1">
-            <img src="./images/cs-btn.png" alt="" class="cs-btn">
+            <img src="/frontend/web/shandong-renbao-hero/images/cs-btn.png" alt="" class="cs-btn">
         </a>
     </div>
     <!-- 中奖名单 -->

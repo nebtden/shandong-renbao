@@ -27,7 +27,7 @@ use yii\helpers\Url;
             $.post('answer.html',{question_id:question_id,answer:answer},function (data) {
                 // console.log();
                 if(data.status==0){
-                    window.location.href = 'last.html';
+                    window.location.href = 'last.html?scores='+data.data.scores;
                 }else{
                     window.location.href = 'question.html?id='+data.data.id;
                 }

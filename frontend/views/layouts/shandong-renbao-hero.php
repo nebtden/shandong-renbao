@@ -15,6 +15,8 @@
     <title>猜英雄 送礼品</title>
     <link rel="stylesheet" href="/frontend/web/shandong-renbao-hero/css/rest.css">
     <link rel="stylesheet" href="/frontend/web/shandong-renbao-hero/css/content.css">
+    <script src="/frontend/web/shandong-renbao-wish/js/jquery-2.2.0.min.js"></script>
+    <script src="/frontend/web/shandong-renbao-hero/js/index.js"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -23,7 +25,8 @@
 
 <?php $this->endBody() ?>
 
-<script src="/frontend/web/shandong-renbao-hero/js/index.js"></script>
+
+
 <script>
     var _hmt = _hmt || [];
     (function() {
