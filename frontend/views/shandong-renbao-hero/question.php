@@ -3,26 +3,49 @@
 use yii\helpers\Url;
 
 ?>
-<div class="bg-index">
+<div class="hero-bg">
+    <h1 class="hide">猜英雄 得大奖</h1>
+    <div class="hero-con" style="display: block">
+        <div class="hero-con1">
+            <input type="hidden" class="question" value="<?= $question['id'] ?>">
 
-        <?= $question['question'] ?>
-    <input type="hidden" class="question" value="<?= $question['id'] ?>">
+            <img src="/frontend/web/shandong-renbao-hero/images/hero-1.jpg" alt="">
+            <ul class="hero-xz">
+                <?php foreach ($answers as $answer){ ?>
+                    <li class="answer" data-id="<?= $answer['id'] ?>" ><?= $answer['answer'] ?></li>
+                <?php } ?>
 
-        <br>
-        <?php foreach ($answers as $answer){ ?>
-            <input type="radio" id="answer" name="answer" value="<?= $answer['id'] ?>" ><?= $answer['answer'] ?>
-            <br>
-        <?php } ?>
+            </ul>
+
+        </div>
+        <ul class="hero-con2">
+            <li <?php if($question['id']==1){ ?>class="current"<?php }?>>  </li>
+            <li <?php if($question['id']==2){ ?>class="current"<?php }?>></li>
+            <li <?php if($question['id']==3){ ?>class="current"<?php }?>></li>
+            <li <?php if($question['id']==4){ ?>class="current"<?php }?>></li>
+        </ul>
+    </div>
 
 
-        <button type="submit"  class="submit" >提交</button>
 
+    <a href="javascript:;"  class="hero-btn submit"> 下一步 </a>
 </div>
+
 <script>
     $(function () {
+        var answer = 0;
+        $('.answer').click(function () {
+            answer = $(this).data('id');
+            $(this).addClass('active');
+        });
+
+
         $('.submit').click(function () {
             var question_id = $('.question').val();
-            var answer= $('input[name=answer]:checked').val();
+            if(answer==0){
+                alert('请选择英雄');
+                return false
+            }
 
             $.post('answer.html',{question_id:question_id,answer:answer},function (data) {
                 // console.log();

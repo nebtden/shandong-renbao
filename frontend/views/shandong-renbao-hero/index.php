@@ -63,8 +63,3 @@ use yii\helpers\Url;
 
 </div>
 
-<script>
-
-
-
-</script>
