@@ -86,7 +86,7 @@ class ShandongRenbaoHeroController extends PController {
         ])->asArray()->one();
         $scores = Yii::$app->session['shandong_renbao_scores'];
         if($question['correct_answer_id']==$answer){
-            $scores = $scores+10;
+            $scores = $scores+25;
             Yii::$app->session['shandong_renbao_scores']= $scores;
         }
 
@@ -122,17 +122,12 @@ class ShandongRenbaoHeroController extends PController {
         ]);
     }
 
-    public function actionPrize() {
-        return $this->render('prize',[
+    public function actionMobile() {
+        return $this->render('mobile',[
 
         ]);
     }
-    public function actionIndexs() {
-        $this->layout=false;
-        return $this->render('indexs',[
 
-        ]);
-    }
 
     public function actionMusic() {
         return $this->render('music',[

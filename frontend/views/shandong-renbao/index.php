@@ -4,6 +4,7 @@ use yii\helpers\Url;
 
 ?>
 <div class="bg-index">
+    本次活动已结束，谢谢您的关注
     <img src="/frontend/web/shandong-renbao/images/active.png" alt="" class="ac-img" style="display: none">
     <!-- 车牌查询 -->
 

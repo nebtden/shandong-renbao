@@ -5,7 +5,8 @@ use yii\helpers\Url;
 ?>
 <div class="score-bg">
     <h1 class="hide">猜英雄 赢大奖</h1>
-    <div class="scroe-kk"style="display: none" >
+    <?php if($scores==0){ ?>
+    <div class="scroe-kk"style="" >
         <p class="scr-cs">0</p>
         <span >
                <h2>谢谢参与</h2>
@@ -13,6 +14,7 @@ use yii\helpers\Url;
                 送您一次抽奖的机会
           </span>
     </div>
+    <?php }else{ ?>
     <div class="scroe-kk">
         <p class="scr-cs"><?=$scores?></p>
         <span>
@@ -20,7 +22,8 @@ use yii\helpers\Url;
                      获得1次抽奖机会
                 </span>
     </div>
-    <a href="javascript:;" class="scroe-btn">
+    <?php  } ?>
+    <a href="mobile.html" class="scroe-btn">
         去抽奖
     </a>
     <!-- 底部申明 -->

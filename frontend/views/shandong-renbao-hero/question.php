@@ -9,7 +9,7 @@ use yii\helpers\Url;
         <div class="hero-con1">
             <input type="hidden" class="question" value="<?= $question['id'] ?>">
 
-            <img src="/frontend/web/shandong-renbao-hero/images/hero-1.jpg" alt="">
+            <img src="/frontend/web/shandong-renbao-hero/images/hero-<?= $question['id'] ?>.jpg" alt="">
             <ul class="hero-xz">
                 <?php foreach ($answers as $answer){ ?>
                     <li class="answer" data-id="<?= $answer['id'] ?>" ><?= $answer['answer'] ?></li>
@@ -36,7 +36,8 @@ use yii\helpers\Url;
         var answer = 0;
         $('.answer').click(function () {
             answer = $(this).data('id');
-            $(this).addClass('active');
+            $('.answer').removeClass('hero-current');
+            $(this).addClass('hero-current');
         });
 
 
@@ -50,6 +51,7 @@ use yii\helpers\Url;
             $.post('answer.html',{question_id:question_id,answer:answer},function (data) {
                 // console.log();
                 if(data.status==0){
+                    console.log(data.data);
                     window.location.href = 'last.html?scores='+data.data.scores;
                 }else{
                     window.location.href = 'question.html?id='+data.data.id;

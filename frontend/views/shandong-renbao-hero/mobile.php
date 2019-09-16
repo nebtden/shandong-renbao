@@ -1,16 +1,30 @@
 
-<div class="bg-vcation">
-    <input type="number"  class="vct-number mobile" placeholder="请输入手机号码">
-    <div class="vct-hqbtn">
-        <input type="text" placeholder="输入验证码" class="vct-import code" >
-        <div class="vct-btn send">
-            获取
-        </div>
+<div class="getbag-bg">
+    <h1 class="hide">猜英雄 赢大奖</h1>
+    <div for="" class="getbag-con1">
+        <input type="number" class="vct-number" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 请输入手机号码" >
+        <input type="text"   class="vct-import" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 输入验证码">
     </div>
-    <a href="#" class="submit">
-        <img src="/frontend/web/shandong-renbao/images/pg-btn1.png" alt="评估" class="vction-btn">
+    <a  href="javascript:popShow('pop_per');" class="scroe-btn">
+        领取礼包
     </a>
-    <p class="vct-p"> 已有<b><?=$total ?></b>人参与<br/>最终解释权归临沂人保财险所有</p>
+
+</div>
+<!-- 弹窗 -->
+<div  class="pop" id="pop_per">
+    <div class="pop_cont3">
+        <div class="pop-con1">
+            <a href="javascript:;">去使用</a>
+            <a href="javascript:popShow('pop1');" >邀朋友一起来PK</a>
+            <p>好友获得礼品的同时<br/>
+                将发放一份随机神秘礼给您</p>
+        </div>
+        <a href="javascript:popHide();" title="点击关闭" class="btn close gtbcls"> </a>
+    </div>
+</div>
+
+<div class="pop1" id="pop1">
+    <img src="./images/gbga-tc2.jpg" alt="">
 </div>
 
 
