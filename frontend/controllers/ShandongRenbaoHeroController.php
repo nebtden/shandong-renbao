@@ -117,7 +117,7 @@ class ShandongRenbaoHeroController extends PController {
 
     public function actionLast() {
 
-
+        Yii::$app->session->set('mobile', 1);
         $request = Yii::$app->request;
         $scores = $request->get('scores', 0);
 
