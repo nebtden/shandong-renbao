@@ -1,5 +1,5 @@
 <div class="hero-bg">
-    <h1 class="hide">猜英雄 得大奖</h1>
+    <h1 class="hide">猜英雄 赢大奖</h1>
 
     <div class="bug-site">
         <input type="hidden" class="rewards_id" value="<?= $rewards_id ?>">

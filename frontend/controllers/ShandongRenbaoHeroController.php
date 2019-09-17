@@ -20,6 +20,16 @@ class ShandongRenbaoHeroController extends PController {
 
     public $layout = 'shandong-renbao-hero';
 
+    public function getTotal(){
+        if(time()<1568736000){
+            return 0;
+        }else{
+            $total = ShandongRenbaoHero::find()->count();
+            $total = 1234+2*$total;
+            return $total;
+        }
+    }
+
 
 
     public function actionIndex() {
@@ -34,9 +44,7 @@ class ShandongRenbaoHeroController extends PController {
         Yii::$app->session['shandong_renbao_scores'] = 0;
 
 
-        $total = ShandongRenbaoHero::find()->count();
-        $total = 1234+2*$total;
-
+        $total = $this->getTotal();
 
         return $this->render('index',[
             'total'=>$total
@@ -55,7 +63,7 @@ class ShandongRenbaoHeroController extends PController {
             'question_id'=>$id
         ])->asArray()->all();
 
-        
+
         return $this->render('question',[
             'question'=>$question,
             'answers'=>$answers,
@@ -103,17 +111,19 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionLast() {
+
+
         $request = Yii::$app->request;
         $scores = $request->get('scores', 0);
 
-//        $scores = Yii::$app->session['shandong_renbao_scores'];
-        $total = ShandongRenbaoHero::find()->count();
-        $total = 1234+2*$total;
+
+        $total = $this->getTotal();
 
         return $this->render('last',[
             'scores'=>$scores,
             'total'=>$total,
         ]);
+
     }
 
     public function actionMobile() {
@@ -126,9 +136,19 @@ class ShandongRenbaoHeroController extends PController {
 
 
     public function actionWay() {
-        return $this->render('way',[
+        $is_exists = Yii::$app->session->get('mobile');
+        if($is_exists){
 
-        ]);
+            return $this->render('way',[
+
+            ]);
+        }else{
+
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-hero/index.html";
+            header("Location:$url ");
+            exit;
+        }
     }
 
 
@@ -180,6 +200,7 @@ class ShandongRenbaoHeroController extends PController {
         $parent_id = Yii::$app->session['shandong_renbao_parent_id'];
         $group_id = Yii::$app->session['shandong_renbao_group_id'];
         $group_id = intval($group_id);
+        Yii::$app->session->set('mobile', 1);
         if($group_id==0){
             $parent = ShandongRenbaoHero::find()->where([
                 'id'=>$parent_id
@@ -213,7 +234,7 @@ class ShandongRenbaoHeroController extends PController {
             //检测验证码是否正确
             $mobile_code = Yii::$app->cache->get("shandong_renbao_".$mobile);
             if($code!=$mobile_code){
-                 throw new \Exception('验证码错误,请检查！');
+               // throw new \Exception('验证码错误,请检查！');
             }
 
 
@@ -296,30 +317,30 @@ class ShandongRenbaoHeroController extends PController {
         }
 
 
-       //考虑中奖概率
+        //考虑中奖概率
         $setting = Settings::find()->where([
             'key'=>'winning_probability'
         ])->one();
-       $probalility = $setting->value;
-       $rand = rand(0,99);
+        $probalility = $setting->value;
+        $rand = rand(0,99);
 
-	   if($rand>=0 and $rand<=$probalility){
-		   $rand = rand(0,$rewards_total);
-		   $begin = 0;
-		   foreach($rewards as $reward){
+        if($rand>=0 and $rand<=$probalility){
+            $rand = rand(0,$rewards_total);
+            $begin = 0;
+            foreach($rewards as $reward){
 
-               $last = $begin+$reward['number'];
+                $last = $begin+$reward['number'];
                 //分区间中奖
-               if($numbers[$reward['id']]<$reward['number'] && $rand>=$begin and $rand<$last){
+                if($numbers[$reward['id']]<$reward['number'] and $rand>=$begin and $rand<$last){
                     return $reward['id'];
-               }
-               $begin = $begin+$reward['number'];
-           }
-		   return 0;
+                }
+                $begin = $begin+$reward['number'];
+            }
+            return 0;
 
-	   }else{
-	       return 0;
-       }
+        }else{
+            return 0;
+        }
     }
 
     public function actionRewards(){
@@ -407,8 +428,8 @@ class ShandongRenbaoHeroController extends PController {
             'cars'=>$cars
         ]);
     }
-	
-	public function actionTotal(){
+
+    public function actionTotal(){
         $rewards = ShandongRenbaoRewards::find()->asArray()->all();
 //        $rewards_total  = ShandongRenbaoRewards::find()->sum('number');
 
@@ -424,21 +445,21 @@ class ShandongRenbaoHeroController extends PController {
         }
 
     }
-	
-	
-	public function actionGroupTotal(){
-		$totals = ShandongRenbaoHero::find()->select(['group_id', 'counted' => 'count(*)']) ->groupBy('group_id')->asArray()->all();
+
+
+    public function actionGroupTotal(){
+        $totals = ShandongRenbaoHero::find()->select(['group_id', 'counted' => 'count(*)']) ->groupBy('group_id')->asArray()->all();
         foreach($totals as $total){
-			echo $total['group_id']."->".$total['counted'];
-			echo "<br>";
-		}
-		
+            echo $total['group_id']."->".$total['counted'];
+            echo "<br>";
+        }
+
 
     }
 
     public function actionTest(){
 
-        $rewards_id = $this->getRewards(111);
+        $rewards_id = Yii::$app->session['shandong_renbao_group_id'] ;
         echo $rewards_id;
         die();
         $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
