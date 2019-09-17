@@ -12,7 +12,7 @@ use yii\helpers\Url;
         </a>
     </div>
     <!-- 中奖名单 -->
-    <div class="pct-list" id="scrollBox">
+    <!--<div class="pct-list" id="scrollBox">
         <ul id="con1">
             <li>
                 <b>131****3658</b>
@@ -57,9 +57,9 @@ use yii\helpers\Url;
         </ul>
         <ul id="con2"></ul>
 
-    </div>
+    </div>-->
     <p class="idx-sm">已有<?= $total ?>人参与<br/>
-        最终解释权归临沂人保财险所有</p>
+        临沂人保财险保留在法律范围内对本活动的解释权</p>
 
 </div>
 

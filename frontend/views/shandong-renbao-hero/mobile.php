@@ -16,7 +16,7 @@
     <div class="pop_cont3">
         <div class="pop-con1">
             <h2>免费洗车券一张</h2>
-            <a href="javascript:;">去使用</a>
+            <a href="getway.html">去使用</a>
             <a href="javascript:popShow('pop1');" >邀朋友一起来PK</a>
             <p>好友获得礼品的同时<br/>
                 将发放一份随机神秘礼给您</p>
@@ -26,7 +26,7 @@
 </div>
 
 <div class="pop1" id="pop1">
-    <img src="./images/gbga-tc2.jpg" alt="">
+    <img src="/frontend/web/shandong-renbao-hero/images/gbga-tc2.jpg" alt="">
 </div>
 
 
@@ -55,7 +55,7 @@
         $(".submit").click(function () {
             var mobile = $('.vct-number').val();
             console.log(mobile);
-            var code = $('.code').val();
+            var code = $('.vct-import').val();
 
             if(!(/^1[3456789]\d{9}$/.test(mobile))){
                 alert("手机号码有误，请重填");
@@ -66,12 +66,13 @@
                 alert("验证码错误,请检查！");
                 return false;
             }
-            popShow('pop_per');
-            $.post('submit.html',{mobile:mobile,code:code,license_plate:license_plate},function (data) {
+
+            $.post('submit.html',{mobile:mobile,code:code},function (data) {
 
                 if(data.status==1){
                     // window.location.href = 'result.html?id='+data.data.id;
-
+                    popShow('pop_per');
+                    $('h2').text(data.data.rewards);
 
                 }else{
                     alert(data.message);

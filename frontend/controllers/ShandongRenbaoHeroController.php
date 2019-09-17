@@ -170,7 +170,6 @@ class ShandongRenbaoHeroController extends PController {
             'mobile'=>$mobile
         ])->one();
         if($car){
-
             return $this->json(-1, '您已经抽过奖，点击确定跳转到中奖页面！',['id'=>$car->id]);
         }
 
@@ -259,6 +258,9 @@ class ShandongRenbaoHeroController extends PController {
                 'data'=>['id'=>$id]
             ];
 
+            //发送短信
+            $this->sendSms($mobile,0,'恭喜您在临沂人保财险举行“猜英雄赢大奖”活动中获得超值大礼，奖券将在五个工作日内充入您山东人保财险公众号账号，还可邀请好友一起来抢！');
+
 
         }catch (\Exception $exception){
             $return = [
@@ -267,50 +269,14 @@ class ShandongRenbaoHeroController extends PController {
             ];
         }
 
-        //发送短信
 
 
         echo \GuzzleHttp\json_encode($return);
     }
 
-    public function actionSend(){
-        $request = Yii::$app->request;
-        $id = $request->post('id');
-        $car = ShandongRenbaoHero::find()->where([
-            'id'=>$id
-        ])->one();
-        $is_reward = $car->is_reward;
-
-        if($car->rewards>0 && $is_reward==0){
-            $car->is_reward = 1;
-            $car->save();
-            $this->sendSms($car->mobile,0,'【云车驾到】恭喜您在人保财险临沂公司举行“我的车牌值多少钱”活动中获得超值大礼包，相关奖券将在五个工作日内到山东人保财险微信公众号享服务中我的礼包领取权益');
-        }
-    }
-
-    public function actionSetrand(){
-
-        $setting = Settings::find()->where([
-            'key'=>'winning_probability'
-        ])->one();
-        $probalility = $setting->value;
-        echo '当前中奖概率为：'.$probalility;
-        echo "<br>";
 
 
 
-        $request = Yii::$app->request;
-        $probability = $request->get('probability');
-        if($probalility>=0 and $probability<=100){
-            $setting = Settings::find()->where([
-                'key'=>'winning_probability'
-            ])->one();
-            $setting->value = intval($probalility);
-            $setting->save();
-            echo "更新成功！";
-        }
-
-    }
 
 
     public function getRewards($mobile){
@@ -434,24 +400,7 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionTest(){
-        $repeat = ShandongRenbaoWish::find()->where(
-           ['mobile'=>13365802535,]
-        )->andWhere(['>','rewards_id',3])->one();
-        var_dump($repeat);
-        die();
 
-
-        $rand = rand(0,9);
-        echo $rand;
-        die();
-        $is = Yii::$app->session->get('mobile',0);
-        var_dump($is) ;
-        die();
-        $url = $_SERVER['HTTP_HOST'];
-        var_dump($_SERVER);
-        $mobile = '13365802535';
-        $code = Yii::$app->cache->get("shandong_renbao_".$mobile);
-        echo $code;
     }
 
 
@@ -464,7 +413,7 @@ class ShandongRenbaoHeroController extends PController {
         );
         if($is_code){
             $code = rand(100000, 999999);
-            $content = '【云车驾到】您参与山东临沂抽奖活动的验证码是：' . $code . ',请注意保管';
+            $content = '【云车驾到】您参与山东临沂活动的验证码是：' . $code . ',请验证后立即删除，不要泄露。';
         }
 
         $postArr = array(

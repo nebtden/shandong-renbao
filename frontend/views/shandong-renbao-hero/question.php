@@ -40,13 +40,18 @@ use yii\helpers\Url;
             $(this).addClass('hero-current');
         });
 
-
+        var clicked=false;
         $('.submit').click(function () {
+
             var question_id = $('.question').val();
             if(answer==0){
                 alert('请选择英雄');
                 return false
             }
+            if(clicked){
+                return false;
+            }
+            clicked = true;
 
             $.post('answer.html',{question_id:question_id,answer:answer},function (data) {
                 // console.log();
