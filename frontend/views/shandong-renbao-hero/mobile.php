@@ -6,8 +6,8 @@
         <input type="text"   class="vct-import" placeholder=" 输入验证码">
         <a href="javascript:;" class="vct-btn"></a>
     </div>
-    <a  href="javascript:;" class="scroe-btn submit">
-        领取礼包
+    <a  href="javascript:;" class="scroe-btn submit" >
+        开始抽奖
     </a>
 
 </div>
