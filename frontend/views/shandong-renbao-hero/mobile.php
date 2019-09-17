@@ -15,13 +15,17 @@
 <div  class="pop" id="pop_per">
     <div class="pop_cont3">
         <div class="pop-con1">
-            <h2>免费洗车券一张</h2>
-            <a href="way.html">去使用</a>
-            <a href="javascript:popShow('pop1');" >邀朋友一起来PK</a>
-            <p>好友获得礼品的同时<br/>
-                将发放一份随机神秘礼给您</p>
+            <b class="lootey">
+                恭喜您<br/>
+                本次抽奖获得
+            </b>
+            <span class="ai-barcode"></span>
+            <h2></h2>
+            <a href="rewards.html" class="pop-btn use" >去使用</a>
+            <a href="javascript:popShow('pop1');"  class="pop-btn pop-btn1">邀朋友一起来PK</a>
+
         </div>
-        <a href="javascript: popHide();" title="点击关闭" class="btn close gtbcls"> </a>
+        <a href="javascript:popHide();" title="点击关闭" class="btn close gtbcls"> </a>
     </div>
 </div>
 
@@ -29,7 +33,7 @@
     <img src="/frontend/web/shandong-renbao-hero/images/gbga-tc2.jpg" alt="">
 </div>
 
-
+<script src="/frontend/web/shandong-renbao-hero/js/show.js"></script>
 <script>
     $(function () {
         $('.vct-btn').click(function () {
@@ -45,7 +49,12 @@
                 // console.log();
                 if(data.status==1){
                     alert('短信发送成功！');
-                } else{
+                } else if(data.status==-1){
+                    alert(data.msg);
+                    $('h2').text(data.data.rewards);
+                    popShow('pop_per');
+
+                }else{
                     alert(data.msg);
                 }
             },'json');
@@ -70,12 +79,25 @@
 
                 if(data.status==1){
                     // window.location.href = 'result.html?id='+data.data.id;
-
-                    $('h2').text(data.data.rewards);
+                    if(data.data.rewards_id==0){
+                        $('.lootey').html('非常遗憾<br>您未中奖');
+                        $('h2').html('下次活动28号<br>不见不散');
+                        $('.use').hide();
+                    }else{
+                        $('h2').text(data.data.rewards);
+                    }
                     popShow('pop_per');
 
                 }else if(data.status==-1){
                     alert(data.message);
+                    if(data.data.rewards_id==0){
+                        $('.lootey').html('非常遗憾<br>您未中奖');
+                        $('h2').html('下次活动28号 <br> 不见不散');
+                        $('.use').hide();
+                    }else{
+                        $('h2').text(data.data.rewards);
+
+                    }
                     popShow('pop_per');
                 }else{
                     alert(data.message);

@@ -149,7 +149,18 @@ class ShandongRenbaoHeroController extends PController {
             'mobile'=>$mobile
         ])->one();
         if($car){
-            return $this->json(-1, '您已经抽过奖,点击确定查看中奖结果',['id'=>$car->id]);
+            $rewards_id = $car->rewards_id;
+            $rewards = ShandongRenbaoRewards::find()->where([
+                'id'=>$rewards_id
+            ])->one();
+            $rewards_name = $rewards->name;
+            $return = [
+                'status'=>-1,
+                'msg'=>'您已经抽过奖，点击确定查看中奖结果！',
+                'data'=>['id'=>$car->id,'rewards_id'=>$rewards_id,'rewards'=>$rewards_name]
+            ];
+            return \GuzzleHttp\json_encode($return);
+//            return $this->json(-1, '您已经抽过奖,点击确定查看中奖结果',['id'=>$car->id]);
         }
 
 
@@ -184,10 +195,15 @@ class ShandongRenbaoHeroController extends PController {
                 'mobile'=>$mobile
             ])->one();
             if($object){
+                $rewards_id = $object->rewards_id;
+                $rewards = ShandongRenbaoRewards::find()->where([
+                    'id'=>$rewards_id
+                ])->one();
+                $rewards_name = $rewards->name;
                 $return = [
                     'status'=>-1,
-                    'message'=>'您已经抽过奖，点击确定跳转到中奖页面！',
-                    'data'=>['id'=>$object->id]
+                    'message'=>'您已经抽过奖，点击确定查看中奖结果！',
+                    'data'=>['id'=>$object->id,'rewards_id'=>$rewards_id,'rewards'=>$rewards_name]
                 ];
                 return \GuzzleHttp\json_encode($return);
 
@@ -202,6 +218,7 @@ class ShandongRenbaoHeroController extends PController {
 
 
             $rewards_id = $this->getRewards($mobile);
+//            $rewards_id = 0;
             $object = new ShandongRenbaoHero();
             $object->mobile = $mobile;
             $object->rewards_id = $rewards_id;
@@ -211,9 +228,20 @@ class ShandongRenbaoHeroController extends PController {
             $object->save();
 
             $id = $object->id;
+
+            if($rewards_id){
+                $rewards = ShandongRenbaoRewards::find()->where([
+                    'id'=>$rewards_id
+                ])->one();
+                $rewards_name = $rewards->name;
+            }else{
+                $rewards_name = '';
+            }
+
             $return = [
                 'status'=>1,
-                'data'=>['id'=>$id]
+                'data'=>['id'=>$id,'rewards_id'=>$rewards_id,'rewards'=>$rewards_name],
+
             ];
 
             //发送短信
@@ -294,6 +322,11 @@ class ShandongRenbaoHeroController extends PController {
        }
     }
 
+    public function actionRewards(){
+        return $this->render('rewards',[
+
+        ]);
+    }
 
 
     public function actionDelete()

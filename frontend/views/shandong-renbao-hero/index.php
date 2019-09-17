@@ -65,4 +65,15 @@ use yii\helpers\Url;
         临沂人保财险保留在法律范围内对本活动的解释权</p>
 
 </div>
+<audio id="Jaudio" class="media-audio" src="/frontend/web/shandong-renbao-hero/music.mp3" preload loop="loop"></audio >
+<script type="text/javascript">
+    function audioAutoPlay(id){
+        var audio = document.getElementById(id);
+        audio.play();
+        document.addEventListener("WeixinJSBridgeReady", function () {
+            audio.play();
+        }, false);
+    }
+    audioAutoPlay('Jaudio');
+</script>
 
