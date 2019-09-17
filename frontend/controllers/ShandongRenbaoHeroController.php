@@ -132,13 +132,20 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionMobile() {
+        $is_exists = Yii::$app->session->get('mobile');
+        if($is_exists){
 
+            return $this->render('mobile',[
 
-        return $this->render('mobile',[
+            ]);
+        }else{
 
-        ]);
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-hero/index.html";
+            header("Location:$url ");
+            exit;
+        }
     }
-
 
     public function actionWay() {
         $is_exists = Yii::$app->session->get('mobile');
