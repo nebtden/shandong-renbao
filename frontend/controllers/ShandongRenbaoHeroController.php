@@ -23,16 +23,18 @@ class ShandongRenbaoHeroController extends PController {
         1=>'200元电商优惠券',
         2=>'单次免费洗车',
         3=>'单次浪漫鲜花',
-        4=>'九阳开水煲',
-        5=>'阳澄湖蟹将军提货券',
+        4=>'铝合金香氛双号停车牌',
+        5=>'多功能家车两用工具箱户外灯',
+        6=>'华帝多功能消毒刀架',
     ];
 
     public static $rewards_number = [
-        1=>'100',
-        2=>'100',
+        1=>'200',
+        2=>'1000',
         3=>'100',
-        4=>'100',
-        5=>'100',
+        4=>'1400',
+        5=>'19',
+        6=>'5',
     ];
 
 
@@ -139,12 +141,6 @@ class ShandongRenbaoHeroController extends PController {
         ]);
     }
 
-
-    public function actionMusic() {
-        return $this->render('music',[
-
-        ]);
-    }
 
     public function actionWay() {
         return $this->render('way',[
@@ -347,6 +343,24 @@ class ShandongRenbaoHeroController extends PController {
             'mobile'=>$mobile
         ]);
         echo '删除成功';
+    }
+
+    public function actionForm()
+    {
+        $this->layout =false;
+        return $this->render('form',[
+
+        ]);
+    }
+
+    public function actionAddress(){
+        $request = Yii::$app->request;
+        $rewards_id = $request->get('rewards_id');
+
+
+        return $this->render('address',[
+
+        ]);
     }
 
 

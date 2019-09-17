@@ -16,7 +16,7 @@
     <div class="pop_cont3">
         <div class="pop-con1">
             <h2>免费洗车券一张</h2>
-            <a href="getway.html">去使用</a>
+            <a href="way.html">去使用</a>
             <a href="javascript:popShow('pop1');" >邀朋友一起来PK</a>
             <p>好友获得礼品的同时<br/>
                 将发放一份随机神秘礼给您</p>
