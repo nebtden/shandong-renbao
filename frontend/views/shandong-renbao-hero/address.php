@@ -1,54 +1,60 @@
+<div class="hero-bg">
+    <h1 class="hide">猜英雄 得大奖</h1>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+    <div class="bug-site">
+        <input type="hidden" class="rewards_id" value="<?= $rewards_id ?>">
+        <span>
+                <input type="text" class="name" placeholder="收件人">
+                <i></i> 
+            </span>
+        <span>
+                <input type="text" class="mobile" placeholder="中奖手机号码">
+                <i class="input-i2" ></i>
+            </span>
 
-    <title>中奖结果导出</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/floating-labels/">
-
-    <!-- Bootstrap core CSS -->
-    <link href="/frontend/web/shandong-renbao-hero/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/frontend/web/shandong-renbao-hero/css/bootstrap-datetimepicker.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/frontend/web/shandong-renbao-hero/css/floating-labels.css" rel="stylesheet">
-    <script src="/frontend/web/shandong-renbao-hero/js/jquery-2.2.0.min.js"  ></script>
-    <script src="/frontend/web/shandong-renbao-hero/js/bootstrap.min.js"  ></script>
-    <script src="/frontend/web/shandong-renbao-hero/js/datetime.js"  ></script>
-</head>
-
-<body>
-<form class="form-signin" method="get">
-
-
-    <div class="form-label-group">
-        <input type="text" id="begin" class="form-control" placeholder="开始日期" required autofocus>
-        <label for="begin">开始日期</label>
+        <div class="control-group">
+            <label class="control-label" for="location_p">详细地址</label>
+            <div class="controls">
+                <select name="location_p" id="location_p"></select>
+                <select name="location_c" id="location_c"></select>
+                <select name="location_a" id="location_a"></select>
+            </div>
+        </div>
+        <textarea name="text" id="messagesbox"  class="messagesbox" placeholder="详细地址：如道路、门牌号、小区、楼栋号、单元室等 "></textarea>
+        <a href="javascript:;" class="affirm">
+            确认
+        </a>
     </div>
-
-    <div class="form-label-group">
-        <input type="text" id="last" class="form-control" placeholder="结束日期" required>
-        <label for="last">结束日期</label>
-    </div>
-
-
-    <button class="btn btn-lg btn-primary btn-block" type="submit">提交</button>
-
-</form>
+</div>
+<script src="/frontend/web/shandong-renbao-hero/js/region_select.js"></script>
 <script type="text/javascript">
+    new PCAS('location_p', 'location_c', 'location_a', ' ', '', '');
 
-    $("#begin").datetimepicker({
-        format: "yyyy-mm-dd hh:ii"
+    $(function () {
+        $('.affirm').click(function(){
+                var rewards_id = $('.rewards_id').val();
+                var mobile = $('.mobile').val();
+                var name = $('.name').val();
+                var p = $('#location_p').val();
+                var c = $('#location_c').val();
+                var a = $('#location_a').val();
+                var address = $('.messagesbox').val();
+                if(!mobile || !name || !p || !c || !a || !address){
+                    alert('请补充资料完全再提交');
+                }
+            $.post('address-save.html',{mobile:mobile,name:name,address:address},function (data) {
+                // console.log();
+                if(data.status==0){
+                    alert(data.msg);
+
+                }else{
+                    window.location.href = 'remind.html?id='+data.data.id;
+
+                }
+            },'json');
+
+
+        });
     });
-    $("#last").datetimepicker({
-        format: "yyyy-mm-dd hh:ii"
-    });
+
 </script>
-</body>
-</html>

@@ -2,7 +2,7 @@
 .index-bg{background: url('../images/images.jpg')no-repeat;background-size: contain;height: 16.98rem;}
 .cs-btn{width: 3.4rem;height: 1rem;margin: 5.4rem auto;}
 /* 中奖名单 */
-.pct-list li{ float: left; text-align: center;margin:0.45rem auto 0;}
+.pct-list li{ float: left; text-align: center;margin:0.45rem auto 0;} 
 #scrollBox{height:2.9rem;width:6.85rem;margin:2rem auto;overflow:hidden;padding-left: 0.5rem;}
 #scrollBox li{height:15px;line-height:15px;text-align:center;}
 .pck-p{margin-top: -0.5rem; font-size: 0.24rem;color:#fff;}
@@ -24,9 +24,9 @@ ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
 /* btn */
 .hero-xz{width: 6.6rem;height: 2.4rem; margin:0.2rem auto 0; }
 .hero-xz li{background: url('../images/hero-btn2.png')no-repeat;background-size: contain;
-    width: 2.9rem;height: 0.95rem; float: left; margin: 0.28rem 0 0 0.25rem; line-height: 0.95rem;color: #c52d24;font-size: 0.4rem;font-weight: bold;}
+width: 2.9rem;height: 0.95rem; float: left; margin: 0.28rem 0 0 0.25rem; line-height: 0.95rem;color: #c52d24;font-size: 0.4rem;font-weight: bold;}
 .hero-btn{background: url('../images/hero-btn1.png')no-repeat; background-size: contain;
-    width: 6.45rem;height: 0.98rem; margin: 0.4rem auto 0; color: #f4f0b4;font-size: 0.4rem;line-height: 0.8rem; margin-left: 0.7rem;}
+width: 6.45rem;height: 0.98rem; margin: 0.4rem auto 0; color: #f4f0b4;font-size: 0.4rem;line-height: 0.8rem; margin-left: 0.7rem;}
 .current{background-color: #f4f0b4; width: 0.45rem;height: 0.45rem;border-radius: 0.5rem;}
 .hero-xz .hero-current{background: url('../images/hero-btnclick.png')no-repeat;width: 2.9rem;height: 0.95rem; background-size: contain;}
 .hero-con2 li{float: left; width: 0.3rem;height: 0.3rem; margin:0.15rem 0 0 0.25rem; }
@@ -41,7 +41,7 @@ ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
 .scroe-kk span{color: #c52d24;font-size: 0.46rem; font-weight: bold; line-height: 0.5rem;}
 .scroe-kk span h2{font-size: 0.8rem;}
 .scroe-btn{background: url('../images/score-btn.png')no-repeat;background-size: contain; font-weight: bold;
-    width: 6.44rem;height: 0.9rem;margin: 0.5rem auto 0; color: #c52d24;font-size: 0.4rem;line-height: 0.86rem;    border-radius: 0.5rem;}
+width: 6.44rem;height: 0.9rem;margin: 0.5rem auto 0; color: #c52d24;font-size: 0.4rem;line-height: 0.86rem;    border-radius: 0.5rem;}
 .score-sm{margin-top: 1.1rem;}
 /* 得分end */
 /* 领取礼包start */
@@ -50,18 +50,19 @@ ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
 .getbag-con1 input{background: url('../images/getbag1.jpg')no-repeat;background-size: contain;width:5.5rem; height: 0.95rem; border:none;padding-left: 0.95rem;}
 .getbag-con1 input:nth-child(2){background: url('../images/getbag2.jpg')no-repeat;background-size: contain;width:6.45rem; height: 0.95rem; margin-top: 0.4rem;}
 .vct-btn{position: absolute;top:1.35rem;right: 0;width: 2.6rem;height: 0.9rem; font-size: 0.28rem;color: #c52d24;line-height: 0.85rem; float: left; margin-left: 0.29rem;  }
+.pop-con1 .lootey{font-size: 0.44rem;color: #fff; padding-top: 2.8rem; display: block;}
 /* tc */
 .pop{display: none;}
 .pop_cont3{width: 7.5rem;height: 14.38rem; opacity: 0.5rem; background-color: #411209; position: relative;}
 .pop-con1{ background: url('../images/getbag-tc.jpg')no-repeat;background-size: contain; width: 100%;height: 9.66rem;}
-.pop-con1 a{background: url('../images/getbag-tcbtn.png')no-repeat;background-size: contain; width: 5.76rem;height: 0.9rem;  position: absolute;top: 5.5rem; left:12%;
-    line-height: 0.9rem;color: #c52d24;font-size: 0.4rem;font-weight: bold;}
-.pop-con1 a:nth-child(2){top: 6.9rem;}
+.pop-con1 .pop-btn{background: url('../images/getbag-tcbtn.png')no-repeat;background-size: contain; width: 5.76rem;height: 0.9rem;  position: absolute;top: 5.5rem; left:12%; 
+line-height: 0.9rem;color: #c52d24;font-size: 0.4rem;font-weight: bold;}
+.pop-con1 .pop-btn1{top: 6.9rem;}
 .pop-con1 p{font-size: 0.36rem; color: #f4f0b4; padding-top: 3.5rem; line-height: 0.36rem;}
 .pop_cont3 .gtbcls{width: 0.76rem;height: 0.7rem; position: absolute;top: 1.33rem;right: 0.75rem; }
 .pop1{background-color: #411209;display: none;}
 .pop1 img{width:100%;height: 100%; margin-top: 0.3rem;}
-.pop-con1 h2{color: #f9f9f9;font-size: 0.64rem; padding-top: 4.2rem;}
+.pop-con1 h2{color: #f9f9f9;font-size: 0.64rem; padding-top: 0.38rem;}
 /* 领取礼包end */
 /* 领取步骤start */
 .bg-award{background: url('../images/award-bg.jpg')no-repeat; background-size: 100%;height: 14.38rem;overflow: hidden;}
@@ -74,4 +75,37 @@ ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
 .getway-bg a{background: url('../images/getway-btn.png')no-repeat;background-size: contain; width: 5.6rem;height: 0.9rem; margin: 1.2rem auto 0; line-height: 0.9rem;font-size: 0.4rem;color: #c52d24;}
 .getway-bg a:nth-child(4){margin-top: 0.35rem;}
 /* 注册流程end */
+/* 输入购买地址start */
+.bug-site{width: 6.46rem; margin: 0.85rem auto 0;}
+.bug-site span{width: 100%; display: block; position: relative;}
+.bug-site input{width: 100%;height: 0.9rem;background: url('../images/nineinput.png')no-repeat;background-size: contain;border: none;border-radius: 0.2rem;margin-top: 0.36rem; padding-left: 0.95rem;}
+.bug-site span i{display: block;background: url('../images/ren.png')no-repeat; background-size: contain;height: 0.32rem;width: 0.5rem; position: absolute;top: 0.66rem;left: 0.3rem;}
+.bug-site .input-i2{background: url('../images/number.png')no-repeat; background-size: contain;}
+.bug-site .input-i3{background: url('../images/map.png')no-repeat; background-size: contain;}
+.bug-site span b{position: absolute;top: 0.7rem;right: 0.5rem; display: block;font-size: 0.32rem;color: #999;}
+.bug-site .messagesbox{width:6.06rem;height: 1.55rem; border-radius: 0.2rem; margin-top: 0.36rem;padding: 0.3rem 0 0 0.4rem; color: #999;}
+.affirm{background: url('../images/score-btn.png')no-repeat;background-size: contain;width: 100%; height: 0.92rem; margin: 0.75rem auto 0;
+border-radius: 0.5rem; color: #c52d24;font-size: 0.4rem;;line-height: 0.92rem;font-weight: boldr; }
+/* 输入购买地址 end */
 
+/*  */
+pre {
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.control-label{text-align: center;width: 100%; text-align: left;font-size: 0.36rem; display: block; margin-top: 0.2rem;}
+.controls select{width: 2rem; margin: 0.2rem 0 0; border: 1px solid #999; border-radius: 0.1rem; position: relative;}
+.control-group {text-align: center;}
+.controls select{background: url('../images/selct.png')no-repeat; background-size: contain; width: 2.05rem;height: 0.9rem;border:none;padding-left: 0.05rem;}
+
+/* 提示页面start */
+.hint-bg{background: url('../images/hint-bg.jpg')no-repeat;background-size: contain; height: 14.38rem;}

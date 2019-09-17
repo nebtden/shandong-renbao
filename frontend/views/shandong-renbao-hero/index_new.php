@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 ?>
-<div class="index-bg" >
+<div class="index-bg" style="background: url(/frontend/web/shandong-renbao-hero/images/index.jpg)no-repeat;background-size: contain;height: 16.98rem;" >
     <h1 class="hide">猜英雄赢大奖</h1>
     <div class="idx-szf">
 
@@ -11,8 +11,8 @@ use yii\helpers\Url;
             <img src="/frontend/web/shandong-renbao-hero/images/cs-btn.png" alt="" class="cs-btn">
         </a>
     </div>
-     中奖名单 -->
-     <div class="pct-list" id="scrollBox">
+    <!-- 中奖名单 -->
+    <!--<div class="pct-list" id="scrollBox">
         <ul id="con1">
             <li>
                 <b>131****3658</b>
@@ -57,7 +57,7 @@ use yii\helpers\Url;
         </ul>
         <ul id="con2"></ul>
 
-    </div>
+    </div>-->
     <p class="idx-sm">已有<?= $total ?>人参与<br/>
         临沂人保财险保留在法律范围内对本活动的解释权</p>
 

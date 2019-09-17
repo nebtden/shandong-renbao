@@ -2,10 +2,12 @@
 namespace frontend\controllers;
 
 use common\models\Settings;
+use common\models\ShandongRenbaoCar;
 use common\models\ShandongRenbaoHeroAnswers;
 use common\models\ShandongRenbaoHeroQuestion;
 use common\models\ShandongRenbaoRepeat;
 use common\models\ShandongRenbaoHero;
+use common\models\ShandongRenbaoRewards;
 use common\models\ShandongRenbaoWish;
 use Yii;
 use frontend\util\PController;
@@ -17,25 +19,6 @@ class ShandongRenbaoHeroController extends PController {
     public $sitetitle = '山东临沂';
 
     public $layout = 'shandong-renbao-hero';
-
-    public $rewards = [
-        0=>'您未中奖',
-        1=>'200元电商优惠券',
-        2=>'单次免费洗车',
-        3=>'单次浪漫鲜花',
-        4=>'铝合金香氛双号停车牌',
-        5=>'多功能家车两用工具箱户外灯',
-        6=>'华帝多功能消毒刀架',
-    ];
-
-    public static $rewards_number = [
-        1=>'200',
-        2=>'1000',
-        3=>'100',
-        4=>'1400',
-        5=>'19',
-        6=>'5',
-    ];
 
 
 
@@ -55,7 +38,7 @@ class ShandongRenbaoHeroController extends PController {
         $total = 1234+2*$total;
 
 
-        return $this->render('index',[
+        return $this->render('index_new',[
             'total'=>$total
         ]);
     }
@@ -175,28 +158,7 @@ class ShandongRenbaoHeroController extends PController {
         return $this->json(1, 'ok');
     }
 
-    /**
-     * 结果
-     */
-    public function actionResult(){
 
-        $request = Yii::$app->request;
-        $id = $request->get('id');
-        $object = ShandongRenbaoHero::find()->where([
-            'id'=>$id
-        ])->one();
-
-
-        $result = $object->toArray();
-        $result['rewards'] = $this->rewards[$result['rewards_id']];
-
-        return $this->render('result',[
-            'result'=>$result,
-            'id'=>$id,
-        ]);
-
-
-    }
 
 
     public function actionSubmit(){
@@ -277,29 +239,34 @@ class ShandongRenbaoHeroController extends PController {
 
     public function getRewards($mobile){
 
-        //如果名单在结果中，则不再中奖
-        $repeat = ShandongRenbaoWish::find()->where(
-            ['mobile'=>$mobile,]
-        )->andWhere(['>','rewards_id',0])->one();
-        if($repeat){
-            return 0;
+        //先检测日期,先看抽奖是否在日期里面。。
+        $time = time();
+        if($time>=1568736000 and $time<1568995200){
+            //如果名单在结果中，则不再中奖
+            $repeat = ShandongRenbaoWish::find()->where(
+                ['mobile'=>$mobile,]
+            )->andWhere(['>','rewards_id',0])->one();
+            if($repeat){
+                return 0;
+            }
+            $repeat = ShandongRenbaoCar::find()->where(
+                ['mobile'=>$mobile,]
+            )->andWhere(['>','rewards',0])->one();
+            if($repeat){
+                return 0;
+            }
         }
 
+        //奖品数量
+        $rewards = ShandongRenbaoRewards::find()->asArray()->all();
+        $rewards_total  = ShandongRenbaoRewards::find()->sum('number');
 
+        $numbers= [] ;
+        $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        foreach ($totals as $total){
+            $numbers[$total['rewards_id']] = $total['count'];
+        }
 
-        $total1 = ShandongRenbaoHero::find()->where([
-            'rewards_id'=>1
-        ])->count();
-        $total2 = ShandongRenbaoHero::find()->where([
-            'rewards_id'=>2
-        ])->count();
-        $total3 = ShandongRenbaoHero::find()->where([
-            'rewards_id'=>3
-        ])->count();
-
-       if($total1>=2000 and $total2>=1000 and $total3>=400){
-           return 0;
-       }
 
        //考虑中奖概率
         $setting = Settings::find()->where([
@@ -309,25 +276,19 @@ class ShandongRenbaoHeroController extends PController {
        $rand = rand(0,99);
 
 	   if($rand>=0 and $rand<=$probalility){
-		   $rand = rand(0,99);
-		   if($total1<2000 && $rand<50){
-                return 1;
-           }elseif($total2<1000 && $rand>=50 and $rand<85){
-		        return 2;
-           }elseif($total3<400 && $rand>=85){
-               return 3;
-           }else{
-		       if($total1<2000){
-		           return 1;
-               }elseif($total2<1000){
-		           return 2;
+		   $rand = rand(0,$rewards_total);
+		   $begin = 0;
+		   foreach($rewards as $reward){
 
-               }elseif($total3<400){
-		           return 3;
-               }else{
-		           return 0;
+               $last = $begin+$reward['number'];
+                //分区间中奖
+               if($numbers[$reward['id']]<$reward['number'] && $rand>=$begin and $rand<$last){
+                    return $reward['id'];
                }
+               $begin = $begin+$reward['number'];
            }
+		   return 0;
+
 	   }else{
 	       return 0;
        }
@@ -353,14 +314,53 @@ class ShandongRenbaoHeroController extends PController {
         ]);
     }
 
+    public function actionRemind()
+    {
+
+        return $this->render('remind',[
+
+        ]);
+    }
+
     public function actionAddress(){
+
         $request = Yii::$app->request;
         $rewards_id = $request->get('rewards_id');
 
-
         return $this->render('address',[
-
+            'rewards_id'=>$rewards_id
         ]);
+    }
+
+    public function actionAdressSave(){
+
+        $request = Yii::$app->request;
+        $rewards_id = $request->post('rewards_id');
+        $mobile = $request->post('mobile');
+        $name = $request->post('name');
+        $address = $request->post('address');
+
+
+        //检测地址是否正确，不正确，报错
+        $hero = ShandongRenbaoHero::find()->where([
+            'mobile'=>$mobile,
+            'rewards_id'=>$rewards_id,
+        ])->asArray()->one();
+        if(!$hero){
+            $return = [
+                'status'=>0,
+                'message'=>'中奖号码不对，请检查'
+            ];
+            echo \GuzzleHttp\json_encode($return);
+        }else{
+            $hero->address = $address;
+            $hero->save();
+            $return = [
+                'status'=>1,
+                'message'=>'您的地址保存成功'
+            ];
+            echo \GuzzleHttp\json_encode($return);
+        }
     }
 
 
@@ -415,6 +415,11 @@ class ShandongRenbaoHeroController extends PController {
 
     public function actionTest(){
 
+        $rewards_id = $this->getRewards(111);
+        echo $rewards_id;
+        die();
+        $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        var_dump($totals);
     }
 
 
