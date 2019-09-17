@@ -21,11 +21,11 @@ class ShandongRenbaoHeroController extends PController {
     public $layout = 'shandong-renbao-hero';
 
     public function getTotal(){
-        if(time()<1568736000){
+        if(time()<1568770200){
             return 0;
         }else{
             $total = ShandongRenbaoHero::find()->count();
-            $total = 1234+2*$total;
+            $total = 234+2*$total;
             return $total;
         }
     }
@@ -42,7 +42,7 @@ class ShandongRenbaoHeroController extends PController {
         //分数清零，开始答题
         Yii::$app->session['shandong_renbao_question_ids'] = [];
         Yii::$app->session['shandong_renbao_scores'] = 0;
-
+        Yii::$app->session->set('mobile', 1);
 
         $total = $this->getTotal();
         if(time()<1568736000){
@@ -117,7 +117,7 @@ class ShandongRenbaoHeroController extends PController {
 
     public function actionLast() {
 
-        Yii::$app->session->set('mobile', 1);
+
         $request = Yii::$app->request;
         $scores = $request->get('scores', 0);
 
@@ -132,20 +132,11 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionMobile() {
-        $is_exists = Yii::$app->session->get('mobile');
-        if($is_exists){
+        return $this->render('mobile',[
 
-            return $this->render('mobile',[
-
-            ]);
-        }else{
-
-            $url = $_SERVER['HTTP_HOST'];
-            $url = "http://$url/frontend/web/shandong-renbao-hero/index.html";
-            header("Location:$url ");
-            exit;
-        }
+        ]);
     }
+
 
     public function actionWay() {
         $is_exists = Yii::$app->session->get('mobile');
@@ -521,8 +512,10 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionTest(){
+
         echo time();
         die();
+
         $rewards_id = Yii::$app->session['shandong_renbao_group_id'] ;
         echo $rewards_id;
         die();
