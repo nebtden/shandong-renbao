@@ -239,7 +239,7 @@ class ShandongRenbaoHeroController extends PController {
             //检测验证码是否正确
             $mobile_code = Yii::$app->cache->get("shandong_renbao_".$mobile);
             if($code!=$mobile_code){
-               // throw new \Exception('验证码错误,请检查！');
+                // throw new \Exception('验证码错误,请检查！');
             }
 
 
@@ -271,7 +271,9 @@ class ShandongRenbaoHeroController extends PController {
             ];
 
             //发送短信
-            $this->sendSms($mobile,0,'恭喜您在临沂人保财险举行“猜英雄赢大奖”活动中获得超值大礼，奖券将在五个工作日内充入您山东人保财险公众号账号，还可邀请好友一起来抢！');
+            if($rewards_id>0){
+                $this->sendSms($mobile,0,'恭喜您在临沂人保财险举行“猜英雄赢大奖”活动中获得超值大礼，奖券将在五个工作日内充入您山东人保财险公众号账号，还可邀请好友一起来抢！');
+            }
 
 
         }catch (\Exception $exception){
