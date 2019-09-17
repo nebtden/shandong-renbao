@@ -38,7 +38,7 @@ class ShandongRenbaoHeroController extends PController {
         $total = 1234+2*$total;
 
 
-        return $this->render('index_new',[
+        return $this->render('index',[
             'total'=>$total
         ]);
     }
@@ -149,7 +149,7 @@ class ShandongRenbaoHeroController extends PController {
             'mobile'=>$mobile
         ])->one();
         if($car){
-            return $this->json(-1, '您已经抽过奖，点击确定跳转到中奖页面！',['id'=>$car->id]);
+            return $this->json(-1, '您已经抽过奖,点击确定查看中奖结果',['id'=>$car->id]);
         }
 
 
@@ -376,30 +376,19 @@ class ShandongRenbaoHeroController extends PController {
     }
 	
 	public function actionTotal(){
-		$total0 = ShandongRenbaoHero::find()->where([
-            'rewards_id'=>0
-        ])->count();
-		$total1 = ShandongRenbaoHero::find()->where([
-            'rewards_id'=>1
-        ])->count();
-        $total2 = ShandongRenbaoHero::find()->where([
-            'rewards_id'=>2
-        ])->count();
-        $total3 = ShandongRenbaoHero::find()->where([
-            'rewards_id'=>3
-        ])->count();
-        echo '总参加人数：';
-        echo ($total0+$total1+$total2+$total3);
-        echo "<br>";
-		echo '未中奖'.$total0;
-        echo "<br>";
-        echo '1奖'.$total1;
-        echo "<br>";
-        echo '2奖'.$total2;
-        echo "<br>";
-        echo '3奖'.$total3;
-        echo "<br>";
-		return false;
+        $rewards = ShandongRenbaoRewards::find()->asArray()->all();
+//        $rewards_total  = ShandongRenbaoRewards::find()->sum('number');
+
+        $numbers= [] ;
+        $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        foreach ($totals as $total){
+            $numbers[$total['rewards_id']] = $total['count'];
+        }
+
+        foreach($rewards as $reward){
+            echo $reward['name'].'数量为：'.$numbers[$reward['id']];
+            echo "<br>";
+        }
 
     }
 	

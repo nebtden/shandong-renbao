@@ -1,18 +1,20 @@
 /* 首页 */
-.index-bg{background: url('../images/images.jpg')no-repeat;background-size: contain;height: 16.98rem;}
-.cs-btn{width: 3.4rem;height: 1rem;margin: 5.4rem auto;}
+.index-bg{background: url('../images/images.jpg')no-repeat;background-size: contain;height: 24.34rem;}
+.cs-btn{width: 3.4rem;height: 1rem;margin: 5.4rem auto 0;}
 /* 中奖名单 */
 .pct-list li{ float: left; text-align: center;margin:0.45rem auto 0;} 
 #scrollBox{height:2.9rem;width:6.85rem;margin:2rem auto;overflow:hidden;padding-left: 0.5rem;}
 #scrollBox li{height:15px;line-height:15px;text-align:center;}
 .pck-p{margin-top: -0.5rem; font-size: 0.24rem;color:#fff;}
 ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
-#scrollBox{width: 6rem;;margin:6rem auto 0;overflow:hidden;    margin-left: 0.65rem;overflow: hidden;}
+#scrollBox{width: 6rem;;margin:2.6rem auto 0;overflow:hidden;    margin-left: 0.65rem;overflow: hidden;}
 #scrollBox #con1,#con2{width: 6rem;float:left;}
 #scrollBox li{line-height:0.1rem;text-align:center;}
 #scrollBox li span{padding-left: 69px;}
+.index-con1{width: 6.9rem;height: 6.7rem; margin: 3.9rem auto 0;}
+.index-con1 img{width: 100%;height: 100%;}
 /* 底部声明 */
-.idx-sm{color:0.24rem;color: #f4f0b4;margin-top:0.2rem;font-weight: bold;line-height: 0.3rem; }
+.idx-sm{color:0.24rem;color: #f4f0b4;margin-top:0.4rem;font-weight: bold;line-height: 0.3rem; }
 /* 首页end */
 /* 猜英雄start */
 .hero-bg{height: 14.38rem;background: url('../images/hero-bg1.jpg')no-repeat;background-size: contain;}

@@ -43,11 +43,10 @@
 
             $.post('code.html',{mobile:mobile},function (data) {
                 // console.log();
-                if(data.status==0){
-                    alert(data.msg);
-
-                }else{
+                if(data.status==1){
                     alert('短信发送成功！');
+                } else{
+                    alert(data.msg);
                 }
             },'json');
         });
@@ -71,9 +70,13 @@
 
                 if(data.status==1){
                     // window.location.href = 'result.html?id='+data.data.id;
-                    popShow('pop_per');
-                    $('h2').text(data.data.rewards);
 
+                    $('h2').text(data.data.rewards);
+                    popShow('pop_per');
+
+                }else if(data.status==-1){
+                    alert(data.message);
+                    popShow('pop_per');
                 }else{
                     alert(data.message);
                 }

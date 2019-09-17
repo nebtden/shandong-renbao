@@ -10,8 +10,11 @@ use yii\helpers\Url;
         <a href="question.html?id=1">
             <img src="/frontend/web/shandong-renbao-hero/images/cs-btn.png" alt="" class="cs-btn">
         </a>
+        <div class="index-con1">
+            <img src="/frontend/web/shandong-renbao-hero/images/index.jpsz.jpg" alt="">
+        </div>
     </div>
-     中奖名单 -->
+    <!-- 中奖名单 -->
      <div class="pct-list" id="scrollBox">
         <ul id="con1">
             <li>
