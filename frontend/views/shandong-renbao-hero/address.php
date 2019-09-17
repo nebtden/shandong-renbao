@@ -42,14 +42,14 @@
                 if(!mobile || !name || !p || !c || !a || !address){
                     alert('请补充资料完全再提交');
                 }
-            $.post('address-save.html',{mobile:mobile,name:name,address:address},function (data) {
+                var address = p+c+a+address;
+            $.post('address-save.html',{rewards_id:rewards_id,mobile:mobile,name:name,address:address},function (data) {
                 // console.log();
                 if(data.status==0){
-                    alert(data.msg);
-
+                    alert(data.message);
                 }else{
-                    window.location.href = 'remind.html?id='+data.data.id;
-
+                    alert('地址提交成功！');
+                    window.location.href = 'remind.html'
                 }
             },'json');
 

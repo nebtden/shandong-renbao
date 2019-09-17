@@ -332,7 +332,7 @@ class ShandongRenbaoHeroController extends PController {
         ]);
     }
 
-    public function actionAdressSave(){
+    public function actionAddressSave(){
 
         $request = Yii::$app->request;
         $rewards_id = $request->post('rewards_id');
@@ -345,7 +345,7 @@ class ShandongRenbaoHeroController extends PController {
         $hero = ShandongRenbaoHero::find()->where([
             'mobile'=>$mobile,
             'rewards_id'=>$rewards_id,
-        ])->asArray()->one();
+        ])->one();
         if(!$hero){
             $return = [
                 'status'=>0,
@@ -354,6 +354,7 @@ class ShandongRenbaoHeroController extends PController {
             echo \GuzzleHttp\json_encode($return);
         }else{
             $hero->address = $address;
+            $hero->name = $name;
             $hero->save();
             $return = [
                 'status'=>1,
