@@ -6,6 +6,7 @@ use common\models\ShandongRenbaoHeroAnswers;
 use common\models\ShandongRenbaoHeroQuestion;
 use common\models\ShandongRenbaoRepeat;
 use common\models\ShandongRenbaoHero;
+use common\models\ShandongRenbaoWish;
 use Yii;
 use frontend\util\PController;
 use common\components\W;
@@ -24,6 +25,14 @@ class ShandongRenbaoHeroController extends PController {
         3=>'单次浪漫鲜花',
         4=>'九阳开水煲',
         5=>'阳澄湖蟹将军提货券',
+    ];
+
+    public static $rewards_number = [
+        1=>'100',
+        2=>'100',
+        3=>'100',
+        4=>'100',
+        5=>'100',
     ];
 
 
@@ -123,6 +132,8 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionMobile() {
+
+
         return $this->render('mobile',[
 
         ]);
@@ -304,10 +315,10 @@ class ShandongRenbaoHeroController extends PController {
 
     public function getRewards($mobile){
 
-        //如果名单在结果中，则中奖
-        $repeat = ShandongRenbaoRepeat::find()->where([
-            'mobile'=>$mobile
-        ])->one();
+        //如果名单在结果中，则不再中奖
+        $repeat = ShandongRenbaoWish::find()->where(
+            ['mobile'=>$mobile,]
+        )->andWhere(['>','rewards_id',0])->one();
         if($repeat){
             return 0;
         }
@@ -423,8 +434,10 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionTest(){
-        $id = $this->getRewards();
-        echo $id;
+        $repeat = ShandongRenbaoWish::find()->where(
+           ['mobile'=>13365802535,]
+        )->andWhere(['>','rewards_id',3])->one();
+        var_dump($repeat);
         die();
 
 
@@ -451,7 +464,7 @@ class ShandongRenbaoHeroController extends PController {
         );
         if($is_code){
             $code = rand(100000, 999999);
-            $content = '【云车驾到】您参与山东临沂抽奖活动的验证码是：' . $code . ',有效时间1分钟，请注意';
+            $content = '【云车驾到】您参与山东临沂抽奖活动的验证码是：' . $code . ',请注意保管';
         }
 
         $postArr = array(

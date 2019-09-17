@@ -5,7 +5,7 @@
         <input type="number" class="vct-number" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 请输入手机号码" >
         <input type="text"   class="vct-import" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 输入验证码">
     </div>
-    <a  href="javascript:popShow('pop_per');" class="scroe-btn">
+    <a  href="javascript:popShow('pop_per');" class="scroe-btn submit">
         领取礼包
     </a>
 
@@ -19,7 +19,7 @@
             <p>好友获得礼品的同时<br/>
                 将发放一份随机神秘礼给您</p>
         </div>
-        <a href="javascript:popHide();" title="点击关闭" class="btn close gtbcls"> </a>
+        <a href="javascript:;" title="点击关闭" class="btn close gtbcls"> </a>
     </div>
 </div>
 
@@ -31,7 +31,8 @@
 <script>
     $(function () {
         $('.send').click(function () {
-            var mobile = $('.mobile').val();
+            var mobile = $('.vct-number').val();
+            console.log(mobile);
             //检测手机号码
             if(!(/^1[3456789]\d{9}$/.test(mobile))){
                 alert("手机号码有误，请重填");
@@ -50,9 +51,10 @@
         });
 
         $(".submit").click(function () {
-            var mobile = $('.mobile').val();
+            var mobile = $('.vct-number').val();
+            console.log(mobile);
             var code = $('.code').val();
-            var license_plate = "<?= $license_plate; ?>";
+
             if(!(/^1[3456789]\d{9}$/.test(mobile))){
                 alert("手机号码有误，请重填");
                 return false;
@@ -64,8 +66,11 @@
             }
 
             $.post('submit.html',{mobile:mobile,code:code,license_plate:license_plate},function (data) {
+
                 if(data.status==1){
                     window.location.href = 'result.html?id='+data.data.id;
+                    popHide();
+
                 }else{
                     alert(data.message);
                 }
