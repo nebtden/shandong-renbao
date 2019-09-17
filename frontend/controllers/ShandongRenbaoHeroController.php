@@ -239,7 +239,7 @@ class ShandongRenbaoHeroController extends PController {
             //检测验证码是否正确
             $mobile_code = Yii::$app->cache->get("shandong_renbao_".$mobile);
             if($code!=$mobile_code){
-                // throw new \Exception('验证码错误,请检查！');
+                throw new \Exception('验证码错误,请检查！');
             }
 
 
@@ -514,7 +514,8 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionTest(){
-
+        echo time();
+        die();
         $rewards_id = Yii::$app->session['shandong_renbao_group_id'] ;
         echo $rewards_id;
         die();
