@@ -24,16 +24,16 @@
 </head>
 
 <body>
-<form class="form-signin" method="get">
+<form class="form-signin" action="download.html" method="get">
 
 
     <div class="form-label-group">
-        <input type="text" id="begin" class="form-control" placeholder="开始日期" required autofocus>
+        <input type="text" id="begin" name="begin" class="form-control" placeholder="开始日期" required>
         <label for="begin">开始日期</label>
     </div>
 
     <div class="form-label-group">
-        <input type="text" id="last" class="form-control" placeholder="结束日期" required>
+        <input type="text" id="last" name="last" class="form-control" placeholder="结束日期" required>
         <label for="last">结束日期</label>
     </div>
 
@@ -42,13 +42,16 @@
 
 </form>
 <script type="text/javascript">
+    $(function () {
+        $("#begin").datetimepicker({
+            format: "yyyy-mm-dd hh:ii"
+        });
+        $("#last").datetimepicker({
+            format: "yyyy-mm-dd hh:ii"
+        });
+    });
 
-    $("#begin").datetimepicker({
-        format: "yyyy-mm-dd hh:ii"
-    });
-    $("#last").datetimepicker({
-        format: "yyyy-mm-dd hh:ii"
-    });
+
 </script>
 </body>
 </html>

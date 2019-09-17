@@ -11,6 +11,9 @@ use yii\helpers\Url;
 </div>
 
 <div class="pop1" id="pop1">
-    <img src="/frontend/web/shandong-renbao-hero/images/gbga-tc2.jpg" alt="">
-</div>
+    <div class="pop1-zz">
 
+    </div>
+    <img src="/frontend/web/shandong-renbao-hero/images/jt.png" alt="箭头">
+    <p>邀请好友一起来抽奖</p>
+</div>

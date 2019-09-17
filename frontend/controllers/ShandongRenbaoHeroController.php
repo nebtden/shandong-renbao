@@ -45,10 +45,15 @@ class ShandongRenbaoHeroController extends PController {
 
 
         $total = $this->getTotal();
-
-        return $this->render('index',[
-            'total'=>$total
-        ]);
+        if(time()<1568736000){
+            return $this->render('index_new',[
+                'total'=>$total
+            ]);
+        }else{
+            return $this->render('index',[
+                'total'=>$total
+            ]);
+        }
     }
 
     public function actionQuestion(){
@@ -321,7 +326,7 @@ class ShandongRenbaoHeroController extends PController {
         $setting = Settings::find()->where([
             'key'=>'winning_probability'
         ])->one();
-        $probalility = $setting->value;
+        $probalility = $setting->setting_value;
         $rand = rand(0,99);
 
         if($rand>=0 and $rand<=$probalility){
@@ -366,6 +371,50 @@ class ShandongRenbaoHeroController extends PController {
         return $this->render('form',[
 
         ]);
+    }
+
+    public function actionDownload(){
+        $filename ="data_export_" . date("Y-m-d") . ".csv";
+        $now = gmdate("D, d M Y H:i:s");
+        header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+        header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
+        header("Last-Modified: {$now} GMT");
+
+        // force download
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+
+        // disposition / encoding on response body
+        header("Content-Disposition: attachment;filename={$filename}");
+        header("Content-Transfer-Encoding: binary");
+        $request = Yii::$app->request;
+        $begin = $request->get('begin');
+        $last = $request->get('last');
+        $array = ShandongRenbaoHero::find()->select([
+            'mobile','rewards_id'
+        ])->where([
+            '>=','created_at',$begin
+        ])->andWhere([
+            '<','created_at',$last
+        ])->asArray()->all();
+        echo $this->array2csv($array);
+        die();
+    }
+
+    public function array2csv(array &$array)
+    {
+        if (count($array) == 0) {
+            return null;
+        }
+        ob_start();
+        $df = fopen("php://output", 'w');
+        fputcsv($df, array_keys(reset($array)));
+        foreach ($array as $row) {
+            fputcsv($df, $row);
+        }
+        fclose($df);
+        return ob_get_clean();
     }
 
     public function actionRemind()
@@ -430,14 +479,19 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionTotal(){
+        $total = ShandongRenbaoHero::find()->where([
+            'rewards_id'=>0
+        ])->count();
+        echo '没中奖人数为'.$total;
+        echo "<br>";
         $rewards = ShandongRenbaoRewards::find()->asArray()->all();
-//        $rewards_total  = ShandongRenbaoRewards::find()->sum('number');
 
         $numbers= [] ;
         $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
         foreach ($totals as $total){
             $numbers[$total['rewards_id']] = $total['count'];
         }
+
 
         foreach($rewards as $reward){
             echo $reward['name'].'数量为：'.$numbers[$reward['id']];

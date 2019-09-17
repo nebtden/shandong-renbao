@@ -58,8 +58,6 @@ use yii\helpers\Url;
         <ul id="con2"></ul>
 
     </div>-->
-    <p class="idx-sm">已有<?= $total ?>人参与<br/>
-        临沂人保财险保留在法律范围内对本活动的解释权</p>
 
 </div>
 
