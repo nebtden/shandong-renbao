@@ -1,35 +1,37 @@
 <?php
 namespace frontend\controllers;
 
-use common\models\Settings;
-use common\models\ShandongRenbaoCar;
-use common\models\ShandongRenbaoHeroAnswers;
-use common\models\ShandongRenbaoHeroQuestion;
-use common\models\ShandongRenbaoRepeat;
-use common\models\ShandongRenbaoHero;
-use common\models\ShandongRenbaoRewards;
-use common\models\ShandongRenbaoWish;
-use Yii;
 use frontend\util\PController;
+use common\models\Settings;
+use common\models\ShandongRenbaoArmy;
+use common\models\ShandongRenbaoArmyQuestion;
+use common\models\ShandongRenbaoArmyAnswers;
+use common\models\ShandongRenbaoRewards;
+use Yii;
 use common\components\W;
 
-
-class ShandongRenbaoHeroController extends PController {
+class ShandongRenbaoArmyController extends PController {
 
     public $sitetitle = '山东临沂';
 
-    public $layout = 'shandong-renbao-hero';
+    public $layout = 'shandong-renbao-army';
+
+//    public function actionIndex(){
+//        return $this->render('index',[
+//
+//        ]);
+//    }
 
     public function getTotal(){
-        $hero_base_count = Settings::find()->where([
-            'key'=>'hero_base_count'
+        $army_base_count = Settings::find()->where([
+            'key'=>'army_base_count'
         ])->one();
-        $here_multiple_count = Settings::find()->where([
-            'key'=>'here_multiple_count'
+        $army_multiple_count = Settings::find()->where([
+            'key'=>'army_multiple_count'
         ])->one();
-        $total = ShandongRenbaoHero::find()->count();
-            $total = $hero_base_count->setting_value+$here_multiple_count->setting_value*$total;
-            return $total;
+        $total = ShandongRenbaoArmy::find()->count();
+        $total = $army_base_count->setting_value+$army_multiple_count->setting_value*$total;
+        return $total;
     }
 
 
@@ -43,16 +45,16 @@ class ShandongRenbaoHeroController extends PController {
 
         //分数清零，开始答题
         Yii::$app->session['shandong_renbao_question_ids'] = [];
-        Yii::$app->session['shandong_renbao_scores'] = 0;
+        Yii::$app->session['shandong_renbao_scores'] = [];
         Yii::$app->session->set('mobile', 1);
 
         $total = $this->getTotal();
-        if(time()<1568736000){
-            return $this->render('index_new',[
+        if(time()<1568736000 || true){
+            return $this->render('index',[
                 'total'=>$total
             ]);
         }else{
-            return $this->render('index',[
+            return $this->render('index_new',[
                 'total'=>$total
             ]);
         }
@@ -63,17 +65,18 @@ class ShandongRenbaoHeroController extends PController {
         $id = $request->get('id',0);
 
 
-        $question = ShandongRenbaoHeroQuestion::find()->where([
+        $question = ShandongRenbaoArmyQuestion::find()->where([
             'id'=>$id
         ])->asArray()->one();
-        $answers = ShandongRenbaoHeroAnswers::find()->where([
+        $answers = ShandongRenbaoArmyAnswers::find()->where([
             'question_id'=>$id
         ])->asArray()->all();
 
-
+        $total = $this->getTotal();
         return $this->render('question',[
             'question'=>$question,
             'answers'=>$answers,
+            'total'=>$total
         ]);
     }
 
@@ -90,17 +93,17 @@ class ShandongRenbaoHeroController extends PController {
 
         //查看正确答案
 
-        $question = ShandongRenbaoHeroQuestion::find()->where([
-            'id'=>$question_id
-        ])->asArray()->one();
+        $questionAnswer = ShandongRenbaoArmyAnswers::find()->where(['id' => $answer])->one();
         $scores = Yii::$app->session['shandong_renbao_scores'];
-        if($question['correct_answer_id']==$answer){
-            $scores = $scores+25;
-            Yii::$app->session['shandong_renbao_scores']= $scores;
+        if ($question_id == 6) {
+            $scores[$questionAnswer->army] += 1.5;
+        } elseif ($question_id >= 3 && $question_id <= 5) {
+            $scores[$questionAnswer->army]++;
         }
+        Yii::$app->session['shandong_renbao_scores']= $scores;
 
         //查看是否有下一题
-        $question = ShandongRenbaoHeroQuestion::find()->where([
+        $question = ShandongRenbaoArmyQuestion::find()->where([
             'id'=>$question_id+1
         ])->asArray()->one();
         if($question){
@@ -108,49 +111,50 @@ class ShandongRenbaoHeroController extends PController {
         }else{
             //把结果拿出来，计算分数
 
-            return $this->json(0, '',['scores'=>$scores]);
+            return $this->json(0, '');
 
         }
-
-
-
-
     }
 
     public function actionLast() {
-
-
-        $request = Yii::$app->request;
-        $scores = $request->get('scores', 0);
-
+        $scores = Yii::$app->session['shandong_renbao_scores'];
+        $maxIndex = 0;
+        for ($i = 1; $i <= 3; $i++) {
+            if ($scores[$i] > $scores[$maxIndex] || !$scores[$maxIndex]) {
+                $maxIndex = $i;
+            }
+        }
+        $results = ['陆军', '海军', '空军', '火箭军'];
+        $descs = [
+            '恭喜您获得陆军认证，是陆上作战中坚力量，血雨腥风中锻造铁的队伍，为保卫国家主权总是冲锋向前，剑锋所指，战无不胜。',
+            '恭喜您获得海军认证，您的主要任务是负责海上作战任务，守卫波澜壮阔300万平方公里的蓝色国土，亚丁湾护航展现大国风采，御敌人于千里之外。',
+            '恭喜您获得空军认证，担负国土防空,支援陆、海军作战。翱翔蓝天，只为守护一方净土，战争中，制空权往往起着决定性作用。',
+            '恭喜您获得火箭军认证，俗称“东风快递”，是国家安全坚实筑石，是一支不可忽视的力量，是震慑敌人最有力的杀手锏。'];
 
         $total = $this->getTotal();
 
         return $this->render('last',[
-            'scores'=>$scores,
+            'result'=>$results[$maxIndex],
+            'desc' => $descs[$maxIndex],
             'total'=>$total,
         ]);
 
     }
 
     public function actionMobile() {
-		return $this->render('mobile',[
+        return $this->render('mobile',[
 
-			]);
+        ]);
     }
 
 
     public function actionWay() {
         $is_exists = Yii::$app->session->get('mobile');
         if($is_exists){
-
-            return $this->render('way',[
-
-            ]);
+            return $this->render('way',[]);
         }else{
-
             $url = $_SERVER['HTTP_HOST'];
-            $url = "http://$url/frontend/web/shandong-renbao-hero/index.html";
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
             header("Location:$url ");
             exit;
         }
@@ -170,7 +174,7 @@ class ShandongRenbaoHeroController extends PController {
         if (!$mobile) return $this->json(0, '请输入手机号码');
 
         //检测手机号码是否发送过
-        $car = ShandongRenbaoHero::find()->where([
+        $car = ShandongRenbaoArmy::find()->where([
             'mobile'=>$mobile
         ])->one();
         if($car){
@@ -207,7 +211,7 @@ class ShandongRenbaoHeroController extends PController {
         $group_id = intval($group_id);
         Yii::$app->session->set('mobile', 1);
         if($group_id==0){
-            $parent = ShandongRenbaoHero::find()->where([
+            $parent = ShandongRenbaoArmy::find()->where([
                 'id'=>$parent_id
             ])->one();
             $group_id = $parent->group_id;
@@ -217,7 +221,7 @@ class ShandongRenbaoHeroController extends PController {
 
         try{
             //检测手机是否用过
-            $object = ShandongRenbaoHero::find()->where([
+            $object = ShandongRenbaoArmy::find()->where([
                 'mobile'=>$mobile
             ])->one();
             if($object){
@@ -239,13 +243,13 @@ class ShandongRenbaoHeroController extends PController {
             //检测验证码是否正确
             $mobile_code = Yii::$app->cache->get("shandong_renbao_".$mobile);
             if($code!=$mobile_code){
-               throw new \Exception('验证码错误,请检查！');
+                throw new \Exception('验证码错误,请检查！');
             }
 
 
             $rewards_id = $this->getRewards($mobile);
 //            $rewards_id = 0;
-            $object = new ShandongRenbaoHero();
+            $object = new ShandongRenbaoArmy();
             $object->mobile = $mobile;
             $object->rewards_id = $rewards_id;
             $object->group_id   = $group_id;
@@ -271,9 +275,9 @@ class ShandongRenbaoHeroController extends PController {
             ];
 
             //发送短信
-			if($rewards_id>0){
-			    $this->sendSms($mobile,0,'恭喜您在临沂人保财险举行“猜英雄赢大奖”活动中获得超值大礼，奖券将在五个工作日内充入您山东人保财险公众号账号，还可邀请好友一起来抢！');
-			}
+            if($rewards_id>0){
+                $this->sendSms($mobile,0,'恭喜您在临沂人保财险举行“猜英雄赢大奖”活动中获得超值大礼，奖券将在五个工作日内充入您山东人保财险公众号账号，还可邀请好友一起来抢！');
+            }
 
 
         }catch (\Exception $exception){
@@ -318,7 +322,7 @@ class ShandongRenbaoHeroController extends PController {
         $rewards_total  = ShandongRenbaoRewards::find()->sum('number');
 
         $numbers= [] ;
-        $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        $totals = ShandongRenbaoArmy::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
         foreach ($totals as $total){
             $numbers[$total['rewards_id']] = $total['count'];
         }
@@ -361,7 +365,7 @@ class ShandongRenbaoHeroController extends PController {
     {
         $request = Yii::$app->request;
         $mobile = $request->get('mobile');
-        $car = ShandongRenbaoHero::deleteAll([
+        $car = ShandongRenbaoArmy::deleteAll([
             'mobile'=>$mobile
         ]);
         echo '删除成功';
@@ -393,7 +397,7 @@ class ShandongRenbaoHeroController extends PController {
         $request = Yii::$app->request;
         $begin = $request->get('begin');
         $last = $request->get('last');
-        $array = ShandongRenbaoHero::find()->select([
+        $array = ShandongRenbaoArmy::find()->select([
             'mobile','rewards_id'
         ])->where([
             '>=','created_at',$begin
@@ -447,20 +451,20 @@ class ShandongRenbaoHeroController extends PController {
 
 
         //检测地址是否正确，不正确，报错
-        $hero = ShandongRenbaoHero::find()->where([
+        $army = ShandongRenbaoArmy::find()->where([
             'mobile'=>$mobile,
             'rewards_id'=>$rewards_id,
         ])->one();
-        if(!$hero){
+        if(!$army){
             $return = [
                 'status'=>0,
                 'message'=>'中奖号码不对，请检查'
             ];
             echo \GuzzleHttp\json_encode($return);
         }else{
-            $hero->address = $address;
-            $hero->name = $name;
-            $hero->save();
+            $army->address = $address;
+            $army->name = $name;
+            $army->save();
             $return = [
                 'status'=>1,
                 'message'=>'您的地址保存成功'
@@ -473,7 +477,7 @@ class ShandongRenbaoHeroController extends PController {
 
     public function actionApi(){
         $this->layout =false;
-        $cars = ShandongRenbaoHero::find()->all();
+        $cars = ShandongRenbaoArmy::find()->all();
 
         return $this->render('api',[
             'cars'=>$cars
@@ -481,7 +485,7 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionTotal(){
-        $total = ShandongRenbaoHero::find()->where([
+        $total = ShandongRenbaoArmy::find()->where([
             'rewards_id'=>0
         ])->count();
         echo '没中奖人数为'.$total;
@@ -489,7 +493,7 @@ class ShandongRenbaoHeroController extends PController {
         $rewards = ShandongRenbaoRewards::find()->asArray()->all();
 
         $numbers= [] ;
-        $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        $totals = ShandongRenbaoArmy::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
         foreach ($totals as $total){
             $numbers[$total['rewards_id']] = $total['count'];
         }
@@ -504,7 +508,7 @@ class ShandongRenbaoHeroController extends PController {
 
 
     public function actionGroupTotal(){
-        $totals = ShandongRenbaoHero::find()->select(['group_id', 'counted' => 'count(*)']) ->groupBy('group_id')->asArray()->all();
+        $totals = ShandongRenbaoArmy::find()->select(['group_id', 'counted' => 'count(*)']) ->groupBy('group_id')->asArray()->all();
         foreach($totals as $total){
             echo $total['group_id']."->".$total['counted'];
             echo "<br>";
@@ -514,14 +518,13 @@ class ShandongRenbaoHeroController extends PController {
     }
 
     public function actionTest(){
-		
-		echo time();
+var_dump(Yii::$app->session['shandong_renbao_scores']);
         die();
 
         $rewards_id = Yii::$app->session['shandong_renbao_group_id'] ;
         echo $rewards_id;
         die();
-        $totals = ShandongRenbaoHero::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        $totals = ShandongRenbaoArmy::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
         var_dump($totals);
     }
 
@@ -588,41 +591,36 @@ class ShandongRenbaoHeroController extends PController {
     public function actionSetTotal()
     {
         $request = Yii::$app->request;
-        $hero_base_count = $request->post('hero_base_count');
-        $here_multiple_count = $request->post('here_multiple_count');
-        $hero_base_count_settings = Settings::find()->where([
-            'key'=>'hero_base_count'
+        $army_base_count = $request->post('army_base_count');
+        $army_multiple_count = $request->post('army_multiple_count');
+        $army_base_count_settings = Settings::find()->where([
+            'key'=>'army_base_count'
         ])->one();
-        $here_multiple_count_settings = Settings::find()->where([
-            'key'=>'here_multiple_count'
+        $army_multiple_count_settings = Settings::find()->where([
+            'key'=>'army_multiple_count'
         ])->one();
-        $hero_base_count_settings->setting_value = $hero_base_count;
-        $hero_base_count_settings->save();
-        $here_multiple_count_settings->setting_value = $here_multiple_count;
-        $here_multiple_count_settings->save();
+        $army_base_count_settings->setting_value = $army_base_count;
+        $army_base_count_settings->save();
+        $army_multiple_count_settings->setting_value = $army_multiple_count;
+        $army_multiple_count_settings->save();
     }
 
     public function actionSettings()
     {
-        $hero_base_count = Settings::find()->where([
-            'key'=>'hero_base_count'
+        $army_base_count = Settings::find()->where([
+            'key'=>'army_base_count'
         ])->one();
-        $here_multiple_count = Settings::find()->where([
-            'key'=>'here_multiple_count'
+        $army_multiple_count = Settings::find()->where([
+            'key'=>'army_multiple_count'
         ])->one();
-        $total = ShandongRenbaoHero::find()->count();
-        $showTotal = $hero_base_count->setting_value+$here_multiple_count->setting_value*$total;
+        $total = ShandongRenbaoArmy::find()->count();
+        $showTotal = $army_base_count->setting_value+$army_multiple_count->setting_value*$total;
 
         return $this->render('total',[
             'total' => $total,
-            'hero_base_count' => $hero_base_count->setting_value,
-            'here_multiple_count' => $here_multiple_count->setting_value,
+            'army_base_count' => $army_base_count->setting_value,
+            'army_multiple_count' => $army_multiple_count->setting_value,
             'showTotal' => $showTotal
         ]);
     }
-
-
-
-
-
 }

@@ -7,9 +7,9 @@ use yii\helpers\Url;
     <h1 class="hide">猜英雄赢大奖</h1>
     <div class="idx-szf">
 
-        <a href="question.html?id=1">
-            <img src="/frontend/web/shandong-renbao-hero/images/cs-btn.png" alt="" class="cs-btn">
-        </a>
+<!--        <a href="question.html?id=1">-->
+<!--            <img src="/frontend/web/shandong-renbao-hero/images/cs-btn.png" alt="" class="cs-btn">-->
+<!--        </a>-->
     </div>
     <!-- 中奖名单 -->
     <!--<div class="pct-list" id="scrollBox">

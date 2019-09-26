@@ -10,7 +10,7 @@ use yii\helpers\Url;
         <a href="question.html?id=1">
             <img src="/frontend/web/shandong-renbao-hero/images/cs-btn.png" alt="" class="cs-btn">
         </a>
-        <div class="index-con1">
+        <div class="index-con1" >
             <img src="/frontend/web/shandong-renbao-hero/images/index.jpsz.jpg" alt="">
         </div>
     </div>
