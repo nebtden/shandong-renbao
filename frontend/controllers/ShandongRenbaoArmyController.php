@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\ShandongRenbaoArmyShare;
 use frontend\util\PController;
 use common\models\Settings;
 use common\models\ShandongRenbaoArmy;
@@ -125,27 +126,39 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionLast() {
-        $scores = Yii::$app->session['shandong_renbao_scores'];
-        $maxIndex = 0;
-        for ($i = 1; $i <= 3; $i++) {
-            if ($scores[$i] > $scores[$maxIndex] || !$scores[$maxIndex]) {
-                $maxIndex = $i;
+        $is_exists = Yii::$app->session->get('renbao_army_mobile');
+        if($is_exists){
+            $scores = Yii::$app->session['shandong_renbao_scores'];
+            $maxIndex = 0;
+            for ($i = 1; $i <= 3; $i++) {
+                if ($scores[$i] > $scores[$maxIndex] || !$scores[$maxIndex]) {
+                    $maxIndex = $i;
+                }
             }
+            $results = ['陆军', '海军', '空军', '火箭军'];
+            $descs = [
+                '恭喜您获得陆军认证，是陆上作战中坚力量，血雨腥风中锻造铁的队伍，为保卫国家主权总是冲锋向前，剑锋所指，战无不胜。',
+                '恭喜您获得海军认证，您的主要任务是负责海上作战任务，守卫波澜壮阔300万平方公里的蓝色国土，亚丁湾护航展现大国风采，御敌人于千里之外。',
+                '恭喜您获得空军认证，担负国土防空,支援陆、海军作战。翱翔蓝天，只为守护一方净土，战争中，制空权往往起着决定性作用。',
+                '恭喜您获得火箭军认证，俗称“东风快递”，是国家安全坚实筑石，是一支不可忽视的力量，是震慑敌人最有力的杀手锏。'];
+
+            $total = $this->getTotal();
+
+            return $this->render('last',[
+                'result'=>$results[$maxIndex],
+                'desc' => $descs[$maxIndex],
+                'total'=>$total,
+            ]);
+
+
+        }else{
+
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            header("Location:$url ");
+            exit;
         }
-        $results = ['陆军', '海军', '空军', '火箭军'];
-        $descs = [
-            '恭喜您获得陆军认证，是陆上作战中坚力量，血雨腥风中锻造铁的队伍，为保卫国家主权总是冲锋向前，剑锋所指，战无不胜。',
-            '恭喜您获得海军认证，您的主要任务是负责海上作战任务，守卫波澜壮阔300万平方公里的蓝色国土，亚丁湾护航展现大国风采，御敌人于千里之外。',
-            '恭喜您获得空军认证，担负国土防空,支援陆、海军作战。翱翔蓝天，只为守护一方净土，战争中，制空权往往起着决定性作用。',
-            '恭喜您获得火箭军认证，俗称“东风快递”，是国家安全坚实筑石，是一支不可忽视的力量，是震慑敌人最有力的杀手锏。'];
 
-        $total = $this->getTotal();
-
-        return $this->render('last',[
-            'result'=>$results[$maxIndex],
-            'desc' => $descs[$maxIndex],
-            'total'=>$total,
-        ]);
 
     }
 
@@ -202,17 +215,35 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionPrizeStep(){
-        $request = Yii::$app->request;
-        $id = $request->get('id');
-        return $this->render('prize-step',[
-            'id'=>$id
-        ]);
+        $is_exists = Yii::$app->session->get('renbao_army_mobile');
+        if($is_exists){
+            $request = Yii::$app->request;
+            $id = $request->get('id');
+            return $this->render('prize-step',[
+                'id'=>$id
+            ]);
+        }else{
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            header("Location:$url ");
+            exit;
+        }
+
     }
 
     public function actionRegister(){
-        return $this->render('register',[
+        $is_exists = Yii::$app->session->get('renbao_army_mobile');
+        if($is_exists){
+            return $this->render('register',[
 
-        ]);
+            ]);
+        }else{
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            header("Location:$url ");
+            exit;
+        }
+
     }
 
 
@@ -381,6 +412,15 @@ class ShandongRenbaoArmyController extends PController {
         foreach ($totals as $total){
             $numbers[$total['rewards_id']] = $total['count'];
         }
+
+        //分享的，也合并
+        $totals = ShandongRenbaoArmyShare::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        foreach ($totals as $total){
+            $numbers[$total['rewards_id']] = $numbers[$total['rewards_id']]+$total['count'];
+        }
+
+//        var_dump($numbers);
+
 
 
         //考虑中奖概率
@@ -573,7 +613,7 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionTest(){
-var_dump(Yii::$app->session['shandong_renbao_scores']);
+        $this->getRewards(4545);
         die();
 
         $rewards_id = Yii::$app->session['shandong_renbao_group_id'] ;
