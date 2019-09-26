@@ -16,11 +16,7 @@ class ShandongRenbaoArmyController extends PController {
 
     public $layout = 'shandong-renbao-army';
 
-//    public function actionIndex(){
-//        return $this->render('index',[
-//
-//        ]);
-//    }
+
 
     public function getTotal(){
         $army_base_count = Settings::find()->where([
@@ -46,6 +42,7 @@ class ShandongRenbaoArmyController extends PController {
         //分数清零，开始答题
         Yii::$app->session['shandong_renbao_question_ids'] = [];
         Yii::$app->session['shandong_renbao_scores'] = [];
+        Yii::$app->session->set('renbao_army_mobile',1);
         Yii::$app->session->set('mobile', 1);
 
         $total = $this->getTotal();
@@ -61,23 +58,34 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionQuestion(){
-        $request = Yii::$app->request;
-        $id = $request->get('id',0);
+        $is_exists = Yii::$app->session->get('renbao_army_mobile');
+        if($is_exists){
+
+            $request = Yii::$app->request;
+            $id = $request->get('id',0);
+
+            $question = ShandongRenbaoArmyQuestion::find()->where([
+                'id'=>$id
+            ])->asArray()->one();
+            $answers = ShandongRenbaoArmyAnswers::find()->where([
+                'question_id'=>$id
+            ])->asArray()->all();
+
+            $total = $this->getTotal();
+            return $this->render('question',[
+                'question'=>$question,
+                'answers'=>$answers,
+                'total'=>$total
+            ]);
+        }else{
+
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            header("Location:$url ");
+            exit;
+        }
 
 
-        $question = ShandongRenbaoArmyQuestion::find()->where([
-            'id'=>$id
-        ])->asArray()->one();
-        $answers = ShandongRenbaoArmyAnswers::find()->where([
-            'question_id'=>$id
-        ])->asArray()->all();
-
-        $total = $this->getTotal();
-        return $this->render('question',[
-            'question'=>$question,
-            'answers'=>$answers,
-            'total'=>$total
-        ]);
     }
 
 
@@ -142,7 +150,67 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionMobile() {
-        return $this->render('mobile',[
+        $is_exists = Yii::$app->session->get('renbao_army_mobile');
+        if($is_exists){
+
+            return $this->render('mobile',[
+
+            ]);
+        }else{
+
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            header("Location:$url ");
+            exit;
+        }
+
+    }
+
+
+
+    public function actionPrize() {
+
+        $is_exists = Yii::$app->session->get('renbao_army_mobile');
+        if($is_exists){
+
+            $request = Yii::$app->request;
+            $id = $request->get('id');
+            $object = ShandongRenbaoArmy::find()->where([
+                'id'=>$id
+            ])->one();
+
+
+            $result = $object->toArray();
+
+            $rewards  = ShandongRenbaoRewards::findOne($result['rewards_id']);
+            $result['rewards'] = $rewards->name;
+
+            return $this->render('prize',[
+                'result'=>$result,
+                'id'=>$id,
+            ]);
+        }else{
+
+            $url = $_SERVER['HTTP_HOST'];
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            header("Location:$url ");
+            exit;
+        }
+
+
+
+    }
+
+    public function actionPrizeStep(){
+        $request = Yii::$app->request;
+        $id = $request->get('id');
+        return $this->render('prize-step',[
+            'id'=>$id
+        ]);
+    }
+
+    public function actionRegister(){
+        return $this->render('register',[
 
         ]);
     }
@@ -243,7 +311,7 @@ class ShandongRenbaoArmyController extends PController {
             //检测验证码是否正确
             $mobile_code = Yii::$app->cache->get("shandong_renbao_".$mobile);
             if($code!=$mobile_code){
-                throw new \Exception('验证码错误,请检查！');
+               // throw new \Exception('验证码错误,请检查！');
             }
 
 
@@ -253,6 +321,7 @@ class ShandongRenbaoArmyController extends PController {
             $object->mobile = $mobile;
             $object->rewards_id = $rewards_id;
             $object->group_id   = $group_id;
+            $object->parent_id   = $parent_id;
             $object->created_at = date('Y-m-d H:i:s');
             $object->updated_at = date('Y-m-d H:i:s');
             $object->save();
@@ -276,7 +345,7 @@ class ShandongRenbaoArmyController extends PController {
 
             //发送短信
             if($rewards_id>0){
-                $this->sendSms($mobile,0,'恭喜您在临沂人保财险举行“猜英雄赢大奖”活动中获得超值大礼，奖券将在五个工作日内充入您山东人保财险公众号账号，还可邀请好友一起来抢！');
+                $this->sendSms($mobile,0,'恭喜您在临沂人保财险举行“测测你是什么军种”活动中获得超值大礼，奖券将在五个工作日内充入您山东人保财险公众号账号，还可邀请好友一起来抢！');
             }
 
 
@@ -301,21 +370,7 @@ class ShandongRenbaoArmyController extends PController {
 
         //先检测日期,先看抽奖是否在日期里面。。
         $time = time();
-//        if($time>=1568736000 and $time<1568995200){
-//            //如果名单在结果中，则不再中奖
-//            $repeat = ShandongRenbaoWish::find()->where(
-//                ['mobile'=>$mobile,]
-//            )->andWhere(['>','rewards_id',0])->one();
-//            if($repeat){
-//                return 0;
-//            }
-//            $repeat = ShandongRenbaoCar::find()->where(
-//                ['mobile'=>$mobile,]
-//            )->andWhere(['>','rewards',0])->one();
-//            if($repeat){
-//                return 0;
-//            }
-//        }
+
 
         //奖品数量
         $rewards = ShandongRenbaoRewards::find()->asArray()->all();

@@ -35,6 +35,7 @@ class ShandongRenbaoHeroController extends PController {
 
 
     public function actionIndex() {
+        return '抽奖活动已经完毕，谢谢大家的参与';
         $request = Yii::$app->request;
         $id = $request->get('id',0);
         $group_id = $request->get('group_id',0);

@@ -3,12 +3,12 @@
     <div class="prize-con">
             <span>
                 恭喜您获得<br/>
-                单次免费洗车
+                <?= $result['rewards'] ?>
             </span>
         <p>分享3位朋友参加抽奖，<br/>
             您将获得电影票1张或洗车1次。</p>
     </div>
-    <a href="prize-step.html" class="prize-btn">去使用</a>
+    <a href="prize-step.html?id=<?= $id ?>" class="prize-btn">去使用</a>
     <a href="javascript:popShow('pop1');" class="prize-btn">分享给好友</a>
 
     <!-- 弹窗 -->

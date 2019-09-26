@@ -82,27 +82,12 @@
             $.post('submit.html',{mobile:mobile,code:code},function (data) {
 
                 if(data.status==1){
-                    // window.location.href = 'result.html?id='+data.data.id;
-                    if(data.data.rewards_id==0){
-                        $('.lootey').html('非常遗憾<br>您未中奖');
-                        $('h2').html('下次活动10月18号<br>不见不散');
-                        $('.use').hide();
-                    }else{
-                        $('h2').text(data.data.rewards);
-                    }
-                    popShow('pop_per');
+                    window.location.href = 'prize.html?id='+data.data.id;
+
 
                 }else if(data.status==-1){
                     alert(data.message);
-                    if(data.data.rewards_id==0){
-                        $('.lootey').html('非常遗憾<br>您未中奖');
-                        $('h2').html('下次活动10月18号 <br> 不见不散');
-                        $('.use').hide();
-                    }else{
-                        $('h2').text(data.data.rewards);
-
-                    }
-                    popShow('pop_per');
+                    window.location.href = 'prize.html?id='+data.data.id;
                 }else{
                     alert(data.message);
                 }

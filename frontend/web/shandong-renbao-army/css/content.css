@@ -47,7 +47,7 @@ ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
   .slide{position: absolute;left: 0px;top: 0px;width: 100%;z-index: 1;opacity: 0;transition: opacity 0.5s;}
   .active-slide{opacity: 1;z-index: 2;}
   .quiz-container{position: relative;height: 6rem;}
-  .quiz span.selected{background-color: #f8de9e;color: #b64646;font-weight: bold; }
+  .quiz span:hover{background-color: #f8de9e;color: #b64646;font-weight: bold; }
   .quiz p{text-align: center; margin-bottom: 0.2rem;font-size: 0.3rem;font-weight: bold;}
   .anser-foter{margin-top: 1rem;}
 
@@ -98,6 +98,8 @@ color: #d71518;font-size: 0.36rem;line-height: 1.1rem; font-weight: bold;}
 .getway-bg img{margin: 45rem auto 0; width: 2.2rem;height: 2.2rem;}
 .getway-bg a{background: url('../images/index-btn.png')no-repeat;background-size: 100%; width: 5.6rem;height: 0.9rem; margin: 1.2rem auto 0; line-height: 0.9rem;font-size: 0.4rem;color: #c52d24;    border-radius: 0.5rem;}
 .getway-bg a:nth-child(4){margin-top: 0.35rem; }
+.register-p1{color: #000;font-size: 0.32rem;background-color: #fee665;margin-top: 0.2rem;
+ display: inline-block;}
 /* 注册流程end */
 
 
