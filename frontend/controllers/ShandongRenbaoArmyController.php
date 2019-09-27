@@ -302,6 +302,7 @@ class ShandongRenbaoArmyController extends PController {
                 'msg'=>'您已经抽过奖，点击确定查看中奖结果！',
                 'data'=>['id'=>$car->id,'rewards_id'=>$rewards_id,'rewards'=>$rewards_name]
             ];
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             return \GuzzleHttp\json_encode($return);
 //            return $this->json(-1, '您已经抽过奖,点击确定查看中奖结果',['id'=>$car->id]);
         }

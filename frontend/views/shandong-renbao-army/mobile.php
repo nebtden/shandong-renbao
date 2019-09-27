@@ -56,7 +56,7 @@
                     alert('短信发送成功！');
                 } else if(data.status==-1){
                     alert(data.msg);
-                    $('h2').text(data.data.rewards);
+                    window.location.href = 'prize.html?id='+data.data.id;
 
                 }else{
                     alert(data.msg);
@@ -84,9 +84,8 @@
                 if(data.status==1){
                     window.location.href = 'prize.html?id='+data.data.id;
 
-
                 }else if(data.status==-1){
-                    alert(data.message);
+                    alert(data.msg);
                     window.location.href = 'prize.html?id='+data.data.id;
                 }else{
                     alert(data.message);

@@ -1,9 +1,15 @@
+html, body, div, p, ul, li, dl, dt, dd, em, i, span, a, img, input, h1, h2, h3, h4, h5 {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  opacity: 1 !important;
+}
 /* 首页 */
 .index-bg{background: url('../images/index-bg.jpg')no-repeat;background-size: contain;height: 24.1rem;}
 .index-btn{background: url('../images/index-btn.png')no-repeat;background-size:100%; width: 6.25rem;height: 0.9rem;margin: 6.95rem auto 0; font-size: 0.3rem;color: #d71518;line-height: 0.98rem;display: block;font-weight: bolder;}
 .index-btn-begin{background: url('../images/begin.png')no-repeat;background-size:100%; width: 6.25rem;height: 0.9rem;margin: 6.95rem auto 0; font-size: 0.3rem;color: #d71518;line-height: 0.98rem;display: block;font-weight: bolder;}
 .index-pic1{width: 6.9rem;height: 4.05rem;margin:0.4rem auto 0; }
-.index-active img{height: 1.18rem; margin: 3.2rem 0 0 6.3rem}
+.index-active img{height: 1.18rem; margin: 3.2rem 0 0 6.3rem;width: 1.35rem;height: 1.35rem;}
 /* 中奖名单 */
 .pct-list li{ float: left; text-align: center;margin:0.45rem auto 0;} 
 #scrollBox{height:2.9rem;width:6.85rem;margin:2rem auto;overflow:hidden;padding-left: 0.3rem;}
@@ -19,13 +25,22 @@ ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
 .idx-sm{font-size:0.24rem;color: #f4f0b4;margin-top:0.4rem;font-weight: bold;line-height: 0.3rem; }
 /* 首页弹窗 */
 /* 弹窗 */
-.pop{display: none;  background:rgba(0, 0, 0, 0.4);
+.pop-anzhuo{display: none;  background:rgba(0, 0, 0, 0.4);
     width:7.5rem;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
     filter:alpha(opacity=60);  /*设置透明度为60%*/
     opacity:0.9;  /*非IE浏览器下设置透明度为60%*/
     position:absolute;left:0px;top:0px;
     height: 17.1rem;
 }
+.pop-ios{display: none;  background:rgba(0, 0, 0, 0.4);
+  width:7.5rem;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+  filter:alpha(opacity=60);  /*设置透明度为60%*/
+  opacity:0.9;  /*非IE浏览器下设置透明度为60%*/
+   padding-top: 1rem;
+  position:absolute;left:0px;top:0.5rem;
+  height: 17.1rem;
+}
+
 .index-tc{ line-height: 0.4rem; font-size: 0.3rem;color: #f8de9e; text-align:left; background: url('../images/index-tc.png')no-repeat;background-size:100%;height: 11.1rem; width: 6.66rem;margin:2.5rem 0 0 0.5rem;}
 .index-con{width: 6rem;margin: 0 auto; position: relative; padding-top: 3.6rem;}
 .index-con p{line-height: 0.4rem;}
@@ -71,7 +86,7 @@ ul,li{list-style:none;display:block;font-size: 0.3rem; color: #666;}
 .prize-bg{background: url('../images/prize-bg.jpg')no-repeat;background-size: 100%;height: 14.38rem;}
 .prize-con { margin-top: 4.3rem; height: 4.8rem;}
 .prize-con span{color: #faf561;font-size: 0.6rem;}
-.prize-con p{font-size: 0.32rem;color: #501402; margin: 0.78rem 0 0 0.2rem; line-height: 0.4rem;}
+.prize-con p{font-size: 0.32rem;color: #501402; margin: 0.65rem 0 0 0.2rem; line-height: 0.4rem;}
 .prize-btn{ background: url('../images/answer-btn.png')no-repeat;background-size:100%;width: 6.48rem;height: 1rem; margin: 0.2rem auto 0;
 color: #d71518;font-size: 0.36rem;line-height: 1.1rem; font-weight: bold;}
 /* 得奖页分享弹窗 */
