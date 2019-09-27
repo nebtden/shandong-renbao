@@ -643,6 +643,9 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionTotal(){
+
+        echo "以下为抽奖记录<br>";
+        
         $total = ShandongRenbaoArmy::find()->where([
             'rewards_id'=>0
         ])->count();
