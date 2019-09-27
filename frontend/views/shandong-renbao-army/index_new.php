@@ -67,7 +67,7 @@
                         游戏规则：<br/>
                         1. 在“PICC临沂客户俱乐部”和“山东人保财险”微信公众号参与活动“测一测，你适合哪个军种！”<br/>
                         2. 根据相关提示回答问题，匹配不同的军种，将有机会获得超值礼品。<br/>
-                        3. 分享3位朋友参加抽奖，您将随机获得电影票、单次洗车、鲜花配送或者两百元电商优惠券其中之一。
+                        3. 分享3位朋友参加抽奖，您将有机会获得洗车、鲜花或者电商兑换券其中之一。
                     </span>
                 <b>
                     注意： <br/>
@@ -78,5 +78,16 @@
         <a href="javascript:popHide();" title="点击关闭" class="btn close"> </a>
     </div>
 </div>
+<audio id="Jaudio" class="media-audio" src="/frontend/web/shandong-renbao-army/music.mp3" preload loop="loop"></audio >
+<script type="text/javascript">
+    function audioAutoPlay(id){
+        var audio = document.getElementById(id);
+        audio.play();
+        document.addEventListener("WeixinJSBridgeReady", function () {
+            audio.play();
+        }, false);
+    }
+    audioAutoPlay('Jaudio');
+</script>
 <script src="/frontend/web/shandong-renbao-army/js/show.js"></script>
 <script src="/frontend/web/shandong-renbao-army/js/index.js"></script>

@@ -18,9 +18,9 @@ class ShandongRenbaoArmyController extends PController {
     public $layout = 'shandong-renbao-army';
 
     public static $share_rewards = [
+        2=>'洗车券',
         3=>'鲜花（乐享）',
         4=>'E惠通（200）',
-
     ];
 
 
@@ -662,6 +662,13 @@ class ShandongRenbaoArmyController extends PController {
 
         foreach($rewards as $reward){
             echo $reward['name'].'数量为：'.$numbers[$reward['id']];
+            echo "<br>";
+        }
+
+        echo "以下为分享赠送记录<br>";
+        $totals = ShandongRenbaoArmyShare::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        foreach ($totals as $total){
+            echo self::$share_rewards[$total['rewards_id']].'数量为：'.$total['count'];
             echo "<br>";
         }
 
