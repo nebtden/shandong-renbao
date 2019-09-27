@@ -31,9 +31,15 @@ class ShandongRenbaoArmyController extends PController {
         return $total;
     }
 
+    public function actionIndex(){
+        $total = $this->getTotal();
+        return $this->render('index',[
+            'total'=>$total
+        ]);
+    }
 
 
-    public function actionIndex() {
+    public function actionHome() {
         $request = Yii::$app->request;
         $id = $request->get('id',0);
         $group_id = $request->get('group_id',0);
@@ -48,11 +54,11 @@ class ShandongRenbaoArmyController extends PController {
 
         $total = $this->getTotal();
         if(time()<1568736000 || true){
-            return $this->render('index',[
+            return $this->render('index_new',[
                 'total'=>$total
             ]);
         }else{
-            return $this->render('index_new',[
+            return $this->render('index',[
                 'total'=>$total
             ]);
         }
@@ -60,11 +66,11 @@ class ShandongRenbaoArmyController extends PController {
 
     public function actionQuestion(){
         $is_exists = Yii::$app->session->get('renbao_army_mobile');
+
+        $request = Yii::$app->request;
+        $id = $request->get('id',0);
+
         if($is_exists){
-
-            $request = Yii::$app->request;
-            $id = $request->get('id',0);
-
             $question = ShandongRenbaoArmyQuestion::find()->where([
                 'id'=>$id
             ])->asArray()->one();
@@ -184,14 +190,13 @@ class ShandongRenbaoArmyController extends PController {
     public function actionPrize() {
 
         $is_exists = Yii::$app->session->get('renbao_army_mobile');
-        if($is_exists){
+        $request = Yii::$app->request;
+        $id = $request->get('id');
 
-            $request = Yii::$app->request;
-            $id = $request->get('id');
+        if($is_exists){
             $object = ShandongRenbaoArmy::find()->where([
                 'id'=>$id
             ])->one();
-
 
             $result = $object->toArray();
 
@@ -203,9 +208,8 @@ class ShandongRenbaoArmyController extends PController {
                 'id'=>$id,
             ]);
         }else{
-
             $url = $_SERVER['HTTP_HOST'];
-            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html?id=$id";
             header("Location:$url ");
             exit;
         }
@@ -216,15 +220,16 @@ class ShandongRenbaoArmyController extends PController {
 
     public function actionPrizeStep(){
         $is_exists = Yii::$app->session->get('renbao_army_mobile');
+        $request = Yii::$app->request;
+        $id = $request->get('id');
         if($is_exists){
-            $request = Yii::$app->request;
-            $id = $request->get('id');
+
             return $this->render('prize-step',[
                 'id'=>$id
             ]);
         }else{
             $url = $_SERVER['HTTP_HOST'];
-            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html?id=$id";
             header("Location:$url ");
             exit;
         }
@@ -232,10 +237,12 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionRegister(){
+        $request = Yii::$app->request;
+        $id = $request->get('id');
         $is_exists = Yii::$app->session->get('renbao_army_mobile');
         if($is_exists){
             return $this->render('register',[
-
+                'id'=>$id
             ]);
         }else{
             $url = $_SERVER['HTTP_HOST'];
@@ -358,6 +365,27 @@ class ShandongRenbaoArmyController extends PController {
             $object->save();
 
             $id = $object->id;
+
+
+            //查看分享的人是否有三次分享
+            $parent_count = ShandongRenbaoArmy::find()->where([
+                'parent_id'=>$parent_id
+            ])->count();
+            if($parent_count>=3){
+                //检测是否在分享里面
+                $share = ShandongRenbaoArmyShare::find()->where([
+                    'army_id'=>$parent_id
+                ])->one();
+                $parent = ShandongRenbaoArmy::find()->where([
+                    'parent_id'=>$parent_id
+                ])->one();
+                if(!$share){
+                    $share = new ShandongRenbaoArmyShare();
+                    $share->army_id = $parent_id;  //数据库需要同步更新
+                    $share->mobile = $parent->mobile;  //数据库需要同步更新
+                    $share->save();
+                }
+            }
 
             if($rewards_id){
                 $rewards = ShandongRenbaoRewards::find()->where([
