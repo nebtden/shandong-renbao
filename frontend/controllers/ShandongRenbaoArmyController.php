@@ -17,6 +17,12 @@ class ShandongRenbaoArmyController extends PController {
 
     public $layout = 'shandong-renbao-army';
 
+    public static $share_rewards = [
+        3=>'鲜花（乐享）',
+        4=>'E惠通（200）',
+
+    ];
+
 
 
     public function getTotal(){
@@ -52,8 +58,10 @@ class ShandongRenbaoArmyController extends PController {
         Yii::$app->session->set('renbao_army_mobile',1);
         Yii::$app->session->set('mobile', 1);
 
+
         $total = $this->getTotal();
         if(time()<1568736000 || true){
+//            return 2;
             return $this->render('index_new',[
                 'total'=>$total
             ]);
@@ -246,7 +254,7 @@ class ShandongRenbaoArmyController extends PController {
             ]);
         }else{
             $url = $_SERVER['HTTP_HOST'];
-            $url = "http://$url/frontend/web/shandong-renbao-army/index.html";
+            $url = "http://$url/frontend/web/shandong-renbao-army/index.html?id=$id";
             header("Location:$url ");
             exit;
         }
@@ -349,7 +357,7 @@ class ShandongRenbaoArmyController extends PController {
             //检测验证码是否正确
             $mobile_code = Yii::$app->cache->get("shandong_renbao_".$mobile);
             if($code!=$mobile_code){
-               // throw new \Exception('验证码错误,请检查！');
+                throw new \Exception('验证码错误,请检查！');
             }
 
 
@@ -383,6 +391,7 @@ class ShandongRenbaoArmyController extends PController {
                     $share = new ShandongRenbaoArmyShare();
                     $share->army_id = $parent_id;  //数据库需要同步更新
                     $share->mobile = $parent->mobile;  //数据库需要同步更新
+                    $share->rewards_id = $this->getShareRewards();  //数据库需要同步更新
                     $share->save();
                 }
             }
@@ -415,12 +424,48 @@ class ShandongRenbaoArmyController extends PController {
             ];
         }
 
-
-
         echo \GuzzleHttp\json_encode($return);
     }
 
 
+    //确定分享的奖品id
+    public function getShareRewards(){
+        $numbers = $this->getNumbers();
+        $rand = rand(0,100);
+
+        if($rand<50){
+            if($numbers[2]<1980){
+                return 2;
+            }
+        }
+        if($rand<75){
+            if($numbers[3]<256){
+                return 3;
+            }
+        }
+
+        if($numbers[4]<530){
+            return 4;
+        }
+
+        return 0;
+    }
+
+
+    public function  getNumbers(){
+        $numbers= [] ;
+        $totals = ShandongRenbaoArmy::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        foreach ($totals as $total){
+            $numbers[$total['rewards_id']] = $total['count'];
+        }
+
+        //分享的，也合并
+        $totals = ShandongRenbaoArmyShare::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
+        foreach ($totals as $total){
+            $numbers[$total['rewards_id']] = $numbers[$total['rewards_id']]+$total['count'];
+        }
+        return $numbers;
+    }
 
 
 
@@ -435,19 +480,9 @@ class ShandongRenbaoArmyController extends PController {
         $rewards = ShandongRenbaoRewards::find()->asArray()->all();
         $rewards_total  = ShandongRenbaoRewards::find()->sum('number');
 
-        $numbers= [] ;
-        $totals = ShandongRenbaoArmy::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
-        foreach ($totals as $total){
-            $numbers[$total['rewards_id']] = $total['count'];
-        }
 
-        //分享的，也合并
-        $totals = ShandongRenbaoArmyShare::find()->select(['rewards_id','count(1) as count'])->groupBy('rewards_id')->asArray()->all();
-        foreach ($totals as $total){
-            $numbers[$total['rewards_id']] = $numbers[$total['rewards_id']]+$total['count'];
-        }
 
-//        var_dump($numbers);
+        $numbers = $this->getNumbers();
 
 
 

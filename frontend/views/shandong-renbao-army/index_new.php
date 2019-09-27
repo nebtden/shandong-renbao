@@ -1,6 +1,7 @@
 <div class="index-bg">
     <h1 class="hide">胜利大阅兵</h1>
-    <a href="question.html?id=1" class="index-btn">2019年9月28日活动正式启动</a>
+    <a href="question.html?id=1" class="index-btn-begin"></a>
+<!--    <a href="question.html?id=1" class="index-btn-begin">开始</a>-->
     <a href="javascript:popShow('pop_per');" class="index-active"><img src="/frontend/web/shandong-renbao-army/images/index-active.png" alt=""></a>
 
     <img src="/frontend/web/shandong-renbao-army/images/index-pic1.png" alt="" class="index-pic1">
@@ -9,7 +10,7 @@
         <ul id="con1">
             <li>
                 <b>131****3658</b>
-                <span>铝合金香氛双号停车牌</span>
+                <span>单次免费洗车</span>
             </li>
             <li>
                 <b>137****6106</b>
@@ -17,7 +18,7 @@
             </li>
             <li>
                 <b>135****8830</b>
-                <span>华帝多功能消毒刀架</span>
+                <span>单次浪漫鲜花</span>
             </li>
             <li>
                 <b>138****1733</b>
@@ -25,23 +26,23 @@
             </li>
             <li>
                 <b>135****5506</b>
-                <span>铝合金香氛双号停车牌</span>
+                <span>电影优惠券</span>
             </li>
             <li>
                 <b>130****4785</b>
-                <span>电商优惠券</span>
+                <span>电影优惠券</span>
             </li>
             <li>
                 <b>177****5272</b>
-                <span>铝合金香氛双号停车牌</span>
-            </li>
-            <li>
-                <b>189****4356</b>
                 <span>单次免费洗车</span>
             </li>
             <li>
+                <b>189****4356</b>
+                <span>单次浪漫鲜花</span>
+            </li>
+            <li>
                 <b>130****7575</b>
-                <span>多功能家车两用工具箱户外灯</span>
+                <span>电影优惠券</span>
             </li>
             <li>
                 <b>152****6421</b>

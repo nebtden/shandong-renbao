@@ -1,6 +1,7 @@
 /* 首页 */
 .index-bg{background: url('../images/index-bg.jpg')no-repeat;background-size: contain;height: 24.1rem;}
 .index-btn{background: url('../images/index-btn.png')no-repeat;background-size:100%; width: 6.25rem;height: 0.9rem;margin: 6.95rem auto 0; font-size: 0.3rem;color: #d71518;line-height: 0.98rem;display: block;font-weight: bolder;}
+.index-btn-begin{background: url('../images/begin.png')no-repeat;background-size:100%; width: 6.25rem;height: 0.9rem;margin: 6.95rem auto 0; font-size: 0.3rem;color: #d71518;line-height: 0.98rem;display: block;font-weight: bolder;}
 .index-pic1{width: 6.9rem;height: 4.05rem;margin:0.4rem auto 0; }
 .index-active img{height: 1.18rem; margin: 3.2rem 0 0 6.3rem}
 /* 中奖名单 */
