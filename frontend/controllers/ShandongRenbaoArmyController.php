@@ -38,10 +38,30 @@ class ShandongRenbaoArmyController extends PController {
     }
 
     public function actionIndex(){
+        $request = Yii::$app->request;
+        $id = $request->get('id',0);
+        $group_id = $request->get('group_id',0);
+        Yii::$app->session['shandong_renbao_parent_id'] = $id;
+        Yii::$app->session['shandong_renbao_group_id']  = $group_id;
+
+        //分数清零，开始答题
+        Yii::$app->session['shandong_renbao_question_ids'] = [];
+        Yii::$app->session['shandong_renbao_scores'] = [];
+        Yii::$app->session->set('renbao_army_mobile',1);
+        Yii::$app->session->set('mobile', 1);
+
+
         $total = $this->getTotal();
-        return $this->render('index',[
-            'total'=>$total
-        ]);
+        if(time()<1568736000 || true){
+//            return 2;
+            return $this->render('index_new',[
+                'total'=>$total
+            ]);
+        }else{
+            return $this->render('index',[
+                'total'=>$total
+            ]);
+        }
     }
 
 
@@ -380,7 +400,7 @@ class ShandongRenbaoArmyController extends PController {
             $parent_count = ShandongRenbaoArmy::find()->where([
                 'parent_id'=>$parent_id
             ])->count();
-            if($parent_count>=3){
+            if($parent_count>=1){
                 //检测是否在分享里面
                 $share = ShandongRenbaoArmyShare::find()->where([
                     'army_id'=>$parent_id

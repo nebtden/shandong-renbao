@@ -3,9 +3,9 @@
     <img src="/frontend/web/shandong-renbao-army/images/award-ewm.png" alt="">
 <!--    <a href="javascript:;">去个人中心查看奖品 </a>-->
     <a href="javascript:popShow('pop1');">邀朋友一起来PK </a>
-    <p class="register-p1">分享3位朋友并完成抽奖， </p><br/>
-    <p class="register-p1"> 您将获得洗车、</p><br/>
-    <p class="register-p1">鲜花或者电商兑换券其中之一<br/></p>
+    <p class="register-p1">分享朋友再次领奖，您将随机 </p><br/>
+    <p class="register-p1"> 获得电影票、单次洗车、鲜花或</p><br/>
+    <p class="register-p1">200元电商优惠券其中之一。<br/></p>
 </div>
 <!-- 弹窗 -->
 <div class="pop pop1" id="pop1">

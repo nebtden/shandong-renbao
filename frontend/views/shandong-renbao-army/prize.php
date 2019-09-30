@@ -5,8 +5,9 @@
                 恭喜您获得<br/>
                 <?= $result['rewards'] ?>
             </span>
-        <p>分享3位朋友参加抽奖，<br/>
-            您将获得洗车、鲜花或者<br/>电商兑换券其中之一。</p>
+        <p>分享朋友再次领奖，您将随机<br/>
+            获得电影票、单次洗车、鲜花或<br/>
+            200元电商优惠券其中之一。</p>
     </div>
     <a href="prize-step.html?id=<?= $id ?>" class="prize-btn">去使用</a>
     <a href="javascript:popShow('pop1');" class="prize-btn">分享给好友</a>
