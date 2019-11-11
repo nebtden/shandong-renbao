@@ -141,6 +141,9 @@ class ShandongRenbaoHeroController extends PController {
 
 
     public function actionWay() {
+        return $this->render('way',[
+
+        ]);
         $is_exists = Yii::$app->session->get('mobile');
         if($is_exists){
 

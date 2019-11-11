@@ -44,10 +44,11 @@
 <script type="text/javascript">
     $(function () {
         $("#begin").datetimepicker({
-            format: "yyyy-mm-dd hh:ii"
+            minView: "month",
+            format: "yyyy-mm-dd"
         });
         $("#last").datetimepicker({
-            format: "yyyy-mm-dd hh:ii"
+            format: "yyyy-mm-dd 23:59:59"
         });
     });
 
