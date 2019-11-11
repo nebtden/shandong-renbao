@@ -30,7 +30,7 @@
                         <span>姓名:</span>
                     </li>
                 </ul>
-                <a href="bm-number.html" class="con5-btn"> 我要报名 </a>
+                <a href="add.html" class="con5-btn"> 我要报名 </a>
             </div>
         </div>
     </div>

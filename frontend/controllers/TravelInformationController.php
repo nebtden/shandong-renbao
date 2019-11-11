@@ -32,6 +32,12 @@ class TravelInformationController extends PController
         ]);
     }
 
+    public function actionSubmit(){
+        return $this->render('submit',[
+
+        ]);
+    }
+
 
 
 

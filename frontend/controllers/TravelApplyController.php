@@ -34,6 +34,16 @@ class TravelApplyController extends PController
         ]);
     }
 
+    /**
+     * @return string
+     * 请传递id
+     */
+    public function actionAdd(){
+        return $this->render('add',[
+
+        ]);
+    }
+
 
 
 
