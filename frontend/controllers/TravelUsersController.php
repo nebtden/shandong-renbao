@@ -21,7 +21,7 @@ class TravelUsersController extends PController
 {
 
     public $site_title = '云车驾到';
-
+    public $layout = 'travelpublic';
 
     /*
      * 首页
