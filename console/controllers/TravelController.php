@@ -26,22 +26,26 @@ use Yii;
 class TravelController extends Controller
 {
 
-    public function actionIminfo(){
+    public function actionLose(){
         $e = new EDaiJia();
         $date_model = new TravelListDate();
         $time = time();
-        $lockeds = TravelUsersLocked::find()->select(['sum(num) as num','travel_list_id'])->where([
+
+        TravelUsersLocked::updateAll(['number'=>0],
+            "ctime <$time-60*30 and number >0"
+        );
+
+        $lockeds = TravelUsersLocked::find()->select(['sum(number) as num','travel_date_id'])->where([
             '>','ctime',$time-60*30
         ])->andWhere([
             '>','number',0
         ])
-            ->groupBy('travel_list_id')->asArray()->all();
-        foreach($lockeds as $locked){
-            //查询用户的电话
-            $uid = $locked['uid'];
-            $fans_account = FansAccount::find()->where(['uid' => $uid])->one();
-            $mobile = $fans_account['mobile'];
-            $result = $e->get_order_info($order_info['booking_id'],$mobile,1);
+            ->groupBy('travel_date_id')->asArray()->all();
+
+        foreach($lockeds as $lose){
+            $date = TravelListDate::findOne($lose['travel_date_id']);
+            $date->locked = $lose['num'];
+            $date->save();
 
         }
     }

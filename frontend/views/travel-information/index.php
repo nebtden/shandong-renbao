@@ -128,7 +128,7 @@
                     window.location.href = 'submit.html?id='+data.data.id;
                 }else{
                     alert(data.data.msg);
-                    // window.location.href = 'prize.html?id='+data.data.id;
+
                 }
             },'json');
 
