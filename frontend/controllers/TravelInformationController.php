@@ -21,7 +21,7 @@ class TravelInformationController extends PController
     public function actionIndex(){
 
         $request = Yii::$app->request;
-        Yii::$app->session['travel_user_id']  =2;
+
 
         $user_id = Yii::$app->session['travel_user_id'];
         $id = Yii::$app->session['travel_list_id'];

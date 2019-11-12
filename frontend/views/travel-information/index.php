@@ -41,7 +41,7 @@
         </ul>
         <!--添加出游人  -->
         <div class="submitbtn">
-            <a class="submit" href="javascript:;">提交</a>
+            <a class="submit" href="javascript:;">保存并填写下一个</a>
         </div>
     </div>
     <div class="con7footer">
@@ -61,6 +61,17 @@
 
 </style>
 
+<audio id="Jaudio" class="media-audio" src="/frontend/web/travel/static/xialian.mp3" preload loop="loop"></audio >
+<script type="text/javascript">
+    function audioAutoPlay(id){
+        var audio = document.getElementById(id);
+        audio.play();
+        document.addEventListener("WeixinJSBridgeReady", function () {
+            audio.play();
+        }, false);
+    }
+    audioAutoPlay('Jaudio');
+</script>
 <script>
     $('.con7add').click(function(){
         // $("body").append($("#comappend>input").clone());
@@ -103,7 +114,7 @@
                 return false;
             }
 
-            if(!(/^1[3456789]\d{9}$/.test(phone))){
+            if(!(/^1[3456789]\d{9}$/.test(mobile))){
                 alert("手机号码有误，请重填");
                 return false;
             }

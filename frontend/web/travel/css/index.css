@@ -163,8 +163,8 @@ input {
 }
 
 /* 第四个页面 */
-.con-4 {
-  position: relative;
+ .con-4 {
+  background: url(../img/chengtou/indexbutton1.png)no-repeat;
 }
 
 .con-4 span {
@@ -183,16 +183,16 @@ input {
 .con-4 .con4btn {
   position: absolute;
   bottom: 0.15rem;
-  left: 41%;
+  left: 13%;
   display: block;
-  width: 1.9rem;
-  height: 0.9rem;
+  width: 2.3rem;
+  height: 1rem;
 }
 
 .con-4 .con4btn1 {
   position: absolute;
   bottom: 0.1rem;
-  right: 0.9rem;
+  right: 22%;
   display: block;
   width: 1.1rem;
 }
@@ -213,9 +213,11 @@ input {
   width: 5.6rem;
   padding-top: 0.4rem;
 }
-.com5list{
+
+.com5list {
   margin-top: 0.6rem;
 }
+
 .con5 input {
   width: 3.8rem;
   height: 0.56rem;
@@ -223,7 +225,7 @@ input {
   display: block;
   border: none;
   font-size: 0.26rem;
-  line-height: 0.56rem;
+  line-height: 1rem;
   color: #000;
   margin: 0.2rem auto 0;
   border-radius: 0.1rem;
@@ -310,7 +312,7 @@ input {
   display: block;
   border: none;
   font-size: 0.26rem;
-  line-height: 0.56rem;
+  line-height: 1rem;
   color: #000;
   margin: 0.2rem auto 0;
   border-radius: 0.1rem;
@@ -375,16 +377,15 @@ input {
   background-size: 100%;
   width: 6.4rem;
   height: 1.38rem;
-  /* margin-top:0.35rem; */
   position: absolute;
-  bottom: 0;
-
+  bottom: -0.1rem;
+  line-height: 1.38rem;
 }
 
 .con7footer p {
   width: 5.6rem;
   color: #112150;
-  margin: 0.15rem auto 0;
+  margin: 0.3rem auto 0;
   line-height: 0.35rem;
 }
 
@@ -399,14 +400,8 @@ input {
   background: url('../img/chengtou/con5-btn.png')no-repeat;
   background-size: 100%;
   display: block;
-  margin: 0.1rem auto 0;
+  margin: 0.2rem auto 0;
 }
-
-/* 提交 */
-.con8 {
-  background: url('');
-}
-
 .submit {
   position: relative;
 
@@ -497,7 +492,7 @@ input {
   border-radius: 0.1rem;
   position: relative;
   line-height: 0.56rem;
-
+  display: block;
 }
 
 .con5box span {
@@ -507,11 +502,32 @@ input {
 .con5select {
   margin-left: 2rem;
   position: absolute;
-  top: 0.15rem;
-  right: 0;
+  top: 0;
+  right: 0.6rem;
   border: none;
-  background-color: #f5f7f9;
+  height: 0.3rem;
+  margin: 0 auto;
+
+
 }
-.inputName .con5gonghao{
+
+.inputName .con5gonghao {
   padding-left: 0;
 }
+
+.newcon7 {
+  height: 5.8rem;
+}
+
+.con7date {
+  width: 4.58rem;
+  height: 4.58rem;
+  padding: 0.5rem 0 0 0.4rem;
+}
+
+.con7-logo {
+  width: 1.93rem;
+  height: 0.64rem;
+  margin: 1rem auto 0;
+}
+

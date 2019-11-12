@@ -16,7 +16,7 @@ use yii\helpers\Url;
             <p class="p2">锁定中名额：<b><?php echo $locked?></b></p>
             <ul class="con5list bm-list">
                 <li class="inputName">
-                    <input type="text"  class="con7input1 con6input" id="inputName">
+                    <input type="number"  class="con7input1 con6input" id="inputName" min="2" max="10000">
                     <span>填写您报名人数:</span>
                 </li>
             </ul>
@@ -35,7 +35,15 @@ use yii\helpers\Url;
     function  subdate() {
         var num=$('#inputName').val();
         var date_id='<?php echo $date_id?>';
-        var sum ='<?php echo $sum?>';
+        var list_id='<?php echo $list_id?>';
+        if(!num){
+            alert('请填写报名人数');
+            return false;
+        }
+        if(num < 2){
+            alert('报名人数不得少于两人');
+            return false;
+        }
         if(is_subm){
             alert('数据提交中，请稍候');
             return false;
@@ -45,12 +53,13 @@ use yii\helpers\Url;
         $.post(url,{
             num:num,
             date_id:date_id,
-            sum:sum
+            list_id:list_id
         },function(json){
-            alert(json.msg);
             is_subm = false;
             if(json.status == 1){
                 window.location.href=json.url;
+            }else{
+                alert(json.msg);
             }
         });
     }

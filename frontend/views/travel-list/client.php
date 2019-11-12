@@ -70,12 +70,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-2_1.png?v=1" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-2_1.2.png?v=1" class="ele animated2 zoomIn ts3">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=1"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
+
             </li>
           </ul>
         </div>
@@ -90,13 +85,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-2_2.png?v=1" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-2_1.2.png?v=1" class="ele animated2 zoomIn ts3">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=1"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -111,13 +100,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-2_3.png?v=1" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-2_1.2.png?v=1" class="ele animated2 zoomIn ts3">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=1"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -132,13 +115,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-2_3.4.png?v=1" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-2_1.2.png?v=1" class="ele animated2 zoomIn ts3">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=1"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -153,14 +130,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-2_3.5.png?v=1" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-2_1.2.png?v=1" class="ele animated2 zoomIn ts3">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-
-                  <a href="/frontend/web/travel-information/success.html?id=1"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -177,13 +147,7 @@ use yii\helpers\Url;
                         <li>
                             <img src="/frontend/web/travel/img/chengtou/slide-2_1.png?v=1" class="ele animated2 zoomIn ts2">
                             <img src="/frontend/web/travel/img/chengtou/slide-2_1.1.png?v=1" class="ele animated2 zoomIn ts3">
-                            <div class="ele con-4"
-                                 style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                                <div>
 
-                                    <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                                    <a href="/frontend/web/travel-information/success.html?id=2"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                                </div>
                         </li>
                     </ul>
                 </div>
@@ -198,13 +162,7 @@ use yii\helpers\Url;
                         <li>
                             <img src="/frontend/web/travel/img/chengtou/slide-2_2.png?v=1" class="ele animated2 zoomIn ts2">
                             <img src="/frontend/web/travel/img/chengtou/slide-2_1.1.png?v=1" class="ele animated2 zoomIn ts3">
-                            <div class="ele con-4"
-                                 style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                                <div>
 
-                                    <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                                    <a href="/frontend/web/travel-information/success.html?id=2"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                                </div>
                         </li>
                     </ul>
                 </div>
@@ -219,13 +177,7 @@ use yii\helpers\Url;
                         <li>
                             <img src="/frontend/web/travel/img/chengtou/slide-2_3.png?v=1" class="ele animated2 zoomIn ts2">
                             <img src="/frontend/web/travel/img/chengtou/slide-2_1.1.png?v=1" class="ele animated2 zoomIn ts3">
-                            <div class="ele con-4"
-                                 style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                                <div>
 
-                                    <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                                    <a href="/frontend/web/travel-information/success.html?id=2"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                                </div>
                         </li>
                     </ul>
                 </div>
@@ -240,13 +192,7 @@ use yii\helpers\Url;
                         <li>
                             <img src="/frontend/web/travel/img/chengtou/slide-2_3.4.png?v=1" class="ele animated2 zoomIn ts2">
                             <img src="/frontend/web/travel/img/chengtou/slide-2_1.1.png?v=1" class="ele animated2 zoomIn ts3">
-                            <div class="ele con-4"
-                                 style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                                <div>
 
-                                    <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                                    <a href="/frontend/web/travel-information/success.html?id=2"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                                </div>
                         </li>
                     </ul>
                 </div>
@@ -261,14 +207,7 @@ use yii\helpers\Url;
                         <li>
                             <img src="/frontend/web/travel/img/chengtou/slide-2_3.5.png?v=1" class="ele animated2 zoomIn ts2">
                             <img src="/frontend/web/travel/img/chengtou/slide-2_1.1.png?v=1" class="ele animated2 zoomIn ts3">
-                            <div class="ele con-4"
-                                 style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                                <div>
 
-                                    <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>1]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-
-                                    <a href="/frontend/web/travel-information/success.html?id=2"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                                </div>
                         </li>
                     </ul>
                 </div>
@@ -285,13 +224,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-tb-1.png" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-tbtxt.png" class="ele animated2 zoomIn ts3">
-              <div class="ele  con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>2]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=3"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -306,14 +239,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-tb-2.png" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-tbtxt.png" class="ele animated2 zoomIn ts3">
-              <div class="ele  con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>2]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-
-                  <a href="/frontend/web/travel-information/success.html?id=3"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -328,13 +254,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-tb-3.png" class="ele animated2 zoomIn ts3">
               <img src="/frontend/web/travel/img/chengtou/slide-tbtxt.png" class="ele animated2 zoomIn ts2">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>2]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=3"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -349,13 +269,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-tb-4.png" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-tbtxt.png" class="ele animated2 zoomIn ts3">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>2]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=3"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -372,13 +286,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-zj-1.png" class="ele animated2 zoomIn ts3">
               <img src="/frontend/web/travel/img/chengtou/slide-slide-zjtxt.png" class="ele animated2 zoomIn ts2">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>3]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=4"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -393,13 +301,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-zj-2.png" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-slide-zjtxt.png" class="ele animated2 zoomIn ts3">
-              <div class="ele  con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>3]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=4"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -414,13 +316,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-zj-3.png" class="ele animated2 zoomIn ts3">
               <img src="/frontend/web/travel/img/chengtou/slide-slide-zjtxt.png" class="ele animated2 zoomIn ts2">
-              <div class="ele  con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>3]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=4"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -435,13 +331,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-zj-4.png" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-slide-zjtxt.png" class="ele animated2 zoomIn ts3">
-              <div class="ele  con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>3]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-                  <a href="/frontend/web/travel-information/success.html?id=4"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -456,14 +346,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-zj-5.png" class="ele animated2 zoomIn ts3">
               <img src="/frontend/web/travel/img/chengtou/slide-slide-zjtxt.png" class="ele animated2 zoomIn ts2">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>3]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-
-                  <a href="/frontend/web/travel-information/success.html?id=4"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -479,14 +362,7 @@ use yii\helpers\Url;
             <li>
               <img src="/frontend/web/travel/img/chengtou/slide-zj-6.png" class="ele animated2 zoomIn ts2">
               <img src="/frontend/web/travel/img/chengtou/slide-slide-zjtxt.png" class="ele animated2 zoomIn ts3">
-              <div class="ele con-4"
-                style="background-image: url('/frontend/web/travel/img/chengtou/slide-2_1.3.png?v=1'); background-size: cover; display: block;">
-                <div>
 
-                  <a href="<?php echo Url::to(['travel-apply/index' , 'id'=>3]);?>"><img src="/frontend/web/travel/img/chengtou/con4-btn.png" alt="" class="con4btn"></a>
-
-                  <a href="/frontend/web/travel-information/success.html?id=4"> <img src="/frontend/web/travel/img/chengtou/con4-btn1.png" alt="" class="con4btn1"></a>
-                </div>
             </li>
           </ul>
         </div>
@@ -499,7 +375,17 @@ use yii\helpers\Url;
   <div class="up">
     <div class="ups"></div>
   </div>
-
+    <audio id="Jaudio" class="media-audio" src="/frontend/web/travel/static/xialian.mp3" preload loop="loop"></audio >
+    <script type="text/javascript">
+        function audioAutoPlay(id){
+            var audio = document.getElementById(id);
+            audio.play();
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                audio.play();
+            }, false);
+        }
+        audioAutoPlay('Jaudio');
+    </script>
 <?php $this->beginBlock('script')?>
     <script src="/frontend/web/travel/js/donghua.js"></script>
 <?php $this->endBlock('script')?>

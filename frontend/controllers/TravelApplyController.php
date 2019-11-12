@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 
 
+use common\models\TravelUsersLocked;
 use Yii;
 use frontend\util\PController;
 use common\models\TravelUsers;
@@ -30,15 +31,21 @@ class TravelApplyController extends PController
         $model = new TravelCompany();
         $organ  = $model->select('*',['pid'=>0])->all();
         $mechanism = $model->select('*',['pid'=>1])->all();
+        $organ = array_column($organ,'name');
+        $organ = json_encode($organ);
         return $this->render('index',['organ'=>$organ,'mechanism'=>$mechanism,'id'=>$id]);
     }
+
     public function actionMechanism(){
         $request = Yii::$app->request;
         if($request->isPost) {
             $model = new TravelCompany();
-            $company_id = intval($request->post('opt1'));
-            $data['pid'] = $company_id;
-            $res  = $model->select('*',$data)->all();
+            $name = $request->post('name');
+            $data['name'] = $name;
+            $result  = $model->select('id',$data)->one();
+            $where['pid'] = $result['id'];
+            $res  = $model->select('*',$where)->all();
+            $res  =  array_column($res,'name');
             if(empty($res)) return $this->json(0,'系统错误');
             return $this->json(1,'操作成功',$res);
         }
@@ -57,8 +64,12 @@ class TravelApplyController extends PController
         if($request->isPost) {
             $list_id = intval($request->post('list_id'));
             $date_id = intval($request->post('date_id'));
+
             $res = $dateModel ->select('*',['travel_list_id'=>$list_id,'id'=>$date_id])->one();
             if(empty($res)) return $this->json(0,'信息填写错误');
+
+            Yii::$app->session['travel_date_id']  =  $request->post('date_id');
+
             $url= Url::to(['travel-apply/add','date_id'=>$date_id,'list_id'=>$list_id]);
             return $this->json(1,'操作成功',[],$url);
         }
@@ -70,28 +81,50 @@ class TravelApplyController extends PController
      */
     public function actionAdd(){
         $request = Yii::$app->request;
+        $dateModel = new TravelListDate();
+        $numModel = new TravelData();
+
+        if($request->isPost) {
+
+            $travel_date_id = intval($request->post('date_id'));
+            $travel_list_id = intval($request->post('list_id'));
+            $number   = intval($request->post('num'));
+            $travel_user_id = Yii::$app->session['travel_user_id'];
+
+            $pdate_id = intval($request->post('date_id'));
+            $plist_id = intval($request->post('list_id'));
+            $pinfo = $dateModel ->select('*',['id'=>$pdate_id])->one();
+            $pnum = $numModel ->select('*',['travel_date_id'=>$pdate_id])->count();
+            $sum = $pinfo['number'] - $pinfo['locked']- $pnum;
+            if($number < 2) return $this->json(0,'报名人数至少2人');
+            if($number  > $sum) return $this->json(0,'人数过多');
+            $total_number = $pinfo['locked'] + $number;
+
+            $locked = new TravelUsersLocked();
+            $locked->travel_user_id = $travel_user_id;
+            $locked->travel_list_id = $travel_list_id;
+            $locked->travel_date_id = $travel_date_id;
+            $locked->number = $number;
+            $locked->ctime = time();
+            $res = $locked->save();
+
+            Yii::$app->session['travel_locked'] = $number;
+
+            $res = (new TravelListDate())->myUpdate(['locked'=>$total_number],['id'=>$pdate_id]);
+            if(empty($res)) return $this->json(0,'报名失败');
+            $url= Url::to(['travel-information/index','date_id'=>$pdate_id,'list_id'=>$plist_id]);
+            return $this->json(1,'操作成功',[],$url);
+        }
+        $request = Yii::$app->request;
         $list_id = intval($request->get('list_id'));
         $date_id = intval($request->get('date_id'));
         Yii::$app->session['travel_date_id'] = $date_id;
-        $dateModel = new TravelListDate();
-        $numModel = new TravelData();
-        $info = $dateModel ->select('*',['id'=>$list_id])->one();
+
+        $info = $dateModel ->select('*',['id'=>$date_id])->one();
         $num = $numModel ->select('*',['travel_date_id'=>$date_id])->count();
         $sum = $info['number'] - $info['locked']-$num;
-        if($request->isPost) {
-            $date_id = intval($request->post('date_id'));
-            $num = intval($request->post('num'));
-            $sum = intval($request->post('sum'));
-            
-            if($num  > $sum) return $this->json(0,'人数过多');
-            $num = $info['locked'] + $num;
-            $res = (new TravelListDate())->myUpdate(['locked'=>$num],['id'=>$date_id]);
-            if(empty($res)) return $this->json(0,'信息填写错误');
-            $url= Url::to(['travel-information/index','date_id'=>$date_id,'list_id'=>Yii::$app->session['travel_list_id']]);
-            return $this->json(1,'操作成功',[],$url);
-        }
 
-        return $this->render('add',[ 'sum'=>$sum,'date_id'=>$date_id, 'locked'=>$info['locked']?$info['locked']:0]);
+        return $this->render('add',[ 'sum'=>$sum,'date_id'=>$date_id,'list_id'=>$list_id, 'locked'=>$info['locked']?$info['locked']:0]);
     }
     /**
      * @return string
@@ -101,11 +134,12 @@ class TravelApplyController extends PController
         $request = Yii::$app->request;
         if($request->isPost) {
             $model = new TravelUsers();
-            $company_id = intval($request->post('opt1'));
-            $organ_id = intval($request->post('opt2'));
+            $company_name = $request->post('opt1');
+            $organ_name = $request->post('opt2');
             $code = trim($request->post('opt3'));
             $name = trim($request->post('opt4'));
-            $data['organ_id'] = $organ_id;
+            $res = (new TravelCompany()) ->select('id',['name'=>$organ_name])->one();
+            $data['organ_id'] = $res['id'];
             $data['code'] = $code;
             $data['name'] = $name;
             $res = $model ->select('*',$data)->one();
