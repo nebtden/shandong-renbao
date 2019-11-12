@@ -10,7 +10,12 @@
 
 <div class="bm-number con-box ">
     <div class="con6box conimportant ">
-        <h1>已提交出游人信息</h1>
+        <?php if($is_empty){ ?>
+            <h1>您的登录信息已失效，请联系管理员查看</h1>
+        <?php }else{ ?>
+            <h1>已提交出游人信息</h1>
+        <?php  } ?>
+
         <?php foreach ($list as $data ){  ?>
             <div class="con7  " style="height: 6.1rem">
                 <li class="inputName">

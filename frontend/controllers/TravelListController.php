@@ -23,8 +23,19 @@ class TravelListController extends PController
      * 首页
      * */
     public function actionIndex(){
+        $request = \Yii::$app->request;
+        $id = $request->get('id');
         return $this->render('index',[
+            'id'=>$id
+        ]);
+    }
 
+
+    public function actionClient(){
+        $request = \Yii::$app->request;
+        $id = $request->get('id');
+        return $this->render('index',[
+            'id'=>$id
         ]);
     }
 

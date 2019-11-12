@@ -8,6 +8,9 @@ use Yii;
 use frontend\util\PController;
 use common\models\TravelUsers;
 use common\models\TravelCompany;
+use common\models\TravelList;
+use common\models\TravelListDate;
+use common\models\TravelData;
 use yii\helpers\Url;
 
 class TravelApplyController extends PController
@@ -23,10 +26,11 @@ class TravelApplyController extends PController
      * */
     public function actionIndex(){
         //显示一级机构
+        $id = Yii::$app->request->get('id');
         $model = new TravelCompany();
         $organ  = $model->select('*',['pid'=>0])->all();
         $mechanism = $model->select('*',['pid'=>1])->all();
-        return $this->render('index',['organ'=>$organ,'mechanism'=>$mechanism]);
+        return $this->render('index',['organ'=>$organ,'mechanism'=>$mechanism,'id'=>$id]);
     }
     public function actionMechanism(){
         $request = Yii::$app->request;
@@ -39,15 +43,55 @@ class TravelApplyController extends PController
             return $this->json(1,'操作成功',$res);
         }
     }
+    /**
+     * @return string
+     * 请传递id
+     */
+    public function actionChangedate(){
+        $request = Yii::$app->request;
+        $list_id = intval($request->get('id'));
+        Yii::$app->session['travel_list_id'] = $list_id;
+        $dateModel = new TravelListDate();
+        $info = $dateModel ->select('*',['travel_list_id'=>$list_id])->all();
 
+        if($request->isPost) {
+            $list_id = intval($request->post('list_id'));
+            $date_id = intval($request->post('date_id'));
+            $res = $dateModel ->select('*',['travel_list_id'=>$list_id,'id'=>$date_id])->one();
+            if(empty($res)) return $this->json(0,'信息填写错误');
+            $url= Url::to(['travel-apply/add','date_id'=>$date_id,'list_id'=>$list_id]);
+            return $this->json(1,'操作成功',[],$url);
+        }
+        return $this->render('changedate',['info'=>$info,'list_id'=>$list_id]);
+    }
     /**
      * @return string
      * 请传递id
      */
     public function actionAdd(){
-        return $this->render('add',[
+        $request = Yii::$app->request;
+        $list_id = intval($request->get('list_id'));
+        $date_id = intval($request->get('date_id'));
+        Yii::$app->session['travel_date_id'] = $date_id;
+        $dateModel = new TravelListDate();
+        $numModel = new TravelData();
+        $info = $dateModel ->select('*',['id'=>$list_id])->one();
+        $num = $numModel ->select('*',['travel_date_id'=>$date_id])->count();
+        $sum = $info['number'] - $info['locked']-$num;
+        if($request->isPost) {
+            $date_id = intval($request->post('date_id'));
+            $num = intval($request->post('num'));
+            $sum = intval($request->post('sum'));
+            
+            if($num  > $sum) return $this->json(0,'人数过多');
+            $num = $info['locked'] + $num;
+            $res = (new TravelListDate())->myUpdate(['locked'=>$num],['id'=>$date_id]);
+            if(empty($res)) return $this->json(0,'信息填写错误');
+            $url= Url::to(['travel-information/index','date_id'=>$date_id,'list_id'=>Yii::$app->session['travel_list_id']]);
+            return $this->json(1,'操作成功',[],$url);
+        }
 
-        ]);
+        return $this->render('add',[ 'sum'=>$sum,'date_id'=>$date_id, 'locked'=>$info['locked']?$info['locked']:0]);
     }
     /**
      * @return string
@@ -64,11 +108,13 @@ class TravelApplyController extends PController
             $data['organ_id'] = $organ_id;
             $data['code'] = $code;
             $data['name'] = $name;
-            $res  = $model->select('*',$data)->one();
+            $res = $model ->select('*',$data)->one();
             if(empty($res)) return $this->json(0,'信息填写错误',$data);
-            $url= Url::to(['travel-apply/add']);
+            $model->myUpdate(['utime'=>time()],$data);
+            Yii::$app->session['travel_user_id'] = $res['id'];
+            $url= Url::to(['travel-apply/changedate','id'=>intval($request->post('opt5'))]);
             return $this->json(1,'操作成功',$data,$url);
         }
     }
-    
+
 }

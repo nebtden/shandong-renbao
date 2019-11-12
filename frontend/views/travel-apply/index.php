@@ -13,7 +13,7 @@ use yii\helpers\Url;
         <div class=" con5">
             <ul class="con5list com5list">
                 <li class="con5box">
-                    <span>工号:</span>
+                    <span>中支:</span>
                     <select class="con5select" id="opt1" onchange="getMechanism()">
                         <option>请选择</option>
                         <?php foreach ($organ as $key=>$val){?>  
@@ -23,8 +23,11 @@ use yii\helpers\Url;
                 </li>
                 <li class="con5box">
                     <span>机构:</span>
-                    <select class="con5select" id="opt2">
+                    <select class="con5select" id="opt2" >
                             <option >请选择</option>
+                            <?php foreach ($mechanism as $key=>$val){?>  
+                                    <option value="<?php echo $val['id']?>" ><?php echo $val['name']?></option>  
+                            <?php } ?>
                     </select>
                 </li>
                 <li class="inputName">
@@ -51,6 +54,7 @@ use yii\helpers\Url;
             var opt2=$('#opt2').val();
             var opt3=$('#opt3').val();
             var opt4=$('#opt4').val();
+            var opt5 = '<?php echo $id;?>';
             if(is_sub){
                 alert('数据提交中，请稍候');
                 return false;
@@ -61,7 +65,9 @@ use yii\helpers\Url;
                 opt1:opt1,
                 opt2:opt2,
                 opt3:opt3,
-                opt4:opt4
+                opt4:opt4,
+                opt5:opt5
+
             },function(json){
 
                 is_sub = false;
@@ -69,11 +75,12 @@ use yii\helpers\Url;
                 if(json.status == 1){
                     window.location.href=json.url;
                 }else{
-                    alert(json.message);
+                    alert(json.msg);
                 }
             });
         })
     });
+
     var is_subm = false;
     function  getMechanism() {
         var opt1=$('#opt1').val();
