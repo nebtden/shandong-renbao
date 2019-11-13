@@ -110,6 +110,7 @@ class TravelApplyController extends PController
     public function actionAdd(){
         $request = Yii::$app->request;
         $dateModel = new TravelListDate();
+        $listModel = new TravelList();
         $numModel = new TravelData();
 
         if($request->isPost) {
@@ -151,10 +152,16 @@ class TravelApplyController extends PController
         Yii::$app->session['travel_date_id'] = $date_id;
 
         $info = $dateModel ->select('*',['id'=>$date_id])->one();
+        $list_info = $listModel ->select('*',['id'=>$list_id])->one();
         $num = $numModel ->select('*',['travel_date_id'=>$date_id])->count();
         $sum = $info['number'] - $info['locked']-$num;
 
-        return $this->render('add',[ 'sum'=>$sum,'date_id'=>$date_id,'list_id'=>$list_id, 'locked'=>$info['locked']?$info['locked']:0]);
+        return $this->render('add',[
+            'sum'=>$sum,'date_id'=>$date_id,
+            'list_id'=>$list_id,
+            'list_info'=>$list_info,
+            'locked'=>$info['locked']?$info['locked']:0]
+        );
     }
     /**
      * @return string

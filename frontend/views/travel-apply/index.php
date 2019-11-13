@@ -42,7 +42,7 @@ use yii\helpers\Url;
                     <span class="con5gonghao">姓名:</span>
                 </li>
             </ul>
-            <a  href="javascript: void(0);" href="bm-number.html" class="con5-btn"> 我要报名 </a>
+            <a  href="javascript: void(0);"  class="con5-btn"> 我要报名 </a>
         </div>
     </div>
 </div>
@@ -117,6 +117,7 @@ use yii\helpers\Url;
             });
         })
     });
-    
+
+
 </script>
 <?php $this->endBlock('script'); ?>

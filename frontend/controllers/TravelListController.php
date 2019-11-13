@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 
+use common\models\TravelList;
 use frontend\util\PController;
 
 
@@ -14,7 +15,7 @@ use frontend\util\PController;
 class TravelListController extends PController
 {
 
-    public $site_title = '云车驾到';
+    public $site_title = '太平洋保险';
 
     public $layout = 'travelpublic';
     /*
@@ -26,10 +27,12 @@ class TravelListController extends PController
         $request = \Yii::$app->request;
         $id = $request->get('id');
 
-
+        $info = TravelList::findOne($id);
+        $this->site_title = $this->site_title.'--'.$info->title.'--'.$info->title2;
 
         return $this->render('index',[
-            'id'=>$id
+            'id'=>$id,
+
         ]);
     }
 

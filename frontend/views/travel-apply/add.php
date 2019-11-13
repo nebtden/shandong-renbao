@@ -10,7 +10,7 @@ use yii\helpers\Url;
 
 <div class="bm-number">
     <div class="con6box">
-        <h1>古滇王国 康养之旅</h1>
+        <h1><?php echo $list_info['title2'] ?></h1>
         <div class="con5 con6">
             <p class="p1">名额仅剩：<b><?php echo $sum?></b></p>
             <p class="p2">锁定中名额：<b><?php echo $locked?></b></p>

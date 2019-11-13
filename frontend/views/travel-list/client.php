@@ -12,6 +12,7 @@ use yii\helpers\Url;
     <link rel="stylesheet" href="/frontend/web/travel/lib/css/animate.css">
     <link rel="stylesheet" href="/frontend/web/travel/css/chengtou-90f4f10114.css">
     <link rel="stylesheet" href="/frontend/web/travel/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/frontend/web/travel/css/public.css">
 <?php $this->endBlock('headStyle')?>
 
 <div class="swiper-container fullpage swiper-container-initialized swiper-container-vertical" id="swiper_index">
