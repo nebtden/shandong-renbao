@@ -2,8 +2,10 @@
 
 namespace frontend\controllers;
 
+use common\models\TravelCompany;
 use common\models\TravelListDate;
 use common\models\TravelData;
+use common\models\TravelUsers;
 use common\models\TravelUsersLocked;
 use frontend\util\PController;
 use Yii;
@@ -91,6 +93,16 @@ class TravelInformationController extends PController
             return $this->json(-1, '添加失败，请联系管理员！');
         }
 
+        //查询机构
+        $travel_user = TravelUsers::findOne($travel_user_id);
+        $travel_user_company_id  = $travel_user->organ_id;
+
+        //查询父机构
+        $company = TravelCompany::findOne($travel_user_company_id);
+        $travel_user_pcompany_id = $company->pid;
+
+
+
         $request = Yii::$app->request;
 
         $data = new TravelData();
@@ -101,6 +113,9 @@ class TravelInformationController extends PController
         $data->ctime = time();
 
         $data->travel_date_id = Yii::$app->session['travel_date_id'];
+        $data->travel_user_id = $travel_user_id;
+        $data->company_id = $travel_user_company_id;
+        $data->company_pid  = $travel_user_pcompany_id;
         $data->travel_user_id = $travel_user_id;
         $data->travel_list_id = Yii::$app->session['travel_list_id'];
         $data->remark = $request->post('remark');
