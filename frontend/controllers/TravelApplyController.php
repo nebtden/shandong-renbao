@@ -29,11 +29,39 @@ class TravelApplyController extends PController
         //显示一级机构
         $id = Yii::$app->request->get('id');
         $model = new TravelCompany();
-        $organ  = $model->select('*',['pid'=>0])->all();
+        $filde = ['id','name','pid'];
+        $organ  = $model->select($filde)->all();
         $mechanism = $model->select('*',['pid'=>1])->all();
-        $organ = array_column($organ,'name');
-        $organ = json_encode($organ);
-        return $this->render('index',['organ'=>$organ,'mechanism'=>$mechanism,'id'=>$id]);
+        $info = [];
+        foreach ($organ as $key=>$val){
+            if($val['pid'] == 0){
+                $info[$val['id']]['id'] =$val['id'];
+                $info[$val['id']]['value'] =$val['name'];
+            }else{
+                $info[$val['pid']]['childs'][$val['id']]['id'] =$val['id'];
+                $info[$val['pid']]['childs'][$val['id']]['value'] =$val['name'];
+            }
+        }
+        $i = 0;
+        $arr = [];
+        foreach ($info as $key=>$val){
+            $arr[$i]['id'] = $val['id'];
+            $arr[$i]['value'] =$val['value'];
+            $temp = $val['childs'];
+            $temp_1 = [];
+            $j = 0;
+            foreach($temp as $k=>$v ){
+                $temp_1[$j]['id'] = $v['id'];
+                $temp_1[$j]['value'] = $v['value'];
+                $j++;
+            }
+            $arr[$i]['childs'] = $temp_1;
+            $i++;
+        }
+
+
+        $arr = json_encode($arr);
+        return $this->render('index',['info'=>$arr,'mechanism'=>$mechanism,'id'=>$id]);
     }
 
     public function actionMechanism(){
@@ -57,7 +85,7 @@ class TravelApplyController extends PController
     public function actionChangedate(){
         $request = Yii::$app->request;
         $list_id = intval($request->get('id'));
-        Yii::$app->session['travel_list_id'] = $list_id;
+//        Yii::$app->session['travel_list_id'] = $list_id;
         $dateModel = new TravelListDate();
         $info = $dateModel ->select('*',['travel_list_id'=>$list_id])->all();
 
@@ -88,6 +116,8 @@ class TravelApplyController extends PController
 
             $travel_date_id = intval($request->post('date_id'));
             $travel_list_id = intval($request->post('list_id'));
+
+            Yii::$app->session['travel_user_id'] = $travel_list_id;
             $number   = intval($request->post('num'));
             $travel_user_id = Yii::$app->session['travel_user_id'];
 

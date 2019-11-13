@@ -45,42 +45,42 @@ class TravelInformationController extends PController
     }
 
     //人数总结
-    public function actionLocked(){
-
-
-        $request = Yii::$app->request;
-
-        $travel_user_id = Yii::$app->session['travel_user_id'];
-        $travel_list_id = Yii::$app->session['travel_list_id'];
-        $travel_date_id = Yii::$app->session['travel_date_id'];
-        $locked = new TravelUsersLocked();
-        $locked->travel_user_id = $travel_user_id;
-        $locked->travel_list_id = $travel_list_id;
-        $locked->travel_date_id = $travel_date_id;
-        $locked->number = $number =  $request->post('number');
-        $locked->ctime = time();
-        $res = $locked->save();
-
-        Yii::$app->session['travel_locked'] = $number;
-
-        //将总数写入执行
-        $date = TravelListDate::find()->where([
-            'id'=>$travel_date_id
-        ])->one();
-        $date->locked =  $date->locked+$number;
-        $date->save();
-
-
-        if($res){
-            //锁定人数-1
-            return $this->json(1, '添加成功！请继续添加',['id'=>$locked->id]);
-
-        }else{
-            //添加失败，可以不考虑
-            return $this->json(-1, '添加失败，请联系管理员！');
-
-        }
-    }
+//    public function actionLocked(){
+//
+//
+//        $request = Yii::$app->request;
+//
+//        $travel_user_id = Yii::$app->session['travel_user_id'];
+//        $travel_list_id = Yii::$app->session['travel_list_id'];
+//        $travel_date_id = Yii::$app->session['travel_date_id'];
+//        $locked = new TravelUsersLocked();
+//        $locked->travel_user_id = $travel_user_id;
+//        $locked->travel_list_id = $travel_list_id;
+//        $locked->travel_date_id = $travel_date_id;
+//        $locked->number = $number =  $request->post('number');
+//        $locked->ctime = time();
+//        $res = $locked->save();
+//
+//        Yii::$app->session['travel_locked'] = $number;
+//
+//        //将总数写入执行
+//        $date = TravelListDate::find()->where([
+//            'id'=>$travel_date_id
+//        ])->one();
+//        $date->locked =  $date->locked+$number;
+//        $date->save();
+//
+//
+//        if($res){
+//            //锁定人数-1
+//            return $this->json(1, '添加成功！请继续添加',['id'=>$locked->id]);
+//
+//        }else{
+//            //添加失败，可以不考虑
+//            return $this->json(-1, '添加失败，请联系管理员！');
+//
+//        }
+//    }
 
 
     //写入数据库
@@ -98,6 +98,7 @@ class TravelInformationController extends PController
         $data->code = $request->post('code');
         $data->name = $request->post('name');
         $data->mobile = $request->post('mobile');
+        $data->ctime = time();
 
         $data->travel_date_id = Yii::$app->session['travel_date_id'];
         $data->travel_user_id = $travel_user_id;
@@ -124,6 +125,8 @@ class TravelInformationController extends PController
                 $date->save();
             }
 
+            //
+
 
             $locked = Yii::$app->session['travel_locked'] = Yii::$app->session['travel_locked']-1;
             if($locked==0){
@@ -143,8 +146,12 @@ class TravelInformationController extends PController
     }
 
     public function actionSubmit(){
-        return $this->render('submit',[
+        $request = Yii::$app->request;
+        $id = $request->get('id');
 
+
+        return $this->render('submit',[
+            'id'=>$id
         ]);
     }
 
@@ -162,10 +169,20 @@ class TravelInformationController extends PController
         }
 
         $id = $request->get('id');
-        $list = TravelData::find()->where([
-            'travel_user_id'=>$user_id,
-            'travel_list_id'=>$id
-        ])->asArray()->all();
+        if(!$id){
+
+            $travel_date_id = Yii::$app->session['travel_date_id'];
+            $list = TravelData::find()->where([
+                'travel_user_id'=>$user_id,
+                'travel_date_id'=>$travel_date_id
+            ])->asArray()->all();
+        }else{
+            $list = TravelData::find()->where([
+                'travel_user_id'=>$user_id,
+                'travel_list_id'=>$id
+            ])->asArray()->all();
+        }
+
 
         return $this->render('success',[
             'list'=>$list,

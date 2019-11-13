@@ -30,7 +30,7 @@ use yii\helpers\Url;
                 <li class="con5box">
                     <span>机构:</span>
                        <div class="demo con5select">
-                        <div id="trigger2" data-align="">请选择机构▽</div>
+                        <div id="trigger2" data-align=""></div>
                     </div>
                 </li>
                 <li class="inputName">
@@ -53,43 +53,23 @@ use yii\helpers\Url;
 <?php $this->beginBlock('script'); ?>
 <script>
 
-     var weekdayArr1 = <?php echo $organ?>;
-     var weekdayArr2 = new Array();
-    var mobileSelect1 = new MobileSelect({
+     var weekdayArr1 = '<?php echo $info?>';
+     var Arr1 = eval('(' + weekdayArr1 + ')');
+            console.log(Arr1);
+     var mobileSelect = new MobileSelect({
         trigger: '#trigger1',
         title: '选择中支',
         wheels: [{
-            data: weekdayArr1
+            data: Arr1
         }],
-        position: [1], //初始化定位 打开时默认选中的哪个  如果不填默认为0
+        position: [0], //初始化定位 打开时默认选中的哪个  如果不填默认为0
         callback:function(indexArr, data){
             console.log(data); //Returns the selected json data
-            console.log(data[0]); //Returns the selected json data
-            console.log(indexArr); //Returns the selected json data
-           $('#opt1').val(data[0]);
-            var name=data[0];
-            $('#trigger2').html('请选择机构▽');
-            $('#opt2').val('');
-            var url = "<?php echo Url::to(['travel-apply/mechanism']);?>";
-            $.post(url,{
-                name:name
-            },function(json){
-                console.log(json.data);
-                if(json.status == 1){;
-                    weekdayArr2 = json.data;
-                    var mobileSelect2 = new MobileSelect({
-                        trigger: '#trigger2',
-                        title: '选择机构',
-                        wheels: [{
-                            data: weekdayArr2
-                        }],
-                        position: [1], //初始化定位 打开时默认选中的哪个  如果不填默认为
-                        callback:function(indexArr, data){
-                            $('#opt2').val(data[0]);
-                        }
-                    });
-                }
-            });
+            console.log(data[0]['value']); //Returns the selected json data
+            $('#opt1').val(data[0]['value']);
+            $('#opt2').val(data[1]['value']);
+            $('#trigger1').html(data[0]['value']);
+            $('#trigger2').html(data[1]['value']);
         }
     });
 
@@ -137,7 +117,6 @@ use yii\helpers\Url;
             });
         })
     });
-
-
+    
 </script>
 <?php $this->endBlock('script'); ?>

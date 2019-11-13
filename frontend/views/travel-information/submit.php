@@ -12,7 +12,7 @@
         <div class="submit">
             <!-- 成功 -->
             <img src="/frontend/web/travel/img/chengtou/submit-succes.png" alt="">
-            <a href="succespeople.html" class="go-apply">查看提交记录</a>
+            <a href="success.html?id=" class="go-apply">查看刚刚提交记录</a>
 
             <!-- 失败 -->
             <!-- <img src="./img/chengtou/submit-error.png" alt="">
