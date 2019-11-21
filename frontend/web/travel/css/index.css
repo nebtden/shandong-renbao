@@ -163,8 +163,8 @@ input {
 }
 
 /* 第四个页面 */
- .con-4 {
-  background: url(../img/chengtou/indexbutton1.png)no-repeat;
+.con-4 {
+  /* background: url(../img/chengtou/indexbutton1.png)no-repeat; */
 }
 
 .con-4 span {
@@ -182,19 +182,19 @@ input {
 
 .con-4 .con4btn {
   position: absolute;
-  bottom: 0.15rem;
-  left: 13%;
+  bottom: 0.1rem;
+  left: 12%;
   display: block;
-  width: 2.3rem;
-  height: 1rem;
+  width: 1.7rem;
+  height: 0.7rem;
 }
 
 .con-4 .con4btn1 {
   position: absolute;
-  bottom: 0.1rem;
-  right: 22%;
+  bottom: 0.05rem;
+  right: 19%;
   display: block;
-  width: 1.1rem;
+  width: 0.8rem;
 }
 
 /* 业务员报名 */
@@ -225,7 +225,7 @@ input {
   display: block;
   border: none;
   font-size: 0.26rem;
-  line-height: 1rem;
+  line-height: 0.56rem;
   color: #000;
   margin: 0.2rem auto 0;
   border-radius: 0.1rem;
@@ -312,7 +312,7 @@ input {
   display: block;
   border: none;
   font-size: 0.26rem;
-  line-height: 1rem;
+  line-height: 0.56rem;
   color: #000;
   margin: 0.2rem auto 0;
   border-radius: 0.1rem;
@@ -346,6 +346,7 @@ input {
   height: 1rem;
   margin: 0.4rem auto 0;
   display: block;
+  padding:0;
 }
 
 .con7delete {
@@ -376,7 +377,7 @@ input {
   background: url('../img/chengtou/con7footer.png')no-repeat;
   background-size: 100%;
   width: 6.4rem;
-  height: 1.38rem;
+  height: 1.4rem;
   position: absolute;
   bottom: -0.1rem;
   line-height: 1.38rem;
@@ -402,6 +403,7 @@ input {
   display: block;
   margin: 0.2rem auto 0;
 }
+
 .submit {
   position: relative;
 
@@ -442,7 +444,7 @@ input {
 }
 
 .con7input1 {
-  padding-left: 1.6rem;
+  padding-left: 1.5rem;
 }
 
 .con7input2 {
@@ -530,4 +532,3 @@ input {
   height: 0.64rem;
   margin: 1rem auto 0;
 }
-

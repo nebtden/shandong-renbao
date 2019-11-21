@@ -118,7 +118,7 @@ class TravelApplyController extends PController
             $travel_date_id = intval($request->post('date_id'));
             $travel_list_id = intval($request->post('list_id'));
 
-            Yii::$app->session['travel_user_id'] = $travel_list_id;
+            Yii::$app->session['travel_list_id'] = $travel_list_id;
             $number   = intval($request->post('num'));
             $travel_user_id = Yii::$app->session['travel_user_id'];
 

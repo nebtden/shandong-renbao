@@ -9,7 +9,6 @@
 ?>
 <script src="/frontend/web/travel/lib/js/jquery-2.4.1.js"></script>
 <script src="/frontend/web/travel/js/index.js"></script>
-<link rel="stylesheet" type="text/css" href="/frontend/web/travel/css/indexnew.css">
 <link rel="stylesheet" type="text/css" href="/frontend/web/travel/css/public.css">
 <div class="bm-number con-box">
     <div class="con6box">
@@ -46,7 +45,7 @@
     </div>
     <div class="con7footer">
         <p>
-            请在<b>59:59:60</b>内填写完并提交本页面信息否则名额
+            请在<b>一个小时</b>内填写完并提交本页面信息否则名额
             将会释放，在填写完成并提交之前关闭了此页面，
             也不会为您锁定名额，如有需要需重新抢订名额
         </p>

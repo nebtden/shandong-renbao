@@ -140,7 +140,13 @@ class TravelInformationController extends PController
                 $date->save();
             }
 
-            //
+            //把锁定的表中数据，减少一个
+            $locked = TravelUsersLocked::find()->where([
+                'travel_user_id'=>$travel_user_id,
+                'travel_date_id'=>Yii::$app->session['travel_date_id'],
+            ])->orderBy('id desc')->one();
+            $locked->number = $locked->number-1;
+            $locked->save();
 
 
             $locked = Yii::$app->session['travel_locked'] = Yii::$app->session['travel_locked']-1;

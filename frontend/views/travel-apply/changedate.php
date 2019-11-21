@@ -28,9 +28,15 @@ use yii\helpers\Url;
         <div class="submitbtn">
             <a href="javascript: void(0);" onclick="subdate()">下一步</a>
         </div>
-        <img src="./img/chengtou/logo.png" alt="" class="con7-logo">
+        <img src="/frontend/web/travel/img/chengtou/logo.png" alt="" class="con7-logo">
     </div>
 </div>
+<style>
+    .xuanze li {
+        clear:left;
+        margin-top: 0.3rem
+    }
+</style>
 <script>
     var is_subm = false;
     function  subdate() {

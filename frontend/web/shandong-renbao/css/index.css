@@ -1,0 +1,191 @@
+        /*reset*/
+        ::-webkit-input-placeholder {color: #999; }
+        input[type="text"],input[type="password"],select {-webkit-appearance: none;appearance: none;outline: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);border-radius: 0;font-family:
+        '\5FAE\8F6F\96C5\9ED1';box-sizing: border-box;}
+        html,body,div,p,ul,li,dl,dt,dd,em,i,span,a,img,input,h1,h2,h3,h4,h5 {margin: 0;padding: 0; line-height: 1;}
+        img {border: 0;display: block; }
+        a,button,input {-webkit-tap-highlight-color: rgba(255, 0, 0, 0);}
+        ol,ul {list-style: none;}
+        table { border-collapse: collapse;border-spacing: 0;}
+        html {-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;font-size: 100px;background: #ffece5;}
+        body,html {-webkit-tap-highlight-color: transparent;-webkit-user-select: none;width: 100%;font-size:0.18rem;color: #fff;}
+        .c:after { content: '\20'; display: block; height: 0; line-height: 0; visibility: hidden;clear: both;}
+        .hide {height:0.1rem;font-size: 0;line-height: 0;visibility: hidden;overflow: hidden;}
+        a{text-decoration: none;display: block;}
+        a:focus { outline: none}
+        .fl {float: left;}
+        .fr {float: right;}
+        .pr { position: relative;}
+        .pa {position: absolute;}
+        .t { text-indent: -9999rem; display: block;}
+        #afooter {color: #d1cfcf;font-size: 0.18rem;background: #000;line-height: 0.25rem;text-align: center;padding:0.12rem 0;width: 100%;}
+        /* 内容部分 */
+        header{
+          width: 4.95rem;
+          height: 3.65rem;
+          margin: 0.1rem auto 0;
+        }
+        header img{
+          width: 100%;
+          height: 100%;
+          -webkit-animation: zoomIn 1.5s;animation: zoomIn 1.5s
+        }
+        .main{
+          width: 6.6rem;
+          height: 7.24rem;
+          margin: 0.25rem auto 0;
+          line-height: 0.5rem;
+          position: relative;
+          }
+        .main .txt1{
+          font-size: 0.32rem;
+          color: #2c1428;
+        }
+        .main .p1{
+          -webkit-animation:righteaseinAnimate 1s;animation:righteaseinAnimate 1s
+        }
+        .main .p1, .main .p2{
+          font-size: 0.26rem;
+          color: #000;
+          font-weight: bold;
+
+        }
+        .main .p2{
+          color: #f02838;
+
+        }
+        .main-pic{
+          margin-top:0.45rem;
+          width: 4.45rem;          
+        }
+        .main-pic1{
+          margin-top: 0.43rem;
+          width: 4.4rem;
+         }
+         .main-input{
+           margin-top: 0.23rem;
+           height: 0.66rem;
+         
+         }
+         .main-input input{
+           width: 0.58rem;
+           height: 0.66rem;
+           font-size: 0.32rem;
+          color: #999;
+          border: none;
+          border:1px solid #999;
+          text-align: center;
+          }
+          .main-input i{
+            color: #2c1428;
+            font-size:1rem;
+            line-height: 0;
+          }
+          .active-btn{
+            width: 2.5rem;
+            height: 0.7rem;
+            background-color: #666;
+            text-align:center;
+            line-height: 0.7rem;
+            color: #fff;
+            font-size: 0.28rem;
+            font-weight: bolder;
+            border-radius: 0.2rem;
+            position: absolute;
+            top: 4.2rem;
+            left: 0.06rem;
+            -webkit-animation: pulse 1s infinite;animation: pulse 1s infinite
+          }
+          .active-btn1{
+            width: 2.5rem;
+            height: 0.7rem;
+            background-color: #1997f2;
+            text-align:center;
+            line-height: 0.7rem;
+            color: #fff;
+            font-size: 0.28rem;
+            font-weight: bolder;
+            border-radius: 0.2rem;
+            margin-top: 0.24rem;
+            padding-left: 0.06rem;
+            -webkit-animation: pulse 1s infinite;animation: pulse 1s infinite
+          }
+
+
+          .main-tu{
+            width: 4.5rem;
+            height: 6.6rem;
+            position: absolute;
+            top: 0.65rem;
+            right: -0.45rem;
+            z-index: -1;
+            -webkit-animation: zoomIn 1.5s;animation: zoomIn 1.5s
+          }
+          footer{
+            color: #333333;
+            font-size: 0.24rem;
+           text-align: center;
+           margin-top: 0.36rem;
+           font-weight: bolder;
+          }
+          .tishi,.tishi1{ 
+            color: #f02838;
+            font-size: 0.2rem;
+            margin-top: 0.1rem;
+          }
+
+          /* 动画 */
+          /* 文字从右飞入 */
+
+@keyframes righteaseinAnimate{
+0%{ transform: translateX(2000px); 
+  opacity:0;} /*在0%时设置文字在想X轴2000px位移处（右边），透明度为0，也就是看不见文字*/
+100%{ transform:translateX(0px);opacity:1;} /*在100%时设置文字在想X轴0px位移处，也就是原始布局的位置，透明度为1，也就是文字可以看见了*/
+}
+@-webkit-keyframes righteaseinAnimate{
+0%{ -webkit-transform: translateX(2000px); opacity: 0;}
+100%{ -webkit-transform: translateX(0px); opacity: 1;}
+}
+@-o-keyframes righteaseinAnimate{
+0%{ -webkit-transform: translateX(2000px); opacity: 0;}
+100%{ -webkit-transform: translateX(0px); opacity: 1;}
+}
+@-ms-keyframes righteaseinAnimate{
+0%{ -webkit-transform: translateX(2000px); opacity: 0;}
+100%{ -webkit-transform: translateX(0px); opacity: 1;}
+}
+@-moz-keyframes righteaseinAnimate{
+0%{ -webkit-transform: translateX(2000px); opacity: 0;}
+100%{ -webkit-transform: translateX(0px); opacity: 1;}
+}
+.company_introduce{
+animation: righteaseinAnimate 1s ease 1; /*调用已定义好的动画righteaseinAnimate，全程运行时间1S，进入的速度曲线为ease，只播放一次*/
+-webkit-animation: righteaseinAnimate 1s ease 1;
+-moz-animation: righteaseinAnimate 1s ease 1;
+-ms-animation: righteaseinAnimate 1s ease 1;
+-o-animation: righteaseinAnimate 1s ease 1;
+
+/*规定动画的最后状态为结束状态*/
+animation-fill-mode:forwards;
+-webkit-animation-fill-mode: forwards;
+-o-animation-fill-mode: forwards;
+-ms-animation-fill-mode: forwards;
+-moz-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes zoomIn {
+  0% {-webkit-transform: scale3d(.3, .3, .3);opacity: 0;filter: alpha(opacity=0);transform: scale3d(.3, .3, .3)}
+  50% {opacity: 1;filter: alpha(opacity=100)}}
+  @keyframes zoomIn {
+  0% {-webkit-transform: scale3d(.3, .3, .3);opacity: 0;filter: alpha(opacity=0);transform: scale3d(.3, .3, .3)}
+  50% {opacity: 1;filter: alpha(opacity=100)}}
+
+  @-webkit-keyframes pulse {
+    0% {-webkit-transform: scaleX(1.2);transform: scaleX(1.2)}
+    50% {-webkit-transform: scale3d(1.05, 1.05, 1.05);transform: scale3d(1.05, 1.05, 1.05)}
+    to {-webkit-transform: scaleX(1);transform: scaleX(1)}}
+    @keyframes pulse {
+    0% {-webkit-transform: scaleX(1);transform: scaleX(1)}
+    50% {-webkit-transform: scale3d(1.05, 1.05, 1.05);transform: scale3d(1.05, 1.05, 1.05)}
+    to {-webkit-transform: scaleX(1);transform: scaleX(1)}}
+
