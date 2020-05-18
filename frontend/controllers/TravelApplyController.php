@@ -87,7 +87,7 @@ class TravelApplyController extends PController
         $list_id = intval($request->get('id'));
 //        Yii::$app->session['travel_list_id'] = $list_id;
         $dateModel = new TravelListDate();
-        $info = $dateModel ->select('*',['travel_list_id'=>$list_id])->all();
+        $info = $dateModel ->select('*',['travel_list_id'=>$list_id,'status'=>1])->all();
 
         if($request->isPost) {
             $list_id = intval($request->post('list_id'));
@@ -125,7 +125,7 @@ class TravelApplyController extends PController
             $pdate_id = intval($request->post('date_id'));
             $plist_id = intval($request->post('list_id'));
             $pinfo = $dateModel ->select('*',['id'=>$pdate_id])->one();
-            $pnum = $numModel ->select('*',['travel_date_id'=>$pdate_id])->count();
+            $pnum = $numModel ->select('*',['travel_date_id'=>$pdate_id,'status'=>1])->count();
             $sum = $pinfo['number'] - $pinfo['locked']- $pnum;
             if($number < 2) return $this->json(0,'报名人数至少2人');
             if($number  > $sum) return $this->json(0,'人数过多');
@@ -172,17 +172,19 @@ class TravelApplyController extends PController
         if($request->isPost) {
             $model = new TravelUsers();
             $company_name = $request->post('opt1');
-            $organ_name = $request->post('opt2');
+            $organ_id = (int)$request->post('opt2');
             $code = trim($request->post('opt3'));
             $name = trim($request->post('opt4'));
-            $res = (new TravelCompany()) ->select('id',['name'=>$organ_name])->one();
-            $data['organ_id'] = $res['id'];
+            $re = (new TravelCompany()) ->select('id',['id'=>$organ_id])->one();
+            if(empty($re)) return $this->json(0,'机构已下架不可选择');
+            $data['organ_id'] = $organ_id;
             $data['code'] = $code;
             $data['name'] = $name;
             $res = $model ->select('*',$data)->one();
             if(empty($res)) return $this->json(0,'信息填写错误',$data);
             $model->myUpdate(['utime'=>time()],$data);
             Yii::$app->session['travel_user_id'] = $res['id'];
+
             $url= Url::to(['travel-apply/changedate','id'=>intval($request->post('opt5'))]);
             return $this->json(1,'操作成功',$data,$url);
         }

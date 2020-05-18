@@ -52,6 +52,9 @@ class ShandongRenbaoArmyController extends PController {
 
 
         $total = $this->getTotal();
+        return $this->render('index',[
+            'total'=>$total
+        ]);
         if(time()<1568736000 || true){
 //            return 2;
             return $this->render('index_new',[

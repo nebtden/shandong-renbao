@@ -20,7 +20,7 @@ class WashShopShandongTaibao extends Base_model
             [['name','shop_id','prov','city','district','shengda_district',
                 'shop_lng','shop_lat','distance','avator','images',
                 'tel','address','service_starttime','service_endtime','score',
-                'date','c_time','u_time','company','is_get'
+                'date','c_time','u_time','company_id','is_get'
                 ], 'safe'],
         ];
     }

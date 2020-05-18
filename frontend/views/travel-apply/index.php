@@ -62,14 +62,16 @@ use yii\helpers\Url;
         wheels: [{
             data: Arr1
         }],
-        position: [0], //初始化定位 打开时默认选中的哪个  如果不填默认为0
+        position: [0,0], //初始化定位 打开时默认选中的哪个  如果不填默认为0
         callback:function(indexArr, data){
-            console.log(data); //Returns the selected json data
-            console.log(data[0]['value']); //Returns the selected json data
-            $('#opt1').val(data[0]['value']);
-            $('#opt2').val(data[1]['value']);
+//            console.log(data); //Returns the selected json data
+//            console.log(data[0]['id']); //Returns the selected json data
+//            console.log(data[1]['id']); //Returns the selected json data
+            $('#opt1').val(data[0]['id']);
             $('#trigger1').html(data[0]['value']);
+            $('#opt2').val(data[1]['id']);
             $('#trigger2').html(data[1]['value']);
+
         }
     });
 

@@ -20,7 +20,7 @@ use yii\helpers\Url;
             <li>
                 <form action="">
                     <?php foreach ($info as $val){?>
-                        <label><input type="radio" id="" name="radio" value="<?php echo $val['id'] ?>" /><?php echo $val['date'] ?></label> <br />
+                        <label><input type="radio" id="" name="radio" value="<?php echo $val['id'] ?>" /><?php echo $val['date'] ?> -- <?php echo $val['end'] ?></label> <br />
                     <?php }?>
                 </form>
             </li>
@@ -52,11 +52,11 @@ use yii\helpers\Url;
             date_id:date_id,
             list_id:list_id
         },function(json){
-            console.log(111);
+
             is_subm = false;
 
             if(json.status == 1){
-               console.log(111);
+
                 window.location.href=json.url;
             }else{
                 alert(json.msg)

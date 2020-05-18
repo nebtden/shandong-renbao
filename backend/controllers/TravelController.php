@@ -44,7 +44,7 @@ class TravelController extends BController {
         $start_time = $request->get('start_time',null);
         $end_time = $request->get('end_time',null);
 
-        $where=' id<>0 ';
+        $where=' status = 1 ';
         if(!empty($name)){
             $where.=' AND  name ="'.$name.'"';
         }
@@ -196,14 +196,14 @@ class TravelController extends BController {
         $usercode = array_column($users,'code','id');
         $companylist =  $companyModel->getCompanyAll();
 
-        $field = ['id','name','code','mobile','sex','travel_list_id','travel_user_id','yincode','travel_date','ctime','company_pid','company_id'];
-        $str   = ['序号','游客姓名',['身份证号','string'],['游客手机','string'],'性别','路线','营销员姓名','营销员代码','出发日期','添加时间','中支','机构'];
+        $field = ['id','name','code','mobile','sex','travel_list_id','travel_user_id','yincode','travel_date','ctime','company_pid','company_id','remark'];
+        $str   = ['序号','游客姓名',['身份证号','string'],['游客手机','string'],'性别','路线','营销员姓名','营销员代码','出发日期','添加时间','中支','机构','备注'];
         $data  = null;
         $tmp   = null;
         foreach ($list as $e){
             $tmp['id'] = $e['id'];
             $tmp['name'] = $e['name'];
-            $tmp['code'] = $e['code'];
+            $tmp['code'] = $e['code'].'--';
             $tmp['mobile'] = $e['mobile'];
             $tmp['sex'] = $e['sex'] ;
             $tmp['travel_list_id'] = $luxianlist[$e['travel_list_id']];
@@ -213,6 +213,7 @@ class TravelController extends BController {
             $tmp['ctime']=! empty($e['ctime']) ? date("Y-m-d H:i:s",$e['ctime']) : '--';
             $tmp['company_pid']=$companylist[$e['company_pid']];
             $tmp['company_id']=$companylist[$e['company_id']];
+            $tmp['remark']=$e['remark'];
             $data[] = $tmp;
         }
 
@@ -278,6 +279,7 @@ class TravelController extends BController {
     public function actionDateList() {
         $luxianModel= new TravelList();
         $luxianlist =  $luxianModel->getLuxianAll();
+        $status = TravelListDate::$status;
         if (Yii::$app->request->isAjax) {
             $model = new TravelListDate();
             $where=$this->setDatelWhere();
@@ -287,7 +289,8 @@ class TravelController extends BController {
             foreach ($listrows as $k => $val) {
                 $listrows[$k]['ctime']=$this->handleTime($val['ctime']);
                 $listrows[$k]['luxian'] = $luxianlist[$val['travel_list_id']];
-                $listrows[$k]['prenum'] = (new TravelData())->getUserNum(['travel_date_id'=>$val['id']]);
+                $listrows[$k]['status'] = $status[$val['status']];
+                $listrows[$k]['prenum'] = (new TravelData())->getUserNum(['travel_date_id'=>$val['id'],'status'=>1]);
             }
             $res['rows']=$listrows;
             return json_encode($res);
@@ -302,12 +305,15 @@ class TravelController extends BController {
         $info = [];
         $luxianid=intval($request->get('id'));
         $luxianModel = new TravelListDate();
+        $status = TravelListDate::$status;
         if($luxianid)$info=$luxianModel->select('*',['id'=>$luxianid])->one();
         if ($request->isPost) {
             $data = $request->post();
             $datadb['travel_list_id'] = $data['luxian'];
             $datadb['date'] = $data['date'];
+            $datadb['end'] = $data['end'];
             $datadb['number'] = $data['number'];
+            $datadb['status'] = $data['status'];
             $datadb['ctime'] = time();
             if($data['id']){
                 $luxianModel->myUpdate($datadb,['id'=>(int)$data['id']]);
@@ -316,7 +322,11 @@ class TravelController extends BController {
             }
             $this->redirect('date-list.html');
         }
-        return   $this->render('edit-date',['luxianlist'=>$luxianlist,'info'=>$info]);
+        return   $this->render('edit-date',[
+            'luxianlist'=>$luxianlist,
+            'info'=>$info,
+            'status'=>$status
+        ]);
     }
     public function actionEnrollEdit() {
         $request = Yii::$app->request;
@@ -407,7 +417,7 @@ class TravelController extends BController {
         return $where;
     }
     /**
-     * 报名列表查询列表
+     * 白名单列表查询列表
      * @return  $res  json
      */
     public function actionSalesmanList() {
@@ -437,6 +447,203 @@ class TravelController extends BController {
         }
         $orgain =  $companyModel->getCompanyAll(['pid'=>0]);
         return      $this->render ( 'salesman-list',['luxianlist'=>$luxianlist,'orgain'=>$orgain] );
+    }
+
+    public function actionSalesmanEdit() {
+        $request = Yii::$app->request;
+        $info = [];
+        $id=intval($request->get('id'));
+        $userModel = new TravelUsers();
+        $companyModel = new TravelCompany();
+        $companylist =  $companyModel->getCompanyAll(['pid'=>0]);
+        $jigoulist =  $companyModel->getCompanyAll(['pid'=>'429']);
+
+        if($id){
+            $info=$userModel->select('*',['id'=>$id])->one();
+            $jigouinfo =  $companyModel->getCompanyOne(['id'=>$info['organ_id']]);
+            $jigoulist =  $companyModel->getCompanyAll(['pid'=>$jigouinfo['pid']]);
+            $info['company_pid'] = $jigouinfo['pid'];
+        }
+        if ($request->isPost) {
+            $data = $request->post();
+            $datadb['name'] = $data['name'];
+            $datadb['code'] = $data['code'];
+            $datadb['organ_id'] = $data['company_id'];
+
+            if($data['id']){
+                $datadb['utime'] = time();
+                $userModel->myUpdate($datadb,['id'=>(int)$data['id']]);
+            }else{
+
+                $res = $userModel->getUserOne(['code'=>$datadb['code']]);
+                if($res)exit('此人信息已存在不可重复添加');
+                $datadb['ctime'] = time();
+                $userModel->myInsert($datadb);
+            }
+            $this->redirect('salesman-list.html');
+        }
+
+        return   $this->render('salesman-edit',[
+            'info'=>$info,
+            'companylist'=>$companylist,
+            'jigoulist'=>$jigoulist?$jigoulist:[]
+        ]);
+    }
+    //批量导入客户信息
+    public function actionLeadin() {
+        return $this->render('leadin');
+    }
+    public function actionExcutexls() {
+        if(Yii::$app->request->isPost){
+            $rootPath = Yii::$app->params['rootPath'];
+            $path = Yii::$app->request->post('path');
+            $path = $rootPath.$path;
+            if(!$path || !file_exists($path)) return $this->json(0,'文件不存在');
+            $batch_no = W::createNonceCapitalStr(8);
+            $data = CExcel::getExcel()->importExcel($path);
+            unset($data[0]);
+
+            $luxianall = (new TravelListDate()) ->getDateAll([],false);
+            $luxian = array_column($luxianall,'travel_list_id','id');
+            $dates = array_column($luxianall,'date','id');
+
+            $userall =  (new TravelUsers())->getUserAll();
+            $company_ids = array_column($userall,'organ_id','code');
+            $userids = array_column($userall,'id','code');
+
+            $companyall =  (new TravelCompany())->getCompanyAll([],false);
+            $company_pids =  array_column($companyall,'pid','id');
+
+            $c_time = time();
+            $data_2=[];
+
+            foreach ($data as $key=>$val){
+                $usercode = $val[5];
+                $luxianid = $luxian[$val[1]];
+                $date = $dates[$val[1]];
+                $company_id = $company_ids[$usercode];
+                $company_pid = $company_pids[$company_ids[$usercode]];
+                $val[5] = $userids[$usercode];
+
+                array_push($val,$luxianid,$date,$company_id,$company_pid,$c_time,$batch_no);
+                if(!empty($val[0]) && !empty($val[1]) && !empty($val[2]) && !empty($val[3]) && !empty($usercode)){
+                    $data_2[]=$val;
+                }
+            }
+
+//            unlink($path);
+//            return $this->json(0,'全为重复数据',$data_2);
+            $arrlength=count($data_2);
+            if(! empty($data) && empty($data_2)){
+                unlink($path);
+                return $this->json(0,'全为重复数据');
+            }
+
+            if($arrlength == 0 && empty($data_2)){
+                unlink($path);
+                return $this->json(0,'数据不存在');
+            }
+            //分割数组并插入缓存
+            $result=$this->segmentationArr($data_2);
+            if(!$result)return $this->json(0,'数据写入缓存失败');
+            unset($data,$data_2);
+            return $this->json(1,'成功',$result);
+        }
+        return '非法访问';
+    }
+
+
+    public function actionBatchenrll(){
+        set_time_limit(0);
+        if(Yii::$app->request->isAjax){
+            ini_set('memory_limit','1024M');
+            $data = Yii::$app->request->post();
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($data['num'] >= $data['xxzmaxnum']){
+                $msg['status'] = 0;
+                $msg['error'] = '非法调用';
+            }else{
+                $fileds = ['name','travel_date_id','code','mobile','sex','travel_user_id',
+                    'travel_list_id','travel_date','company_id','company_pid','ctime','batch_no'];
+                $tablename='{{%travel_data}}';
+                $msg=$this->insertDb($data,$fileds,$tablename);
+            }
+            return $msg;
+        }
+        return '非法访问';
+    }
+    //批量操作数组分割并存入缓存
+    protected function segmentationArr($data)
+    {
+        $chennum=$this->maxInsertNum;
+        $arrlength=count($data);
+        $xxz_i=ceil($arrlength/$chennum);
+
+        $xxz_key=time().W::createNonceCapitalStr(6);
+        $result=['xxzkey'=>$xxz_key,'xxzmaxnum'=>$xxz_i];
+        for($i=0;$i<$xxz_i;$i++){
+            $res=Yii::$app->cache->set($xxz_key.$i, array_slice($data,($i*$chennum),$chennum), $this->cacheTime);
+            if(!$res){
+                $result=false;
+                break;
+            }
+        }
+        return $result;
+    }
+    //批量操作插入数据库
+    protected function insertDb($data,$fileds,$tablename){
+
+        $msg['status'] = 2;
+        $msg['error'] = 'ok';
+        $msg['data'] = [];
+        $res = Yii::$app->cache->get($data['key'].$data['num']);
+        if(!$res){
+            $msg['status'] = 0;
+            $msg['error'] = '获取缓存失败';
+            return $msg;
+        }
+        $db = Yii::$app->db;
+        $transaction = $db->beginTransaction();
+        try{
+            $db->createCommand()->batchInsert($tablename,$fileds,$res)->execute();
+            if($data['num'] == ($data['xxzmaxnum']-1)){
+                $msg['status'] = 1;
+                $msg['error'] = 'yes';
+            }else{
+                $msg['data'] = ['xxzkey'=>$data['key'],'xxzmaxnum'=>$data['xxzmaxnum']];
+            }
+            Yii::$app->cache->delete($data['key'].$data['num']);
+        }catch (\Exception $e){
+            $transaction->rollBack();
+            $msg['status'] = 0;
+            $msg['error'] = $e->getMessage();
+        }
+        $transaction->commit();
+        return $msg;
+    }
+
+//删除
+    public function actionDelenroll() {
+        $ids = implode(',', Yii::$app->request->get('params'));
+        $list = new TravelData();
+        $arr = array('status' => 0);
+        $where = 'id in(' . $ids . ')';
+        $list->upData($arr, $where);
+        exit;
+    }
+    //删除
+    public function actionDeluser() {
+        $ids = implode(',', Yii::$app->request->get('params'));
+        $list = new TravelUsers();
+        $where = 'id in(' . $ids . ')';
+        $list->myDel($where);
+        exit;
+    }
+
+    //下载洗车券导入模板
+    function actionDexcelenroll() {
+        $rootpath = Yii::$app->params['rootPath'];
+        return Yii::$app->response->sendFile($rootpath.'./static/tpl/enroll.xls');
     }
 }
 
