@@ -279,20 +279,13 @@ class ShandongTaibaoController extends Controller
             $shopStatus = 3;
 //            $map['is_get']=-1;
             $res = $this->delete($map,$shopStatus);
-/*            if($res){
-                if($res['ReturnCode']==1){
-                    //数据库，是否推送
-                    Yii::$app->db->createCommand()
-                        ->update(WashShopShandongTaibao::tableName(),
-                            [ 'is_post'=>1 ], //columns and values
-                            $map) //condition, similar to where()
-                        ->execute();
-
-                }else{
-                    // continue;
-                    //die('111');
-                }
-            }*/
+            if($res){
+                Yii::$app->db->createCommand()
+                    ->update(WashShopShandongTaibao::tableName(),
+                        [ 'is_post'=>1 ], //columns and values
+                        $map) //condition, similar to where()
+                    ->execute();
+            }
 
             //  1 新增  2 更新 3删除
             $shopStatus = 1;
