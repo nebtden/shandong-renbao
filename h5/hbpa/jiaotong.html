@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>洗车服务</title>
+    <link rel="stylesheet" href="./css/ydui.css" />
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/all.css">
+    <!-- 引入YDUI自适应解决方案类库 -->
+    <script src="./js/ydui.flexible.js"></script> 
+</head>
+<body >
+    <div class="coupon-wrapper">
+        <div class="notice">
+            <span class="title">使用须知:</span>
+            <ul class="notice-ul">
+                <li>激活后可在优惠券中心查看券码，本服务不可退换。</li>
+                <li>请在<i class="same-color">60天内激活</i>，否则会自动失效并不予退款。</li>
+                <li>激活完成后请在<i class="same-color">当月30日前</i>使用完毕，否则自动失效。</li>
+                <li>任何问题请拨打客服热线<a class="same-color" href="tel:400-617-1981">400-617-1981</a>。 </li>
+            </ul>
+        </div>
+    </div>
+    <div class="user-input-wrapper">
+        <div class="user-input-info">
+            <ul class="input-info-ul">
+                <li>
+                    <input type="tel" name="mobile" placeholder="输入手机号">
+                </li>
+                <li>
+                    <input type="number" name="code" placeholder="输入验证码" ><button class="send-code" type="button" id="J_GetCode">发送验证码</button>
+                </li>
+
+            </ul>
+            <div class="commom-btn commom-submit"><button  type="button" class="btn-block btn-primary login">登录</button></div>
+        </div>
+    </div>
+    
+<script src="./js/jquery-2.1.4.js"></script>
+<script src="./js/ydui.js"></script>
+<script>
+    // js防止安卓手机软键盘弹出挤压页面导致变形
+
+    var testMobile = function(m){
+        var reg = /^1[0-9]{10}$/;
+        return reg.test(m);
+    };
+
+    $(document).on('touchstart','#J_GetCode' ,function () {
+        var mobile = $("input[name=mobile]").val();
+        if(!testMobile(mobile)){
+            YDUI.dialog.toast('请输入正确的手机号码','none',1500);
+            return false;
+        }
+        /* ajax 成功发送验证码后调用【start】 */
+        YDUI.dialog.loading.open('发送中');
+        $.post("/frontend/web/webcarlogin/smscode.html",{mobile:mobile},function(json){
+            YDUI.dialog.loading.close();
+            if(json.status == 1){
+                $getCode.sendCode('start');
+                YDUI.dialog.toast('验证码已发送', 'none', 1500);
+            }else{
+                YDUI.dialog.alert(json.msg);
+            }
+        },'json');
+    });
+
+    /* 定义参数 */
+    var $getCode = $('#J_GetCode');
+    $getCode.sendCode({
+        disClass: 'btn-disabled ',
+        secs: 59,
+        run: false,
+        runStr: '重新发送{%s}',
+        resetStr: '重新获取'
+    });
+
+    var isSubmit = false;
+    $(document).on('click','.commom-submit> .login',function(){
+        if(isSubmit) return false;
+        var mobile = $("input[name=mobile]").val();
+        var code = $("input[name=code]").val();
+
+        if(!testMobile(mobile)){
+            YDUI.dialog.toast('请输入正确的手机号码','none',1500);
+            return false;
+        }
+        isSubmit = true;
+        YDUI.dialog.loading.open('正在提交');
+        let url = '/frontend/web/webcaruser/accoupon.html?curtimestamp=1591770357';
+        $.post("/frontend/web/webcarlogin/login.html",{mobile:mobile,code:code,url:url},function(json){
+            isSubmit = false;
+            YDUI.dialog.loading.close();
+            if(json.status == 1){
+                YDUI.dialog.toast(json.msg, 'none', 1000,function(){
+                    window.location.href = url;
+                });
+
+            }else{
+                YDUI.dialog.alert(json.msg);
+            }
+        },'json');
+    });
+
+</script>   
+</body>
+</html>

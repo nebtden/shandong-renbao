@@ -14,14 +14,12 @@ use common\components\EDaiJia;
 use common\components\Eddriving;
 use common\components\Oilcard;
 use common\components\Openssl;
-use common\components\PiccInterface;
 use common\components\ShengDaCarWash;
 use common\models\Car_bank_code;
 use common\models\Car_wash_order_taibao;
 use common\models\CarCompany;
 use common\models\CarCouponPackage;
 use common\models\CarOilor;
-use common\models\CarRenbaoOrder;
 use common\models\CarSubstituteDriving;
 use common\models\Company;
 use common\models\Wash_shop;
@@ -505,21 +503,12 @@ class NoticeController extends PController
                     'consumer_code'=>$postParam['order'],
                     'apply_phone'=>$postParam['userInfo']
                 ])->one();
-
-                //臭氧杀菌
                 $disObj = new CarDisinfectionOrder();
                 $disOrder = $disObj->table()->select()->where([
                     'consumer_code'=>$postParam['order'],
                     'mobile'=>$postParam['userInfo']
                 ])->one();
-
-                //picc保险
-                $modelRenbao = new CarRenbaoOrder();
-                $renbaoOrder = $modelRenbao->table()->select()->where([
-                    'order_no'=>$postParam['order'],
-                    'mobile'=>$postParam['userInfo']
-                ])->one();
-                if(!$tbOrder && !$disOrder && !$renbaoOrder){
+                if(!$tbOrder && !$disOrder){
                     throw new \Exception('订单不存在');
                 }
                 if($tbOrder){
@@ -537,9 +526,7 @@ class NoticeController extends PController
                     if(!$res){
                         throw new \Exception('订单状态写入失败');
                     }
-                }
-
-                if($disOrder){
+                }else{
                     $disOrder['status'] = ORDER_SUCCESS;
                     $disOrder['s_time'] = time();
                     $disres = $disObj->myUpdate($disOrder);
@@ -547,32 +534,6 @@ class NoticeController extends PController
                         throw new \Exception('臭氧杀菌订单状态写入失败');
                     }
                 }
-
-                if($renbaoOrder){
-                    $renbaoOrder['status'] = ORDER_SUCCESS;
-                    $renbaoOrder['u_time'] = time();
-                    $disres = $modelRenbao->myUpdate($renbaoOrder);
-                    if(!$disres){
-                        throw new \Exception('PICC订单状态写入失败');
-                    }
-
-                    //回调给PICC
-                    $data = [];
-                    $data['orderNo'] = $renbaoOrder['order'];
-                    $data['cuponNo'] = $renbaoOrder['cupon_no'];
-                    $data['userName'] = $renbaoOrder['third_uname'];
-                    $data['outerOrderId'] = $renbaoOrder['order_id'];
-                    $data['status'] = 1;
-                    $data['connectPhone'] = $renbaoOrder['mobile'];
-                    $piccObj = new PiccInterface();
-                    $res = $piccObj->syncOrderInfo($data);
-                    if($res['code'] != '1000000' &&  $res['code'] != '2004024') {
-                        throw new \Exception('推送系统错误');
-                    }
-
-                }
-
-
 
             } else {
                 if($order[$status] == ORDER_SUCCESS){

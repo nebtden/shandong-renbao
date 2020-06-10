@@ -205,7 +205,7 @@ class ShandongTaibaoController extends Controller
 
         print_r('$conditions');
         print_r($conditions);
-        WashShopShandongTaibao::updateAll(['is_get'=>-1,'is_del'=>1],$conditions);
+        WashShopShandongTaibao::updateAll(['is_get'=>-1,'is_del'=>1,'is_post'=>0],$conditions);
 
 
         // $trans->commit();
@@ -223,14 +223,15 @@ class ShandongTaibaoController extends Controller
     public function actionUpdate(){
         $map = [
             'prov' =>'山东省',
-            'city' =>'烟台市',
-            'is_post'=>0
+//            'city' =>'烟台市',
+            'id'=>328
         ];
 
         //首先所有数据删除一次 //  1 新增  2 更新 3删除
         $shopStatus = 3;
         //$map['is_get']=-1;
         $res = $this->delete($map,$shopStatus);
+        print($res);
 
     }
 
@@ -272,24 +273,25 @@ class ShandongTaibaoController extends Controller
             $map = [
                 'prov' =>'山东省',
                 'city' =>$city['name'],
-                'is_post'=>0
+                'is_post'=>0,
             ];
 
             //首先所有数据删除一次 //  1 新增  2 更新 3删除
             $shopStatus = 3;
-//            $map['is_get']=-1;
+//           $map['is_get']=-1;
             $res = $this->delete($map,$shopStatus);
             if($res){
-                Yii::$app->db->createCommand()
-                    ->update(WashShopShandongTaibao::tableName(),
-                        [ 'is_post'=>1 ], //columns and values
-                        $map) //condition, similar to where()
-                    ->execute();
+//                Yii::$app->db->createCommand()
+//                    ->update(WashShopShandongTaibao::tableName(),
+//                        [ 'is_post'=>1 ], //columns and values
+//                        $map) //condition, similar to where()
+//                    ->execute();
             }
 
             //  1 新增  2 更新 3删除
             $shopStatus = 1;
             $map['is_get']=1;  //表示删除了，重新上传
+            $map['yunche_delete']=1;  //表示删除了，重新上传
             $res = $this->send($map,$shopStatus);
 
 

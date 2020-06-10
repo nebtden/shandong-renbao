@@ -22,14 +22,14 @@ class RepairController  extends Controller {
     public function actionEcar(){
         //
         $map = [
-            'remark' => '0526update',
+            'remark' => '0601remark',
             'coupon_type' => 1,
             'amount' => 20,
-            'status' => 1,
-            'uid' => 54622,
+            'status' => 4,
+            'uid' => 54110,
         ];
         $package = new CarCoupon();
-        $sql = $package->table()->where($map)->limit((int)15)->getLastSql();
+        $sql = $package->table()->where($map)->limit((int)36)->getLastSql();
         $db = Yii::$app->db;
         $list = $db->createCommand($sql)->queryAll();
         $now = time();
@@ -43,6 +43,9 @@ class RepairController  extends Controller {
                 $r = $EddrApi->coupon_bind($val['coupon_sn'], $val['mobile']);
                 if ($r === false) {
                     $abnormal[] = $val['id'];
+                    echo '--';
+                    echo "\n";
+
                     continue;
                 }
                 $val['active_time'] = $now;
@@ -68,14 +71,9 @@ class RepairController  extends Controller {
                         $val['use_limit_time'] = strtotime($r['endDate']);
                     }
                 }
-
-                $val['companyid'] = 33;
+                $val['companyid'] = 45;
                 $r = $package->myUpdate($val);
-
             }
-
-
         }
-
     }
 }
