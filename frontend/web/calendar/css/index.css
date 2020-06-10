@@ -1,0 +1,151 @@
+.big-bg {
+    width: 100%;
+    height: 4.2rem;
+    background: url("../images/index_bg.jpg") no-repeat center;
+    background-size: contain;
+}
+
+.banner-box {
+    margin-bottom: -1px;
+}
+.banner-box img {
+    width: 100%;
+    display: block;
+}
+
+.content {
+    box-sizing: border-box;
+    padding: 0 .2rem .5rem;
+}
+/* 太平洋 */
+.content-bg-tpy {
+    background: #FFAB33;
+}
+/* 人寿保险 */
+.content-bg-rbsx {
+    background: #ff5628;
+}
+/* 新华保险 */
+.content-bg-xhbx {
+    background: -webkit-linear-gradient(#1457ca, #1558c9); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#1457ca, #1558c9); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#1457ca, #1558c9); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#1457ca, #1558c9); /* 标准的语法 */
+}
+/* 中国平安 */
+.content-bg-zgpa {
+    background: -webkit-linear-gradient(#ff570e, #ff550b); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#ff570e, #ff550b); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#ff570e, #ff550b); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#ff570e, #ff550b); /* 标准的语法 */
+}
+/* 中国人寿 */
+.content-bg-zgrs {
+    background: -webkit-linear-gradient(#13b261, #13b261); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#13b261, #13b261); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#13b261, #13b261); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#13b261, #13b261); /* 标准的语法 */
+}
+/* 中国太平 */
+.content-bg-zgtp {
+    background: -webkit-linear-gradient(#195fe5, #12b261); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#195fe5, #12b261); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#195fe5, #12b261); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#195fe5, #12b261); /* 标准的语法 */
+}
+/* 通用 */
+.content-bg-com {
+    background: #de1e00;
+}
+.content-bg-com2 {
+    background: #f9321b;
+}
+.content-bg-com4 {
+    background: #f90000;
+}
+
+.menu,
+.menu-title {
+    width: 100%;
+    height: .9rem;
+    text-align: center;
+    line-height: .9rem;
+    display: flex;
+    color: #fe5a1a;
+    font-weight: bold;
+}
+.menu-title {
+    margin-bottom: -1px;
+    border-radius: 16px 16px 0 0;
+    background: #fff url("../images/menu_bg.png") no-repeat center;
+    background-size: cover;
+}
+.menu li {
+    position: relative;
+    background: #fff4e4;
+}
+.menu li:first-child {
+    border-radius: 10px 0 0 0;
+}
+.menu li:last-child {
+    border-radius: 0 10px 0 0;
+}
+.menu li:first-child,
+.menu li:last-child {
+    width: 2.4rem;
+}
+.menu li:nth-child(2) {
+    width: 2.3rem;
+}
+.menu li:nth-child(2)::after {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    content: '';
+    width: 2PX;
+    height: .28rem;
+    background: #ffe0b2;
+}
+.menu li:nth-child(2)::before {
+    left: 0;
+}
+.menu li:nth-child(2)::after {
+    right: 0;
+}
+.menu li span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.menu li span.on {
+    display: none;
+}
+.menu li.active span.on {
+    display: block;
+}
+.menu li span.name-xz {
+    height: 1rem;
+    top: inherit;
+    bottom: 0;
+    background: url("../images/index_tab1_on.png") no-repeat center;
+    background-size: contain;
+}
+.video-list {
+    background: #fff;
+    padding: .34rem .35rem 0;
+    min-height: 4rem;
+    border-radius: 20px;
+}
+.video-list .video-box {
+    height: 3.6rem;
+}
+.video-list li {
+    padding-bottom: .4rem;
+}
+.video-list .desc {
+    color: #333333;
+    font-weight: bold;
+    padding-top: .18rem;
+}

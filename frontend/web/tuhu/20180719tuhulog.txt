@@ -1,0 +1,1 @@
+{"serviceCode":"FW1073160972","shopId":"15822","shopName":"阜新晶途美容店","verifyTime":"20180719144852","region":"辽宁省阜新市细河区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"6fb72db695dff0732f848250c7d000b08496eeab1c7e2bb529fca81333d9c30c"}

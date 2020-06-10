@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>滚动选择</title>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    #container {
+      width: 200px;
+      height: 400px;
+    }
+    .weui-picker-modal .picker-items {
+      -webkit-mask-box-image:none;
+      height: 100%;
+    }
+    .weui-picker-modal.picker-modal-inline {
+      height: 100%;
+    }
+    .weui-picker-modal .picker-items-col.picker-items-col-center {
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <input type="hidden" id='picker'/>
+  </div>
+<!--  <input type="text" id='picker'/>-->
+</body>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+<script>
+  /*$.picker({
+    input: '#input',
+    container: '#container'
+  })*/
+  $("#picker").picker({
+    container: '#container',
+    title: "请选择您的手机",
+    cols: [
+      {
+        textAlign: 'center',
+        values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3']
+      },
+      // {
+      //   textAlign: 'center',
+      //   values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3']
+      // },
+    ]
+  });
+</script>
+</html>

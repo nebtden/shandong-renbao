@@ -1,0 +1,95 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td { margin:0; padding:0; }
+body { background:#fff; color:#555; font-size:14px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+td,th,caption { font-size:14px; }
+h1, h2, h3, h4, h5, h6 { font-weight:normal; font-size:100%; }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal;}
+a { color:#555; text-decoration:none; }
+a:hover { text-decoration:underline; }
+img { border:none; }
+ol,ul,li { list-style:none; }
+input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
+table { border-collapse:collapse; }
+html {overflow-y: scroll;}
+
+.clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
+.clearfix { *zoom:1; }
+
+html,body {
+    height: 100%;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+}
+
+.com-header {
+    background: #fff;
+    height: .9rem;
+    line-height: .3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+.com-header span {
+    font-weight: bold;
+}
+.com-show {
+    display: block !important;
+}
+.com-hide {
+    display: none !important;
+}
+
+.com-pop-confirm-box {
+    display: flex;
+    justify-content: space-around;
+}
+.com-pop-confirm-box span {
+    width: 2.7rem;
+    height: .9rem;
+    line-height: .9rem;
+    border-radius: 14px;
+    text-align: center;
+    box-sizing: border-box;
+}
+.com-pop-confirm-box span:first-child {
+    border: 2px solid #dddddd;
+    color: #999999;
+}
+.com-pop-confirm-box span:last-child {
+    background: #fe5a1a;
+    color: #fff;
+}
+
+.pre-view-img {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.video-box {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+}
+.video-play-mark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.video-play-mark .video-play-btn {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    background: url("../images/video_play_btn.png") no-repeat center;
+    background-size: cover;
+    z-index: 1;
+}

@@ -1,0 +1,1 @@
+{"serviceCode":"FW0282896309","shopId":"22390","shopName":"常州市长江中路店","verifyTime":"20180906105526","region":"江苏省常州市钟楼区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"标准洗车券（前海云车在线）","price":"2700","signature":"64806d14b2d1597bfa911e081533bfb8b7b9d2d722f65f425d7f5908f89fad40"}

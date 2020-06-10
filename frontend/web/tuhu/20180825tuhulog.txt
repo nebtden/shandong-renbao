@@ -1,0 +1,1 @@
+{"serviceCode":"FW2090979167","shopId":"25605","shopName":"惠州仲恺惠丰二路店","verifyTime":"20180825180749","region":"广东省惠州市惠城区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"23af3d780f62d47f945bcc17336a657e290c5b95a4288383d1b9008e1b14eafe"}

@@ -1,0 +1,1 @@
+{"serviceCode":"FW1288011866","shopId":"29869","shopName":"泉港中心工业区店","verifyTime":"20180712090006","region":"福建省泉州市泉港区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"956649b306f3fbf4d86a8c7681d1d86e8c3d964c894a96268c98ec74c877f03b"}

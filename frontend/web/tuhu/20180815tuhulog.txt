@@ -1,0 +1,1 @@
+{"serviceCode":"FW1599088148","shopId":"14495","shopName":"萍乡市学院路店","verifyTime":"20180815134501","region":"江西省萍乡市安源区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"e543bb0a99f540f498473377fe493010059ade1df488c9aef3c9450f5e980355"}

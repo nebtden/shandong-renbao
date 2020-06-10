@@ -1,0 +1,1 @@
+{"serviceCode":"FW1247440484","shopId":"23231","shopName":"途虎养车工场店（长沙麓景路店）","verifyTime":"20180628092142","region":"湖南省长沙市岳麓区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"aed02c8e108b60307382c0b06646cd1635ad2b0e2ece9dde27ce6dee4b419756"}

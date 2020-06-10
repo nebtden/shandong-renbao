@@ -1,0 +1,17 @@
+bizType
+type
+startLat
+startLng
+startPoiName
+startPoiAddress
+endLat
+endLng
+endPoiName
+endPoiAddress
+channel
+subChannel
+publishLat
+publishLng
+startTime
+endTime
+driverNum

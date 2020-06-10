@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>睡眠质量评估</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/animate.css">
+  <link rel="stylesheet" href="./css/jquery-weui.min.css">
+  <link rel="stylesheet/less" type="text/css" href="css/qa.less" />
+  <script src="./lib/less.min.js" type="text/javascript"></script>
+  <script src="./lib/jquery.min.js"></script>
+  <script src="./lib/jquery-weui.min.js"></script>
+</head>
+<body>
+  <div id="app" ref="app">
+    <!--  问题列表  -->
+    <ul class="m-list">
+      <!--<li>
+        <div class="q-box">
+          <div class="avatar"></div>
+          <div class="content-box">
+            &lt;!&ndash;<div class="spinner">
+              <div class="dot1"></div>
+              <div class="dot2"></div>
+              <div class="dot3"></div>
+            </div>&ndash;&gt;
+            <span class="content">欢迎您参加</span>
+          </div>
+        </div>
+        <div class="select-box">
+          <ul class="s-list-one">
+            <li class="active">20岁以下</li>
+          </ul>
+        </div>
+        <div class="select-box select-box-more">
+          <span class="title-more">可多选</span>
+          <ul class="s-list-more">
+            <li class="active">
+              <div class="checkbox-like"></div>
+              <div class="checkbox-text">方案一：万一得了重病，可以免费治疗，不着急上班挣钱，收入不会受到损失</div>
+            </li>
+          </ul>
+          <span class="btn-confirm">继续</span>
+        </div>
+        <div class="select-box select-box-slide">
+          <div class="range-limit" id="container">
+            <input type="hidden" id="picker">
+          </div>
+          <span class="btn-confirm">继续</span>
+        </div>
+        <div class="select-box select-box-more-slide">
+          <ul class="s-list">
+            <li class="active">
+              <div class="control-box">
+                <span>身高(厘米)</span>
+                <span class="btn-control">
+                  请选择
+                </span>
+              </div>
+              <div class="detail-box">
+                <div class="limit">
+                  <input type="hidden">
+                </div>
+              </div>
+            </li>
+          </ul>
+          <span class="btn-confirm">继续</span>
+        </div>
+        <div class="select-box select-box-more-one">
+          <ul class="s-list">
+            <li class="active">
+              <div class="control-box">
+                <span>你吸烟公约多久</span>
+                <span class="btn-control">
+                  请选择
+                </span>
+              </div>
+              <div class="detail-box">
+                <ul class="s-list-more">
+                  <li class="active">
+                    <div class="checkbox-like"></div>
+                    <div class="checkbox-text">我还没有戒烟</div>
+                  </li>
+                  <li class="active">
+                    <div class="checkbox-like"></div>
+                    <div class="checkbox-text">我还没有戒烟</div>
+                  </li>
+                  <li class="active">
+                    <div class="checkbox-like"></div>
+                    <div class="checkbox-text">我还没有戒烟</div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <span class="btn-confirm">继续</span>
+        </div>
+        <div class="a-box">
+          <div class="content-box">
+            <span class="content">
+              <span>你好</span>
+              <i class="user-edit"></i>
+            </span>
+          </div>
+          <div class="avatar-box">
+            <img src="./img/userImageDefault.png" alt="">
+          </div>
+        </div>
+      </li>-->
+      <li
+        v-for="(v,i) in list"
+        :key="i"
+        v-show="i<=index"
+        :class="{'active-height': i==index}"
+      >
+        <div class="q-box">
+          <div class="avatar"></div>
+          <div class="content-box">
+            <div class="spinner" v-if="v.toggleSpinner">
+              <div class="dot1"></div>
+              <div class="dot2"></div>
+              <div class="dot3"></div>
+            </div>
+            <span class="content animated delay-1s fadeInUp">{{ v.description }}</span>
+          </div>
+        </div>
+        <template v-if="v.type!='desc'">
+          <div class="animated fadeInUp" v-show="v.toggleSelect">
+            <template v-if="v.type === 'multi'">
+              <com-multi
+                :index="index"
+                :list="list"
+                :v="v"
+                :i="i"
+                @set-index="setIndex"
+                @reset-list-toggle="resetListToggle"
+                @to-next="toNext"
+              ></com-multi>
+            </template>
+            <template v-if="v.type==='one'">
+              <com-one
+                  :list="list"
+                  :v="v"
+                  :i="i"
+                  @set-index="setIndex"
+                  @reset-list-toggle="resetListToggle"
+                  @to-next="toNext"
+              ></com-one>
+            </template>
+            <template v-if="v.type === 'slide'">
+              <com-slide
+                  :index="index"
+                  :list="list"
+                  :v="v"
+                  :i="i"
+                  :ref="v.ref"
+                  @set-index="setIndex"
+                  @reset-list-toggle="resetListToggle"
+                  @to-next="toNext"
+              ></com-slide>
+            </template>
+            <template v-if="v.type === 'slideMore'">
+              <com-slide-more
+                  :index="index"
+                  :list="list"
+                  :v="v"
+                  :i="i"
+                  :ref="v.ref"
+                  @set-index="setIndex"
+                  @reset-list-toggle="resetListToggle"
+                  @to-next="toNext"
+              ></com-slide-more>
+            </template>
+            <template v-if="v.type === 'oneMore'">
+              <com-one-more
+                  :index="index"
+                  :list="list"
+                  :v="v"
+                  :i="i"
+                  :ref="v.ref"
+                  @set-index="setIndex"
+                  @reset-list-toggle="resetListToggle"
+                  @to-next="toNext"
+              ></com-one-more>
+            </template>
+          </div>
+          <div class="a-box animated fadeInUp" v-show="v.toggleEdit">
+            <div class="content-box">
+              <span class="content" @click="selectChange(i)">
+                <span>{{ v.select.toString() }}</span>
+                <i class="user-edit"></i>
+              </span>
+            </div>
+            <div class="avatar-box">
+              <img src="./img/userImageDefault.png" alt="">
+            </div>
+          </div>
+        </template>
+      </li>
+    </ul>
+    <!-- 信息提交 -->
+    <div class="form-box" v-if="true || index>=list.length">
+      <div>填写个人信息，获取您的睡眠质量评估结果，更有机会获得上千元的奢侈床品噢</div>
+      <p>
+        <span>您的姓名:</span>
+        <input placeholder="请输入" type="text" v-model="formVal.name">
+      </p>
+      <p>
+        <span>联系方式</span>
+        <input placeholder="请输入" type="number" v-model="formVal.phone">
+      </p>
+      <p>
+        <span>收货地址</span>
+        <input placeholder="请输入" type="text" v-model="formVal.address">
+      </p>
+      <span class="btn-confirm" @click="toNextPage">提交</span>
+    </div>
+    <!--  进度条  -->
+    <div class="progress-wrap">
+      <div class="progress">
+        <div class="percent" :style="progressVal"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="./js/template.js"></script>
+<script src="./js/localData.js"></script>
+<script src="./lib/vue.js"></script>
+<!-- 上生产环境用以下js替换上面的 -->
+<!--<script src="./lib/vue.min.js"></script>-->
+<script>
+  //
+  var vm = new Vue({
+    el: '#app',
+    components: {
+      comOne,
+      comMulti,
+      comSlide,
+      comSlideMore,
+      comOneMore,
+    },
+    data: function() {
+      return {
+        index: -1,
+        list,
+        formVal: {
+          name: '',
+          phone: '',
+          address: ''
+        }
+      }
+    },
+    computed: {
+      progressVal: function () {
+        var index = this.index;
+        var len = this.list.length;
+        var val = (index/len) * 100;
+        return 'width: ' + val + '%;'
+      }
+    },
+    methods: {
+      init: function () {
+        this.index += 1;
+        this.showNext();
+        this.testInit();
+      },
+      showNext: function () {
+        var _this = this;
+        var list = this.list;
+        var index = this.index;
+        if (index < list.length) {
+          setTimeout(function () {
+            list[index].toggleSpinner = false
+          }, 800)
+          setTimeout(function () {
+            list[index].toggleSelect = true
+            var refName = list[index].ref;
+            if (_this.$refs[refName] && _this.$refs[refName][0] && _this.$refs[refName][0]['initShow']) {
+              setTimeout(function () {
+                _this.$refs[refName][0]['initShow']();
+              }, 1000);
+            }
+          }, 1500)
+          // 如果是提示，想要自动进入下一题
+          if (list[index].type === 'desc') {
+            setTimeout(function () {
+              _this.index += 1;
+              _this.showNext();
+            }, 2000)
+          }
+          this.setScrollTop();
+        } else {
+          // 答题结束
+        }
+      },
+      setScrollTop: function() {
+        this.$nextTick(function () {
+          var $app = this.$refs.app;
+          var $li = $app.querySelector('.active-height');
+          var top = $li.offsetTop
+          $app.scrollTop = top - 10;
+        })
+      },
+      selectChange: function(i) {
+        this.list[i].toggleSelect = true;
+        this.list[i].toggleEdit = false;
+      },
+      toNext: function () {
+        const _this = this;
+        setTimeout(function () {
+          _this.index += 1;
+          _this.showNext()
+        }, 800);
+      },
+      setIndex: function({ i }) {
+        this.index = i;
+      },
+      resetListToggle: function({ i }) {
+        resetListToggle(this.list, i)
+      },
+      testInit: function () {
+        // $("#picker").picker({
+        //   container: '#container',
+        //   title: "请选择您的手机",
+        //   cols: [
+        //     {
+        //       textAlign: 'center',
+        //       values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3']
+        //     }
+        //   ]
+        // });
+      },
+      toNextPage: function () {
+        var f = this.formVal;
+        if (f.name==='' || f.phone==='' || f.address === '') {
+          return false;
+        }
+        // 统计数据
+        var totalGrade = {
+          0: 0,
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+          5: 0
+        };
+        var arr = [];
+        var list = this.list;
+        list.forEach(function (v) {
+          if (v.getScore) {
+            if (Array.isArray(v.score)) {
+              arr = arr.concat(v.score);
+            } else {
+              arr.push(v.score)
+            }
+          }
+        });
+        arr.forEach(function (v) {
+          totalGrade[v] += 1;
+        });
+        delete  totalGrade[0];
+        // 特殊统计
+        var specArr = ['睡眠障碍多', '入睡时间长', '睡眠时间短', '睡眠效率低', '白天精力差', '用药频率高'];
+        var grades = [];
+        specArr.forEach(function (spec) {
+          var temp = {
+            0: 0,
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0
+          }
+          list.forEach(function (v) {
+            if (v.spec === spec) {
+              if (Array.isArray(v.score)) {
+                v.score.forEach(function (v2) {
+                  temp[v2] += 1;
+                })
+              } else {
+                temp[v.score] += 1;
+              }
+            }
+          })
+          grades.push(temp);
+        });
+        // session
+        var GRADE_ANALYSIS = "GRADE_ANALYSIS";
+        var TOTALGRADE_ANALYSIS = "TOTALGRADE_ANALYSIS";
+        sessionStorage.setItem(GRADE_ANALYSIS, JSON.stringify(grades));
+        sessionStorage.setItem(TOTALGRADE_ANALYSIS, JSON.stringify(totalGrade));
+        var url = 'https://www.yunche168.com/frontend/web/dialogue-web/submit.html';
+        var params = {
+          name: f.name,
+          mobile: f.phone,
+          address: f.address
+        };
+        $.ajax({
+          url,
+          data: params,
+          type: 'POST',
+          complete: function () {
+            window.location.replace("analysis.html")
+          }
+        });
+      }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.init()
+      })
+    }
+  })
+</script>
+</html>

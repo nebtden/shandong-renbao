@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>睡眠质量评估</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet/less" type="text/css" href="css/qa.less" />
+  <script src="lib/less.min.js" type="text/javascript"></script>
+  <script src="lib/fixScreen.js"></script>
+</head>
+<body>
+  <div id="app" ref="app" style="background-color: #4F88AB;">
+    <div class="main">
+      <div class="header">
+        <div>
+          <img src="img/user_head.png" class="avatar">
+        </div>
+        <div class="pretitle">你的睡眠综合情况</div>
+        <div class="title">{{result}}</div>
+      </div>
+      <div class="cardList">
+        <div v-for="(v,i) in list" :key="i" style="margin: 0.6rem auto;">
+          <div class="card">
+            <div class="title">
+              <span>{{v.titleText}}</span>
+              <img :src="v.titleImg" class="title-image">
+            </div>
+            <div class="card-content content-animate" :style="{height:v.showSwitcher === true && v.switcherState==='down'?'2.75rem':'auto'}">
+              <div class="subtitle" v-show="v.subtitle">{{v.subtitleText}}</div>
+              <div class="items-container">
+                <div v-html="v.contents"></div>
+              </div>
+              <div class="mask" v-show="v.showMask"></div>
+            </div>
+            <div class="switcher" @click="switchText(i)" v-show="v.showSwitcher">
+              <img src="img/icon-close.png" class="switherIcon" :class="{'button-opened':v.switcherState==='up'}"><span>{{v.switcherTxt}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin: 0.6rem auto;">
+          <div class="card">
+            <div class="title" style="padding: .23rem .46rem;">
+              <span>恭喜您获得寐MINE夏季清凉系列产品！（下图任选一款）如何领取请联系你的代理人</span>
+            </div>
+            <div class="card-content content-animate">
+              <div class="items-container items-img">
+                <div>
+                  <img src="img/item_01.jpg">
+                  <img src="img/item_02.jpg">
+                  <img src="img/item_03.jpg">
+                  <img src="img/item_04.jpg">
+                  <img src="img/item_05.jpg">
+                  <img src="img/item_06.jpg">
+                  <img src="img/item_07.jpg">
+                  <img src="img/item_08.jpg">
+                  <img src="img/item_09.jpg">
+                  <img src="img/item_10.jpg">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+<script src="lib/vue.js"></script>
+<script src="lib/echarts.min.js"></script>
+<!-- 上生产环境用以下js替换上面的 -->
+<!--<script src="./lib/vue.min.js"></script>-->
+<script>
+  var grades = [  //六大分类对应的得分情况，从session取值
+      {
+        5:2,
+        4:0,
+        3:2,
+        2:2,
+        1:0
+      },
+      {
+        5:2,
+        4:0,
+        3:0,
+        2:0,
+        1:0
+      },
+      {
+        5:2,
+        4:0,
+        3:0,
+        2:0,
+        1:0
+      },
+      {
+        5:1,
+        4:0,
+        3:0,
+        2:0,
+        1:0
+      },
+      {
+        5:2,
+        4:0,
+        3:0,
+        2:0,
+        1:0
+      },
+      {
+        5:5,
+        4:0,
+        3:0,
+        2:0,
+        1:0
+      }
+  ]
+
+  var totalGrades = {  //问题总得分情况，从session取值
+    5:3,
+    4:8,
+    3:2,
+    2:1,
+    1:0
+  }
+
+  var GRADE_ANALYSIS = "GRADE_ANALYSIS";
+  var TOTALGRADE_ANALYSIS = "TOTALGRADE_ANALYSIS";
+  // sessionStorage.setItem(GRADE_ANALYSIS, JSON.stringify(grades));
+  // sessionStorage.setItem(TOTALGRADE_ANALYSIS, JSON.stringify(totalGrades));
+  sessionStorage.getItem(GRADE_ANALYSIS)
+  sessionStorage.getItem(TOTALGRADE_ANALYSIS)
+  var grade = JSON.parse(sessionStorage.getItem(GRADE_ANALYSIS))
+  var totalGrade = JSON.parse(sessionStorage.getItem(TOTALGRADE_ANALYSIS))
+  var ary = []  //用来存放6个维度的总得分值
+
+  grade.forEach(function(item, index) {　　
+    var num = 0;
+    for(var key in item) {
+      num += key * item[key];  //计算总得分，分数*个数之和
+    }
+    ary.push(num) //生成6个维度的总得分值数组
+  })
+
+  var resultTxt = ''; //用来存放睡眠综合情况
+  var score = 0;
+  for(var key in totalGrade){
+    score += +key * totalGrade[key];
+    // if(+key === 5){
+    //   if(totalGrade[key] >8) {
+    //     resultTxt = "严重"
+    //   }else if(totalGrade[key] >5){
+    //     resultTxt = "较差"
+    //   }else if(totalGrade[key] >3){
+    //     resultTxt = "一般"
+    //   }else{
+    //     resultTxt = "较好"
+    //   }
+    // }
+  }
+  if (score >= 85) {
+    resultTxt = '很差';
+  } else if (score >= 60 && score < 85) {
+    resultTxt = '一般';
+  } else if (score >= 20 && score < 60) {
+    resultTxt = '还行';
+  } else {
+    resultTxt = '较好';
+  }
+
+  var max = ary[0];
+  var maxindex = 0
+  for (var i = 0; i < ary.length; i++) {
+//  max = max < ary[i+1] ? ary[i] : max
+    if(max < ary[i]){
+      maxindex = i //找到数组中最大得分的下标，通过下标找对应的维度名称
+    }
+  }
+
+  var sleepAry = ['睡眠障碍多','入睡时间长','睡眠时间短','睡眠效率低','白天精力差','用药频率高'] //定义维度，当前主要睡眠问题需取维度得分最高的下标对应该数组的值；
+  var sleepTxt = sleepAry[maxindex] //赋值
+
+  var list = [{
+      titleText:'你的睡眠问题倾向',
+      titleImg: './img/title-icon-01.png',
+      subtitle: false,
+      subtitleText: '',
+      contents: '<div id="myChart" style="width: 6rem;height:6rem;"></div>'+
+                '<p>您当前的主要睡眠是：<i id="sleepTxt"></i><br>如果上述问题出现的频率较高，就要考虑失眠症的可能啦~建议阅读以下内容，让我们一同改善吧！</p>',
+      switcherState: 'down',
+      switcherTxt: '查看详情',
+      showMask: false,
+      showSwitcher:false,
+    },
+    {
+      titleText: '睡眠小知识',
+      titleImg: './img/title-icon-02.png',
+      subtitle: true,
+      subtitleText: '睡不着≠失眠，但这些情况要警惕',
+      contents: '<p>'+
+                '每个人，都有过几个睡不着的晚上。但睡不着，和失眠症还有一段距离。<br>'+
+                '我们的身体是有自我调节能力的，大脑能够在欠觉之后的一两天内，通过增加深睡眠的方式进行补偿。而有没有失眠，很重要的一项判断标准就是：有没有影响到你正常的工作和生活。'+
+                '<br>如果你因睡眠不好，影响到了白天工作或生活，且这种现象断断续续持续至少一个月，或者连续一个星期如此，就建议咨询一下专业的精神科医生或者心理治疗师了。'+
+                '</p>',
+      switcherState: 'down',
+      switcherTxt: '查看详情',
+      showMask: true,
+      showSwitcher:true,
+    },
+    {
+      titleText: '如何改善睡眠质量',
+      titleImg: './img/title-icon-03.png',
+      subtitle: false,
+      subtitleText: '',
+      contents: '<p>越来越多的人出现睡眠质量不好的问题，晚上睡得晚，早上起得晚，造成了生活作息不规律。很多的人都没有一个好的睡眠质量，那么如何提高睡眠质量呢?</p>'+
+                  '<p>1、买张舒适的床</p>'+
+                  '<p>首先要想拥有一个好的睡眠质量的话，一定要有一张舒适的床，这很重要的。</p>'+
+                  '<img src="img/sleep_method1.png" class="image">'+
+                  '<p>2、限制白天睡眠时间</p>'+
+                  '<p>在白天的时候，最好不要经常的睡觉，除了一些老人可以适当的午睡之外，不要有大量的时间进行睡眠，不然会影响晚上的睡眠的。</p>'+
+                  '<p>3、睡前4小时停止锻炼</p>'+
+                  '<p>锻炼有益睡眠。但是睡前4小时内最好不要锻炼，否则锻炼会令身体兴奋，难以入睡。</p>'+
+                  '<p>4、睡前冲个热水澡</p>'+
+                  '<p>临睡前60—75分钟洗个热水澡，水温不低于摄氏38度，洗浴时间不少于20分钟。热浴有助于放松肌肉，提高身体核心温度，当您离开浴盆体温会逐渐下降，大脑退黑激素分泌量增加，令人感到疲倦，更容易入睡。</p>'+
+                  '<p>5、降低卧室室温</p>'+
+                  '<p>实验证明当卧室室温在摄氏18—24度时，床上温度为27—30度的时候，睡眠质量最好。</p>'+
+                  '<img src="img/sleep_method2.png" class="image">'+
+                  '<p>6、注意卧室灯光</p>'+
+                  '<p>卧室灯光具有调节生物钟的作用。太亮会导致大脑褪黑激素分泌量减少，过于清醒，难以入睡。睡前最好选择较暗且柔和的阅读灯光。睡眠过程中，最好关闭所有光源</p>',
+      switcherState: 'down',
+      switcherTxt: '查看详情',
+      showMask: true,
+      showSwitcher:true,
+    },
+  ];
+
+  var vm = new Vue({
+    el: '#app',
+    data() {
+      return {
+        index:-1,
+        result:resultTxt, //很好、较差。。。。。
+        list
+      }
+    },
+    methods: {
+      switchText: function(i) {
+        this.index = i;
+        this.list[this.index].switcherState = this.list[this.index].switcherState === "up" ? "down" : "up";
+        this.list[this.index].showMask = this.list[this.index].switcherState === "up" ? false : true;
+        this.list[this.index].switcherTxt = this.list[this.index].switcherState === "up" ? "收起卡片" : "查看详情";
+      },
+    }
+  })
+
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.getElementById('myChart'));
+  // 指定图表的配置项和数据
+  option = {
+    title: {},
+    tooltip: {},
+    legend: {
+        data: ['较好', '较差', '很差'],
+        top:0,
+        left:'center',
+        textStyle:{
+          color:'#f00',
+        }
+    },
+    radar: {
+      // shape: 'circle',
+      splitNumber: 3, // 雷达图圈数设置
+      name: {
+        textStyle: {
+          color: '#333',
+        }
+      },
+      indicator: [
+        {
+          name: '睡眠障碍多',
+          max: 30
+        },
+        {
+          name: '入睡时间长',
+          max: 10
+        },
+        {
+          name: '睡眠时间短',
+          max: 10
+        },
+        {
+          name: '睡眠效率低',
+          max: 10
+        },
+        {
+          name: '白天精力差',
+          max: 10
+        },
+        {
+          name: '用药频率高',
+          max: 5
+        }
+      ],
+      radius: 90,
+      splitArea : {
+        show : true,
+        areaStyle : {
+          color: ["#65EFAF","#F6F098","#EA7C85"]  // 图表背景网格的颜色
+        }
+      }
+    },
+    series: [{
+      name: '',
+      type: 'radar',
+      data: [{
+        value: ary,
+        areaStyle: {
+          normal: {
+            color: 'rgba(0, 255, 255, 0.8)' // 选择区域颜色
+          }
+        }
+      }]
+    }]
+  };
+
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+
+  document.getElementById('sleepTxt').innerText = sleepTxt  //当前的主要睡眠问题
+</script>
+</html>

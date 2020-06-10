@@ -1,0 +1,1 @@
+{"serviceCode":"FW1819067384","shopId":"4207","shopName":"爱车吧泉州福尔特店","verifyTime":"20180625145412","region":"福建省泉州市丰泽区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"d0cc1af80e20483ca0cba48a3e3dc6a0e14660179fc56c662b59d7591beb00b3"}

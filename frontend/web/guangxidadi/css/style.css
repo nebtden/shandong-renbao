@@ -1,0 +1,126 @@
+body{
+    background: #fff;
+}
+.contentContain{
+
+}
+.imgContain img{
+    display: block;
+    width: 100%;
+    position: relative;
+}
+.listContain{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 0.7rem;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.3rem;
+    padding-bottom: .3rem;
+}
+.listContain li{
+    width: 1.2rem;
+    text-align: center;
+}
+.listContain li img{
+    display: block;
+    width: 100%;
+    height: 1.2rem;
+    margin-bottom: 0.1rem;
+}
+.listContain a{
+    color: #000;
+}
+.formContain{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.formContain .title{
+    margin-top: 2.5rem;
+}
+.formContain .title img{
+    width: 100%;
+}
+.formpadding{
+    box-sizing: border-box;
+    padding: 0 0.7rem;
+    padding-top: 0.3rem;
+}
+.formpadding li{
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+}
+.formpadding li .username{
+    width: 35%;
+    border: 1px solid #004462;
+    height: 0.56rem;
+    border-radius: 0.1rem;
+    padding-left: 0.2rem;
+}
+.formpadding li .sex{
+    width: 55%;
+    border: 1px solid #004462;
+    height: 0.56rem;
+    border-radius: 0.1rem;
+    color: #004462;
+    line-height: 0.56rem;
+    padding: 0 0.2rem;
+}
+.formpadding li .sex span{
+    margin-right: 0.1rem;
+}
+.formpadding li .sex label{
+    margin-right: 0.1rem;
+}
+.formpadding li .sex input[type="radio"]{
+    width: 0.25rem;
+    height: 0.25rem;
+    -webkit-appearance: radio;
+    appearance:radio;
+    vertical-align: -0.03rem;
+}
+.formpadding li .tel{
+    width: 100%;
+    border: 1px solid #004462;
+    height: 0.56rem;
+    border-radius: 0.1rem;
+    padding-left: 0.2rem;
+}
+.yanzhengma{
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+    border: 1px solid #004462;
+    border-radius: 0.1rem;
+}
+.codeinput{
+    flex: 1;
+    height: 0.56rem;
+    padding-left: 0.2rem;
+    border: none;
+}
+.btn.btn-warning{
+    margin-top: 0.03rem;
+    margin-right: 0.03rem;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    background: #004462;
+}
+.btnContain {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 0.3rem;
+}
+.btnContain button{
+    background: #004462;
+    width: 50%;
+    height: 0.56rem;
+    line-height: 0.56rem;
+}

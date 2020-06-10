@@ -1,0 +1,1 @@
+{"serviceCode":"FW0600366818","shopId":"26837","shopName":"栖霞区金冀汽车服务","verifyTime":"20180829133235","region":"江苏省南京市栖霞区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"466eb7dcd1d0937952875bc0a703ae5ebb5fd123b5cecf1b026a5617453ee4d9"}

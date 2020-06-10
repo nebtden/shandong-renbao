@@ -1,0 +1,82 @@
+/* 我的订单 */
+body{
+    color:#464b55;
+    font-size:.3rem;
+}
+.my-order{
+    margin-bottom:1.4rem;
+}
+.my-order-ul{
+    padding-top: .2rem;
+}
+.my-order-ul>li{
+    position: relative;
+    display: flex;
+    padding: .24rem;
+    background-color: #fff;
+}
+.my-order-ul>li+li{
+    margin-top: .2rem;
+}
+.my-order-ul>li>.li-left{
+    width:1.6rem;
+    height:1.6rem;
+    margin-right:.2rem;
+}
+.my-order-ul>li>.li-left>img{
+    display: block;
+    max-width:100%;
+    height:auto;
+    margin: 0 auto;
+    border-radius:.15rem;
+}
+.my-order-ul>li>.li-right{
+    flex: 1;
+    position: relative;
+}
+.my-order-ul>li>.li-right>.up{
+    display: flex;
+    align-items: center;
+}
+.my-order-ul>li>.li-right>.up>span{
+    flex:1;
+    font-size:.3rem;
+}
+.washCar{
+    color: #6791f4;
+}
+.placeDrive{
+    color: #04c7a2;
+}
+.load-jiuyuan{
+    color: #fb8220;
+}
+.my-order-ul>li>.li-right>.up>time{
+    color: #878994;
+    font-size:.24rem;
+}
+.my-order-ul>li>.li-right>h3{
+    font-weight:normal;
+    font-size: .28rem;
+    margin-top:.05rem;
+}
+.my-order-ul>li>.li-right>.down{
+    position: absolute;
+    bottom:0;
+    left:0;
+    z-index:1;
+    width:100%;
+    display: flex;
+    align-items: center;
+    font-size: .28rem;
+}
+.my-order-ul>li>.li-right>.down>i{
+    flex:1;
+    color: #878994;
+}
+.my-order-ul>li>.li-right>.down>span{
+    color: #ff0000;
+}  
+.youka-service{
+    color: #eeb314;
+}

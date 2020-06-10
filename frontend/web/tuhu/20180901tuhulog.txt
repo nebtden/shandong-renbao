@@ -1,0 +1,1 @@
+{"serviceCode":"FW1221440055","shopId":"29869","shopName":"泉港中心工业区店","verifyTime":"20180901152148","region":"福建省泉州市泉港区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"标准洗车券（前海云车在线）","price":"2700","signature":"94a179895b650337d5c7911128f1e3638f989206ec5c4f6a69ce93888341114e"}

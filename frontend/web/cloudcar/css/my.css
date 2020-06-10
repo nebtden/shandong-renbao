@@ -1,0 +1,840 @@
+/* 个人中心我的*/
+body{
+    color:#464b55;
+    font-size:.3rem;
+}
+.my-top{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    height:6rem;
+    background: url(./../images/mybg.png) center center/cover 
+    no-repeat #fff;
+}
+.name-wrapper{
+    color: #fff;
+    margin-top: .3rem;
+}
+.personalImage-wrapper>img{
+    border-radius:1rem;
+    width:1.52rem;
+    height:1.52rem;
+}
+.name-wrapper{
+    color: #fff;
+    margin-top: .3rem;
+}
+.jifen-wrapper{
+    margin-top:.3rem;
+}
+.jifen-wrapper>span{
+    display:inline-flex;
+    padding: .15rem .4rem;
+    color:#14a0ff;
+    background:#fff;
+    border-radius:1rem; 
+}
+.cardVolume{
+    background-color: #fff;
+}
+.cardVolume-ul{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cardVolume-ul>li{
+    flex: 1;
+    padding: .3rem;
+    text-align: center;
+}
+.cardVolume-ul>li>img{
+    display: inline-flex;
+    width:.72rem;
+    height:.5rem;
+}
+.cardVolume-ul>li>span{
+    display: flex;
+    justify-content: center;
+    margin-top:.1rem;
+}
+
+.hotLine{
+    font-size:.3rem;
+    color: #14a0ff;
+}
+.customerHotLine-wrapper{
+    margin-bottom: 1.3rem;
+}
+.same-cell-ul>li{
+    display: block;
+    background: #fff;
+    padding-left: .24rem;
+}
+.same-cell-ul>li+li{
+    margin-top:.2rem;
+}
+.same-cell-ul>li>a{
+    display: flex;
+    align-items: center;
+    padding:  .24rem .24rem .24rem 0;
+    border-bottom:1px solid #eee;
+}
+.same-cell-ul>li>a:nth-last-of-type(1){
+    border-bottom:none;
+}
+.same-cell-ul>li>a>.div-left{
+    flex:1;
+    display: flex;
+    align-items: center;
+    text-align: left; 
+}
+.same-cell-ul>li>a>.div-right{
+    display: flex;
+    align-items: center;
+    font-size: .28rem;
+    color: #666;
+}
+.same-cell-ul>li>a>.div-left>img{
+    display: inline-flex;
+    width:.49rem;
+    height: .49rem;
+    border-radius:.5rem;
+    margin-right:.2rem;
+}
+.same-cell-wrapper{
+    margin-bottom: 1.3rem;
+}
+/* 绑定手机 */
+.bind-phone-ul{
+    background: #fff;
+    padding-left:.24rem;
+}
+.bind-phone-ul>li{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.bind-phone-ul>li+li{
+    border-top: 1px solid #eee;
+}
+.bind-phone-ul>li>span{
+    flex:0 0 1.4rem;
+}
+.bind-phone-ul>li>input{
+    flex: 1;
+    width:100%;
+    height: 1rem;
+    border: none;
+    font-size: .3rem;
+    padding-right:.24rem;
+}
+.bind-phone-ul>li>.send-code{
+    height: .4rem;
+    line-height: .4rem;
+    padding: 0 .15rem;
+    color: #14a0ff;
+    border-left:1px solid #d9d9d9;
+    border-radius:0;
+}
+.bind-phone-ul>li>.btn-disabled{
+    color: #bbbdc5; 
+    background-color:transparent;
+}
+.send-comfirm{
+    padding:0 .24rem;
+}
+.send-comfirm>button{
+    background-color: #14a0ff;
+    height:.86rem;
+    line-height: .86rem;
+}
+.send-comfirm>button:active{
+    background-color: rgba(20,160,255,.8);
+}
+/* 卡卷激活 */
+.jihuo-tip{
+    margin-top:.2rem;
+    padding: 0 .24rem;
+    color: #80828e;
+    font-size: .26rem;
+}
+.popup-outer{
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:100;
+    width: 100%;
+    height:100%;
+    background:url(./../images/cardVolumebg.png) top center/contain
+    no-repeat rgba(0,0,0,.5);
+    display: none;
+}
+.popup-inner{
+    position: fixed;
+    top:50%;
+    left:50%;
+    z-index:66;
+    width: 85%;
+    transform: translate3d(-50%,-50%,0);    
+    background-color: #f13e31;
+    border-radius:.1rem;
+    padding:.3rem .24rem .3rem ;
+}
+.popup-inner>h3{
+    color: #fffc02;
+    text-align: center;
+    font-size: .45rem;
+}
+.coupons-wrapper{
+    position: relative;
+    margin-top: .3rem;
+    padding: 0  .24rem;
+}
+.coupons-wrapper::before{
+    content: '';
+    position: absolute;
+    top:-.08rem;;
+    left:0;
+    z-index:-1;
+    width:100%;
+    height:.12rem;
+    border-radius:.1rem;
+    background-color: #bf1f15;
+}
+.cardCouponbg-wrapper{
+    position: absolute;
+    top:-3rem;
+    left: 0;
+    z-index:88;
+    width:100%;   
+}
+.cardCouponbg-wrapper>img{
+    display: block;
+    max-width:100%;
+    height:auto;
+}
+.cardCoupon-tip{
+    text-align: center;
+    background-color: #feedb9;
+    font-size:.28rem;
+    margin-bottom:.12rem;
+}
+.coupons-ul{
+    max-height: 6rem;
+    overflow: auto;
+    background-color: #feedb9;
+    padding:.2rem 0;
+}
+.coupons-ul>li{
+    padding:0 .24rem;
+}
+.coupons-ul>li+li{
+    margin-top:.1rem;
+}
+.coupons-ul>li>img{
+    display: block;
+    max-width:100%;
+    height:auto;
+    margin: 0 auto;
+}
+.btn-close-wrapper{
+    position: absolute;
+    bottom: -1.2rem;;
+    left: 0;
+    width: 100%;
+    z-index:10;
+    text-align: center;
+    color: #fff;
+}
+.btn-close-wrapper>i{
+    font-size:.6rem;
+}
+.dikou-tip{
+    margin-top: .2rem;
+    text-align: center;
+    color: #fff;
+}
+.jifen-num{
+    text-align: center;
+    padding: 1.5rem 0;
+    color: #f13e30;
+    font-size:.35rem
+}
+.jifen-num>em{
+    font-size: .7rem;
+    padding-right:.05rem;
+}
+/* 我的卡卷 */
+.my-cardCoupons{
+    padding-top: .2rem;
+}
+.my-cardCoupons-ul{
+    padding:0 .24rem;
+}
+.my-cardCoupons-ul>li+li{
+    margin-top:.2rem;  
+}
+.my-cardCoupons-ul>li>img{
+    display: block;
+    max-width:100%;
+    height: auto;
+    margin: 0 auto;
+}
+.my-cardCoupons-ul>li>.cardCouponbg{
+    display: flex;
+    align-items: center;
+    padding:.42rem 0;
+}
+/* 卡券激活 */
+.coupons-ul>li>.cardCouponbg{
+    display: flex;
+    align-items: center;
+    padding:.35rem 0;
+}
+.coupons-ul>li>.cardCouponbg>.bg-left{
+    flex:0 0 30%;
+}
+.coupons-ul>li>.cardCouponbg>.bg-left>span{
+    display: block;
+    font-size:.24rem;
+}
+.coupons-ul>li>.cardCouponbg>.bg-left>i{
+    font-size: .12rem;
+}
+.coupons-ul>li>.cardCouponbg>.bg-left>span>em{
+    font-size:.4rem;
+}
+.coupons-ul>li>.cardCouponbg>.bg-middle>span{
+    font-size:.22rem;
+}
+.coupons-ul>li>.cardCouponbg>.bg-middle>time{
+    font-size:.12rem;
+}
+.coupons-ul>li>.cardCouponbg>.bg-right>span{
+    font-size: .2rem;
+    padding:.07rem .18rem .03rem;
+}
+/* 洗车 */
+.washCar-wrapper{
+    background: url(./../images/washCarbg.png) left top/cover 
+    no-repeat;
+}
+.washCar-wrapper>.bg-left{
+    color: #14a0ff;
+}
+.washCar-wrapper .bg-right>span{
+    background-color: #14a0ff;
+}
+
+/* 救援 */
+.rescue-wrapper{
+    background: url(./../images/rescuebg.png) left top/cover 
+    no-repeat;
+}
+.rescue-wrapper>.bg-left{
+    color: #f98323;
+}
+.rescue-wrapper .bg-right>span{
+    background-color: #f98323;
+}
+
+/* 代驾 */
+.daijia-wrapper{
+    background: url(./../images/daijiabg.png) left top/cover 
+    no-repeat;
+}
+.daijia-wrapper>.bg-left{
+    color: #05c39f;
+}
+.daijia-wrapper .bg-right>span{
+    background-color: #05c39f;
+}
+
+/* 检测 */
+.testing-wrapper{
+    background: url(./../images/testingbg.png) left top/cover 
+    no-repeat;
+}
+.testing-wrapper>.bg-left{
+    color: #ebb22f;
+}
+.testing-wrapper .bg-right>span{
+    background-color: #ebb22f;
+}
+
+.cardCouponbg>.bg-left{
+    flex: 0 0 30%;
+    text-align: center;
+}
+.cardCouponbg>.bg-left>span{
+    display: block;
+    font-size:.3rem;
+}
+.cardCouponbg>.bg-left>span>em{
+    font-size:.55rem;
+}
+.cardCouponbg>.bg-left>i{
+    display: block;
+    font-size: .22rem;
+}
+.cardCouponbg>.bg-middle{
+    flex:1;
+    padding-left:.2rem;
+    border-left:1px  dotted #bbbec7;
+}
+.cardCouponbg>.bg-middle>span{
+    display: block;
+}
+.cardCouponbg>.bg-middle>time{
+    display: block;
+    font-size:.24rem;
+    margin-top:.15rem;
+    color: #a0a1aa;
+}
+.cardCouponbg>.bg-right{
+    margin-left:.1rem;
+}
+.cardCouponbg>.bg-right>span{
+    padding:.05rem .18rem .03rem;
+    border-top-left-radius:.3rem;
+    border-bottom-left-radius: .3rem;
+    color: #fff;
+    font-size: .26rem;
+}
+/* 卡卷回收 */
+.activation-tip{
+    padding: 0 0 .2rem 0;
+}
+.activation-tip>span{
+    display: block;
+}
+.activation-tip>.unactivation{
+    color: #14a0ff;
+}
+.activation-tip>.activationed{
+    color: #ff0000;
+} 
+.activation-tip>.activationed>i{
+    font-size:.35rem;
+}
+/* 绑定车牌 */
+.bind-plateNumber-ul{
+    padding: 0 .24rem;
+}
+.bind-plateNumber-ul>li{
+    display:flex;
+    align-items: center;
+    background-color: #668ff3;
+    margin-top:.2rem;
+    border-radius:.12rem;
+    padding:.35rem .2rem .3rem;
+}
+.bind-plateNumber-ul>li>.li-left{
+    display: flex;
+    align-self: center;
+    width:2.4rem;
+    height:1rem;
+}
+.bind-plateNumber-ul>li>.li-left>img{
+    display: block;
+    max-width: 100%;
+    height:auto;
+    margin: 0 auto;
+}
+.bind-plateNumber-ul>li>.li-right{
+    flex:1;
+    position: relative;
+}
+.carBrand{
+    display: flex;
+}
+.carBrand>span{
+    padding:.02rem .2rem;
+    background-color: #fff;
+    color: #14a0ff;
+    border-radius:.35rem;
+}
+.plateNumber{
+    color: #fff;
+    margin-top:.1rem;
+}
+.bind-plateNumber-ul>li>.li-right>time{
+    display: block;
+    color: #b5cbfe;
+    font-size:.28rem;
+    margin-top:.05rem;
+}
+.plateNumber-modify{
+    position: absolute;
+    top:-.1rem;
+    right: 0;
+    z-index:10; 
+    display: inline-flex;
+    align-items: center;
+    padding:.1rem;
+    color:#fff;
+    cursor: pointer;  
+}
+.add-car-info{
+    padding:0 .24rem;
+    margin-top: .24rem;
+}
+.add-car-info>a{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    border-radius:.12rem;
+    background-color:#fff;
+    padding: .3rem 0;
+}
+.add-car-info>a>img{
+    width: .82rem;
+    height:.72rem;
+}
+.add-car-info>a>span{
+    display: flex;
+    margin-top:.1rem;
+    color:#14a0ff;
+}
+/* 选择车牌 */
+.select-plateNumber{
+    background-color: #fff;
+}
+.plateNumber-type{
+    padding-left:.24rem;
+
+}
+.plateNumber-title{
+    border-top:1px solid #eee;
+    padding:.24rem 0;
+}
+.plateNumber-radio{
+    padding-bottom:.24rem;
+    border-bottom:1px solid #eee;
+}
+input[type=checkbox], input[type=radio]{
+    -webkit-appearance:radio;
+}
+.plateNumber-radio>input+input{
+    margin-left:.35rem;   
+}
+.plateNumber-input>span{
+    display: inline-flex;
+    align-items: center;
+}
+.plateNumber-input>span>em{
+    background-color: #14a0ff;
+    color:#fff;
+    height:.45rem;
+    line-height:.45rem;
+    padding: 0 .08rem;
+    border-radius:.06rem;
+}
+.plateNumber-input>span+span{
+    margin-left:.2rem;
+}
+.plateNumber-input>input{
+    width: 3.5rem;
+    margin-left: .2rem;
+    height: 1rem;
+    border: none;
+    font-size: .3rem;
+    padding-right:.24rem;
+    padding-left:.3rem;
+}
+.m-actionsheet{
+    background-color:#fff;
+}
+.same-actionSheet-ul{
+    display: flex;
+    flex-wrap: wrap;
+    padding: .24rem .12rem 0rem .12rem; 
+}
+.same-actionSheet-ul>li{
+    height:.8rem;
+    line-height:.8rem;
+    border-radius: .1rem;
+    border:1px solid #d9d9d9;
+    padding: 0 .1rem;
+    font-size:.4rem;
+    margin-bottom:.3rem;
+    margin-left: .24rem;
+    min-width:.55rem;
+    color: #464b55;
+}
+.same-actionSheet-ul>li.active{
+    border:none;
+    background: #14a0ff;
+    color: #fff;
+}
+.selectCar-popop-outer{
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:10;
+    width:100%;
+    height:100%;
+    background-color: #f5f5f5;
+    overflow: scroll;
+    display: none;
+}
+.carType-dl>dt{
+    height:1rem;
+    line-height:1rem;
+    padding-left:.24rem;
+    color:#14a0ff;
+    font-size:.35rem;
+}
+.carType-dl>dd{
+    position: relative;
+    height:1rem;
+    line-height:1rem;
+    background: #fff;
+    padding-left:.24rem;
+}
+.carType-dl>dd+dd::before{
+    content:'';
+    display: flex;
+    width:100%;
+    height:1px;
+    border-top:1px solid #eee;
+}
+.letter-layer{
+    position: fixed;
+    top:0;
+    right:.12rem;
+    z-index:20;
+    width:auto;
+    height:100%;
+    display: flex;
+    padding:.2rem 0 0 0;
+}
+.letter-layer-ul>li{
+    display: flex;
+    width:.5rem;
+    justify-content: center;
+}
+.letter-layer-ul>li+li{
+    margin-top:.02rem;
+}
+.letter-layer-ul>li>a{
+    display: flex;
+    width:.38rem;
+    height: .38rem;
+    border-radius:.2rem;
+    justify-content: center;
+    align-items: center;
+    font-size: .26rem;
+}
+.letter-layer-ul>li.active>a{
+    background-color: #14a0ff;
+    color: #fff;
+}
+/* 出发地 */
+.set-out-top{
+    position: relative;
+    background-color: #fff;
+    padding:.12rem .24rem;
+}
+.set-out-top>i{
+    position: absolute;
+    top:.2rem;
+    left:.34rem;
+    z-index:10;
+    font-size: .6rem;
+    color: #c4c6cd;
+}
+.set-out-top>input{
+    width:100%;
+    height:.8rem;
+    border-radius:.6rem;
+    border: none;
+    font-size: .3rem;
+    padding-left:.7rem;
+    background-color: #f2f2f7;
+}
+.link-addr{
+    margin-top:.2rem;
+}
+.link-addr-ul{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+}
+.link-addr-ul>li{
+    flex:1;
+}
+.link-addr-ul>li+li{
+    border-left: 1px solid #f5f5f5;
+}
+.link-addr-ul>li>a{
+    display: block;
+    width:100%;
+    padding:.4rem 0;
+}
+.link-addr-ul>li>a>i{
+    display: block;
+    color: #14a0ff;
+}
+.link-addr-ul>li>a>span{
+    display: block;
+    margin-top:.1rem;
+}
+.search-reasult-ul{
+    margin-top: .2rem;
+    padding-left: .24rem;
+    background-color:#fff;
+}
+.search-reasult-ul>li{
+    padding:.24rem 0;
+}
+.search-reasult-ul>li+li{
+    border-top:1px solid #f5f5f5;
+}
+.search-reasult-ul>li>h3{
+    font-weight:normal;
+    margin-bottom:.1rem;
+}
+.search-reasult-ul>li>span{
+    color: #bbbdc5;
+}
+/* 商户中心 */
+.businessCenter-top{
+    background: url(./../images/businessbg.png) center center/cover 
+    no-repeat #fff;
+    padding: .4rem 0 1.6rem;
+}
+.businessCenter-top>.up{
+    display: flex;
+    width:100%;
+    padding: 0 .24rem;
+}
+.businessCenter-top>.up>.up-left{
+    position: relative;
+    text-align: center;
+}
+.businessCenter-top>.up>.up-left>span:nth-of-type(1){
+    display: flex;
+    padding:.05rem;
+    border-radius:1rem;
+    background-color:#fff;
+}
+.businessCenter-top>.up>.up-left>span:nth-of-type(1)>img{
+    width:1.5rem;
+    height:1.5rem;
+    border-radius:1rem;
+}
+.businessCenter-top>.up>.up-left>span:nth-of-type(2){
+    display: inline-flex;
+    align-items: center;
+    padding:  .08rem;
+    border-radius:.08rem;
+    margin-top:-.1rem;
+    background-color: #fff;
+    font-size: .28rem;
+}
+.businessCenter-top>.up>.up-left>span:nth-of-type(2)>i::before{
+    font-size:.3rem;
+}
+.authentication{
+   color: #e74240;
+}
+.unauthentication{
+   color: #828282;
+}
+.businessCenter-top>.up>.up-right{
+    margin-left:.2rem;
+}
+.businessCenter-top>.up>.up-right>h3{
+    font-weight: normal;
+    font-size:.35rem;
+    color: #fff;
+    margin-top:.1rem;
+}
+.businessCenter-top>.up>.up-right>span>i::before{
+    font-size:.32rem; 
+}
+.businessCenter-top>.up>.up-right>span{
+    display: block;
+    font-size:.28rem; 
+    color:#ffd2d2;
+    margin-top:.1rem;
+}
+.businessCenter-top>.down{
+    text-align: center;
+}
+.businessCenter-top>.down>a{
+    display: inline-flex;
+    color: #fff;
+    border-radius:.1rem;
+    padding:.0rem .26rem;
+    height: .56rem;
+    line-height: .56rem;
+    border:1px solid #fff;
+}
+.income-cash-ul{
+    display:flex;
+    align-items: center;
+    /* justify-content: center; */
+    text-align: center;
+    padding:.2rem 0;
+    font-size:.35rem;
+}
+.income-cash-ul>li{
+    flex: 1;
+    padding: .1rem 0;
+}
+.income-cash-ul>li+li{
+    border-left:1px solid #dfdee3;
+    color: #282828;
+}
+.income-cash-ul>li>img{
+    display: inline-flex;
+    align-items: center;
+    width: .48rem;
+    height:.3rem;
+    margin:0 .05rem;
+}
+.income-cash-ul>li>i{
+    color: #ff0000;
+}
+.same-cell-ul>li>a>.div-left>em{
+    font-size:.5rem;
+    
+    margin-right: .2rem;
+}
+.color-shouzhi{
+    color: #fd5a5a;
+}
+.color-tixian{
+    color:#ffad54;
+}
+.color-renzheng{
+    color:#8fb6fd;
+}
+.color-zhanghuguanli{
+    color:#fd53eb;
+}
+.color-kefu{
+    color: #ff6666;
+}
+.phone-kefu{
+    display: inline-flex;
+    align-items: center;
+    color: #ff0909;
+    margin-top: .03rem;
+    margin-left:.2rem;
+}
+.businessCenter-ul>li>a>.div-left>i{
+    color: #86858b;
+}
+.businessCenter-ul>li>a>.div-right>i.iconfont{
+    color: #c7c7cc;
+}
+/* 没有券提示 */
+.uncoupons-tip-text{
+    padding: 0 .24rem;
+    text-align: center;
+    margin-top: .52rem;
+}

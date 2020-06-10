@@ -1,0 +1,883 @@
+@charset "utf-8";
+/*reset*/
+html {
+  -webkit-font-smoothing: antialiased;
+  -ms-text-size-adjust:100%;
+  -webkit-text-size-adjust: 100%; /* 2 */
+  margin: 0;
+  padding: 0; 
+}
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,dd,form,span,samp,p,a{
+    font-size: 12px;
+    font-weight: normal;
+    margin:0;
+    font-family:  "Microsoft YaHei", Helvetica, STHeiTi,"Helvetica Neue","微软雅黑",SimSun,sans-serif;
+}
+
+html,body{
+  background: white;
+  min-height: 100%;
+}
+
+
+ul,ol{
+    padding-left:0; 
+    list-style-type:none;
+}
+
+li{display: inline-block;}
+i{font-style: normal;}
+
+a { 
+  cursor: pointer;
+  color:#333;
+  text-decoration: none;
+  /*消除ie10灰色背景*/
+  background-color: transparent;
+  /*消除火狐虚线*/
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+/*  cursor: pointer;*/
+  vertical-align: middle;
+  border: 0 none;
+}
+
+body,button,input,select,textarea {
+  font-size: 12px;
+  font-family:  "Microsoft YaHei", Helvetica, STHeiTi,"Helvetica Neue","微软雅黑",SimSun,sans-serif;
+  color:#3c3c3c;
+  outline: none;
+  resize: none;
+}
+button, input{
+  /* 让 input 和 button 一样高 */
+  line-height:normal;
+}
+
+figure{
+  margin: 0;
+  padding:0;
+}
+
+figure img{
+ width: 100%;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner{
+  padding:0;
+  border:0;
+}
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: none;
+}
+a,button,input{
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* 统一上标和下标 */
+sub, sup{
+  font-size:75%;
+  line-height:0;
+  position:relative;
+}
+:root sub, :root sup{
+  vertical-align:baseline; /* for ie9 and other modern browsers */
+}
+sup{
+  top:-0.5em;
+}
+sub{
+  bottom:-0.25em;
+}
+strong {
+  font-weight: normal;
+}
+mark {
+  background: none;
+}
+/*
+input,button,select,textarea {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+ */
+input[type="checkbox"],
+input[type="radio"] {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+}
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+
+
+
+/*原子类*/
+.wrapper:before,
+.wrapper:after,
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.wrapper:after,
+.clearfix:after {
+  clear: both;
+}
+.wrapper,
+.clearfix {
+  zoom: 1;
+}
+
+.Left{
+  float: left;
+}
+
+.Right{
+  float: right;
+}
+
+
+ html {height: 100%;}
+body {
+  min-width: 320px; 
+  max-width: 1920px; 
+  line-height: 1.6; 
+  margin: auto; 
+}
+
+
+.contain{max-width: 640px; margin: 0 auto; position: relative;}
+
+.fixWidth{
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+}
+
+
+.contain {
+  min-height: 400px;
+  text-align: center;
+}
+
+.contain .demo div{
+  display: block;
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #999;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 40px;
+}
+
+
+.whiteBG {
+  background: white;
+}
+.fullHeight {
+  height: 100%;
+}
+.guideView:before {
+  display: none;
+}
+.center {
+  text-align: center;
+}
+.blue {
+  color: #1e83d3;
+}
+
+/* --------- nav ------------*/
+.nav {
+  width: 100%;
+  max-width: 640px;
+  text-align: left;
+  line-height: 45px;
+  padding: 25px 0 35px;
+}
+
+.nav h1 {
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.mobileSelect {
+  position: relative;
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.mobileSelect .grayLayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #eee;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 888;
+  display: block;
+}
+.mobileSelect .content {
+  width: 100%;
+  display: block;
+  position: fixed;
+  z-index: 889;
+  color: black;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+  bottom: -350px;
+  left:0;
+  background: white;
+}
+.mobileSelect .content .fixWidth {
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+}
+.mobileSelect .content .fixWidth:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.mobileSelect .content .btnBar {
+  border-bottom: 1px solid #DCDCDC;
+  font-size: 15px;
+  height: 45px;
+  position: relative;
+  text-align: center;
+  line-height: 45px;
+}
+.mobileSelect .content .btnBar .cancel,
+.mobileSelect .content .btnBar .ensure {
+  height: 45px;
+  width: 55px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+}
+.mobileSelect .content .btnBar .cancel {
+  left: 0;
+  color: #666;
+}
+.mobileSelect .content .btnBar .ensure {
+  right: 0;
+  color: #1e83d3;
+}
+.mobileSelect .content .btnBar .title {
+  font-size: 15px;
+}
+.mobileSelect .content .panel:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.mobileSelect .content .panel .wheels {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.mobileSelect .content .panel .wheel {
+  position: relative;
+  z-index: 0;
+  float: left;
+  width: 50%;
+  height: 200px;
+  overflow: hidden;
+  -webkit-transition: width 0.3s ease;
+  transition: width 0.3s ease;
+}
+.mobileSelect .content .panel .wheel .selectContainer {
+  display: block;
+  text-align: center;
+  -webkit-transition: -webkit-transform 0.18s ease-out;
+  transition: -webkit-transform 0.18s ease-out;
+  transition: transform 0.18s ease-out;
+  transition: transform 0.18s ease-out, -webkit-transform 0.18s ease-out;
+}
+.mobileSelect .content .panel .wheel .selectContainer li {
+  font-size: 15px;
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mobileSelect .content .panel .selectLine {
+  height: 40px;
+  width: 100%;
+  position: absolute;
+  top: 80px;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-top: 1px solid #DCDCDC;
+  border-bottom: 1px solid #DCDCDC;
+}
+.mobileSelect .content .panel .shadowMask {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 200px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(rgba(255, 255, 255, 0)), to(#ffffff));
+  background: -webkit-linear-gradient(top, #ffffff, rgba(255, 255, 255, 0), #ffffff);
+  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0), #ffffff);
+  opacity: 0.9;
+  pointer-events: none;
+}
+.mobileSelect-show {
+  opacity: 1;
+  z-index: 10000;
+  visibility: visible;
+}
+.mobileSelect-show .content {
+  bottom: 0;
+}
+/*  */
+body {
+  background: #fff;
+  text-align: center;
+  font-size: 0.24rem;
+  margin: 0;
+  padding: 0;
+  background-color: #152445;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+}
+
+input {
+  font-size: 0.24rem;
+}
+
+.fullpage .container {
+  height: 1138px;
+  margin-top: -569px;
+}
+
+.fullpage .swiper-slide {
+  background: #fff;
+}
+
+.fullpage .ele {
+  display: none;
+}
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f5f7f9;
+  z-index: 1999;
+  text-align: center;
+}
+
+#preloader .status {
+  z-index: 999999;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -150px 0 0 -125px;
+}
+
+#preloader .cr {
+  position: absolute;
+  bottom: 50px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(0, 0, 0, .5);
+}
+
+#preloader .cr img {
+  width: 90px;
+  height: auto;
+}
+
+#preloader .progress {
+  margin-top: 15px;
+  background-color: #e5e9eb;
+  height: 3px;
+  position: relative;
+  width: 100%;
+}
+
+#preloader .progress-bar {
+  width: 0%;
+  transition-property: width;
+  transition-duration: 3s;
+  transition-timing-function: ease-in-out;
+  background-image: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  background-size: 250px 5px;
+  height: 100%;
+  position: relative;
+}
+
+#preloader .progress-shadow {
+  background-image: linear-gradient(to bottom, rgba(234, 236, 238, 1), rgba(234, 236, 238, 0));
+  height: 100px;
+  position: absolute;
+  top: 100%;
+  transform: skew(45deg);
+  transform-origin: 0 0;
+  width: 100%;
+}
+
+/* 动画 */
+.up {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  height: 34px;
+  margin: auto;
+  z-index: 1000;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.ups {
+  width: 22px;
+  height: 14px;
+  z-index: 100;
+  animation: up 1s ease-in infinite;
+  -moz-animation: up 1s ease-in infinite;
+  -webkit-animation: up 1s ease-in infinite;
+  left: 0;
+  bottom: 10px;
+  background: none !important;
+  position: relative !important;
+}
+
+.ups:before {
+  content: '';
+  width: 12px;
+  height: 4px;
+  background-color: #000;
+  border-radius: 10px 0px 0px 10px;
+  position: absolute;
+  top: 0px;
+  left: 2px;
+  transform: rotate(-45deg);
+}
+
+.ups:after {
+  content: '';
+  width: 12px;
+  height: 4px;
+  background-color: #000;
+  border-radius: 0px 10px 10px 0px;
+  position: absolute;
+  top: 0px;
+  right: 2px;
+  transform: rotate(45deg);
+}
+
+@keyframes up {
+  0% {
+    bottom: 0;
+    opacity: 0
+  }
+
+  50% {
+    bottom: 10px;
+    opacity: 1
+  }
+
+  100% {
+    bottom: 20px;
+    opacity: 0
+  }
+}
+
+/* 第四个页面 */
+.con-4 {
+  /* background: url(../img/chengtou/indexbutton1.png)no-repeat; */
+}
+
+.con-4 span {
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0.7rem;
+  font-size: 0.4rem;
+  color: rgb(197, 197, 75);
+  display: block;
+}
+
+.con-4 div b {
+  color: red;
+}
+
+.con-4 .con4btn {
+  position: absolute;
+  bottom: 0.1rem;
+  left: 12%;
+  display: block;
+  width: 1.7rem;
+  height: 0.7rem;
+}
+
+.con-4 .con4btn1 {
+  position: absolute;
+  bottom: 0.05rem;
+  right: 19%;
+  display: block;
+  width: 0.8rem;
+}
+
+/* 业务员报名 */
+.bm-number {
+  background: url('../img/slide-5_1.jpg')no-repeat;
+  background-size: 100%;
+  width: 100%;
+  height: 11.38rem;
+}
+
+.con5 {
+  background-image: url(../img/button.png);
+  background-size: 100%;
+  margin: 0.3rem auto 0;
+  height: 5.8rem;
+  width: 5.6rem;
+  padding-top: 0.4rem;
+}
+
+.com5list {
+  margin-top: 0.6rem;
+}
+
+.con5 input {
+  width: 3.8rem;
+  height: 0.56rem;
+  background-color: #f5f7f9;
+  display: block;
+  border: none;
+  font-size: 0.26rem;
+  line-height: 0.56rem;
+  color: #000;
+  margin: 0.2rem auto 0;
+  border-radius: 0.1rem;
+  margin-left: 0.1rem;
+
+}
+
+.con5-btn {
+  margin: 1rem 0 0 0.6rem;
+  background: url('../img/con5-btn.png')no-repeat;
+  background-size: 100%;
+  width: 1.83rem;
+  height: 0.68rem;
+  border: none;
+  z-index: 9999 !important;
+  display: block;
+  margin: 0.4rem auto 0;
+  line-height: 0.68rem;
+  text-align: center;
+  color: #000;
+  font-size: 0.24rem;
+  font-weight: bold;
+}
+
+/* 报名人数 */
+
+.con6box h1 {
+  text-align: center;
+  font-size: 0.26rem;
+  color: #ffee7d;
+  font-weight: bold;
+  padding-top: 1.6rem;
+}
+
+.con6 {
+  padding-top: 0.2rem;
+  font-size: 0.24rem;
+  text-align: center;
+  line-height: 0.5rem;
+}
+
+.con6 p {
+  text-align: center;
+  line-height: 0.2rem;
+}
+
+.con6 .p1 {
+  color: #fff83b;
+}
+
+.con6 .p1 b {
+  color: #fb070d;
+}
+
+.con6 .p2 {
+  color: #deddcb;
+}
+
+.con6 .p3 {
+  color: #deddcb;
+  margin-left: -0.8rem;
+}
+
+.con6 .p4 {
+  color: #deddcb;
+  font-size: 0.18rem;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+/* 出游人信息填写 */
+.con7 {
+  width: 4.3rem;
+  height: 6.8rem;
+  background-image: url(../img/chengtou/button-1.png);
+  background-size: 100%;
+  padding-top: 0.4rem;
+  margin: 0 auto;
+
+}
+
+.con7 .con7input1 {
+  width: 3.35rem;
+  height: 0.56rem;
+  background-color: #f5f7f9;
+  display: block;
+  border: none;
+  font-size: 0.26rem;
+  line-height: 0.56rem;
+  color: #000;
+  margin: 0.2rem auto 0;
+  border-radius: 0.1rem;
+}
+
+.xuanze {
+  margin: 0.36rem auto 0;
+  display: block;
+  color: #deddcb;
+  text-align: left;
+  overflow: hidden;
+  width: 3.7rem;
+}
+
+.xuanze li {
+  float: left;
+  margin-top: 0.2rem;
+}
+.con7date li input {
+ padding-top: 0.1rem;
+}
+.xuanze li:nth-child(2) {
+  margin-left: 0.1rem;
+}
+
+#rad {
+  height: 0.26rem;
+  width: 0.26rem;
+  vertical-align: middle;
+}
+
+.con7 .con7-text {
+  width: 3.25rem;
+  height: 1rem;
+  margin: 0.4rem auto 0;
+  display: block;
+  padding: 0;
+}
+
+.con7delete {
+  background: url('../img/chengtou/delete.png')no-repeat;
+  background-size: 100%;
+  width: 1.85rem;
+  height: 0.45rem;
+  display: block;
+  margin-left: 42%;
+  margin-top: 0.2rem;
+}
+
+.con7add {
+  background: url('../img/chengtou/add.png')no-repeat;
+  background-size: 100%;
+  width: 1.85rem;
+  height: 0.45rem;
+  display: block;
+  margin: 0.2rem 0 0 1.2rem;
+}
+
+.con-box {
+  position: relative;
+  height: 11.4rem;
+}
+
+
+
+
+  color: #d20707;
+}
+
+.submitbtn a {
+  width: 2.2rem;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  background: url(../img/chengtou/con5-btn.png)no-repeat;
+  background-size: 100%;
+  display: block;
+  margin: 0.12rem auto 0;
+  font-size: 0.24rem;
+}
+.submit {
+  position: relative;
+
+}
+
+.go-apply {
+  width: 1.9rem;
+  height: 0.53rem;
+  line-height: 0.53rem;
+  text-decoration: none;
+  background-color: #fff83b;
+  display: block;
+  font-size: 0.24rem;
+  text-align: center;
+  border-radius: 0.2rem;
+  position: absolute;
+  top: 48%;
+  left: 35%;
+  color: #171602;
+  font-weight: bolder;
+
+}
+
+.con7 .inputName,
+.con5list .inputName {
+  position: relative;
+  width: 3.8rem;
+  margin: 0.26rem auto 0;
+  display: flex;
+}
+
+.inputName span {
+  position: absolute;
+  top: 0.3rem;
+  left: 0.2rem;
+  display: block;
+  padding-left: 0.2rem;
+}
+
+.con7input1 {
+  padding-left: 1.6rem;
+}
+
+.con7input2 {
+  padding-left: 1.3rem;
+}
+
+.con5 {
+  position: relative;
+}
+
+.con7input3 {
+  padding-left: 1rem;
+}
+
+
+.bm-list .inputName {
+  width: 4rem;
+}
+
+ .inputName span {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.05rem;
+  line-height: 0.56rem;
+  font-size: 0.24rem;
+  
+}
+.con5gonghao  b{
+ padding-left: 0.24rem;
+ font-weight:normal;
+}
+.con6input {
+  padding-left: 2.1rem;
+}
+
+.con6box {
+  overflow: hidden;
+  height: 100%;
+}
+
+.conimportant {
+  overflow: scroll;
+}
+
+#comappend {
+  overflow: scroll;
+}
+
+.con5box {
+  margin: 0.2rem auto 0;
+  width: 3.8rem;
+  height: 0.56rem;
+  background-color: #f5f7f9;
+  border-radius: 0.1rem;
+  position: relative;
+  line-height: 0.56rem;
+  display: block;
+}
+
+.con5box span {
+  padding-left: 0.2rem;
+}
+
+.con5select {
+  margin-left: 2rem;
+  position: absolute;
+  top: 0;
+  right: 0.6rem;
+  border: none;
+  height: 0.3rem;
+  margin: 0 auto;
+
+
+}
+
+
+
+
+
+
+

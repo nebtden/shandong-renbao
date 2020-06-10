@@ -1,0 +1,1 @@
+{"serviceCode":"FW2002289448","shopId":"29539","shopName":"丰泽车道达人汽车服务","verifyTime":"20180717170351","region":"福建省泉州市丰泽区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"7ea55480b30a7aa4b4f12e86facd79729848c21d2a6e68ee8ed682e099501b1f"}

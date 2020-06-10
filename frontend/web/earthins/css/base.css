@@ -1,0 +1,51 @@
+html{min-height: 100%}
+.h1-bg{height: 100%;background: url("../images/h1-bg.jpg") no-repeat  top .40rem  center / 100% 100%;}
+.h1-bg img{width: 100%;}
+.h1-bg .btn-box {position: absolute;width: 100%;left: 0;bottom:.46rem ;text-align: center}
+.h1-bg .btn-box a{display: inline-block;width: 1.8rem;height: .62rem}
+.h1-bg .btn-box a:nth-child(n+2){margin-left: .30rem   }
+
+.h3-bg{  background: url("../images/bg-h3.jpg") no-repeat center/ 100% 100%; background-attachment: fixed; padding:0 0.6rem 0  .60rem;min-height: 100%;overflow-y: auto }
+.h3-bg .top-tit{padding-top: 1.1rem;text-align: center}
+.h3-bg .top-tit img{display: inline-block;width: 4.05rem}
+.h3-bg .from-box{margin-top: .40rem;padding-bottom: 0.6rem}
+.h3-bg .from-box .iptBox{width: 100%;height: .86rem;border-radius: .06rem;overflow: hidden;background: #fff;margin-top: .50rem;display: -webkit-flex;display: flex;-webkit-align-items: center;align-items: center;color: #666;font-size: .28rem; }
+.h3-bg .from-box .iptBox .iptBox-right{-webkit-flex: 1;flex: 1;padding-left: .34rem;width: 100%}
+.h3-bg .from-box .iptBox .iptBox-left{padding: 0 0  0 .34rem}
+.h3-bg .from-box .iptBox  input{height: 100%;background: none;border: none;outline: none}
+.h3-bg .from-box .iptBox .iptBox-right label:nth-child(2){margin-left: 1rem}
+.h3-bg .from-box .iptBox .iptBox-right label *{vertical-align: middle}
+.h3-bg .from-box .iptBox .iptBox-right i{display: inline-block;width: .25rem;height: .25rem;border-radius: 50%;border: 1px solid #A0A0A0;margin-right: .15rem}
+.h3-bg .from-box .iptBox .iptBox-right label.active i{border: 1px solid #004562!important;background: url("../images/checked_icon.png") no-repeat center center / .16rem .16rem}
+.text-c{text-align: center}
+.h3-bg .from-box .iptBox .yzm{display: inline-block;font-size: .28rem;color: #fff;padding: .15rem 0;width:1.86rem;text-align: center;border-radius: .35rem;margin-right:.1rem;background: #004562}
+.h3-bg .btn-box a{display: block;width: 100%;;height: .86rem;line-height: .86rem;border-radius: .06rem;overflow: hidden;background: #004562;margin-top: .90rem;color: #fff;text-align: center;font-size: .28rem}
+.h3-bg .logo{text-align: center;margin-top: .90rem;}
+.h3-bg .logo img{width: 3.26rem;margin: 0 auto;}
+.h2-bg {  background-attachment: fixed;background: url("../images/bg-h2.jpg") no-repeat center/ 100% 100%; background-attachment: fixed; padding:1rem 0.6rem 0.6rem  .98rem;min-height: 100%;overflow-y: auto }
+.h2-bg .flow-content{background: #FFFFFF;padding: .60rem .30rem .60rem 0;border-radius: .06rem;}
+.h2-bg .flow-content h1{font-size: .51rem;color: #004562;font-weight: 700;text-align: center;}
+.flow-content p{padding-left:.76rem;margin-top: .70rem;font-size: .30rem;color: #3f362d ;position: relative}
+.flow-content p:before{
+    position: absolute;
+    content: '1';
+    width: .76rem;
+    height: .76rem;
+    left: -.38rem;
+    top:50%;
+    margin-top: -.38rem;
+    font-size: .34rem;
+    font-weight: bold;
+    color: #fff;
+    line-height: .76rem;
+    text-align: center;
+    background: url("../images/num-bg.png") no-repeat center /100% 100%;
+}
+.flow-content p:nth-child(3):before{ content: '2';}
+.flow-content p:nth-child(4):before{ content: '3';}
+.flow-content p:nth-child(5):before{ content: '4';}
+.flow-content p:nth-child(6):before{ content: '5';}
+
+.h2-bg  .bj{font-size: .24rem;color:#fff;margin-top: .48rem;line-height: 1.5}
+.h2-bg .logo{text-align: center;margin-top: .40rem;}
+.h2-bg .logo  img{width: 3.26rem;display: inline-block;}

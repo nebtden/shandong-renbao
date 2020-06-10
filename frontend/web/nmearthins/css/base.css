@@ -1,0 +1,15 @@
+
+.h1-bg{height: 100%;background: url("../images/h1-bg.jpg") no-repeat  top .40rem  center / 100% 100%;}
+.h2-bg{height: 100%;background: url("../images/h2-bg.jpg") no-repeat  top .40rem  center / 100% 100%;}
+.h3-bg{height: 100%;background: url("../images/h3-bg.jpg") no-repeat  top .40rem  center / 100% 100%;}
+.index-bg{height: 100%;background: url("../images/index-bg.jpg") no-repeat center / 100% 100%;}
+.h1-bg img,.h2-bg img,.h3-bg img{width: 100%;}
+.btn-box {position: absolute;width: 100%;left: 0;bottom:1.3rem ;text-align: center}
+.btn-box a{display: inline-block;width: 1.8rem;height: .62rem;line-height:.62rem;font-size:.3rem;background: #ff8d24;color: #fff;border-radius: .6rem;}
+.btn-box a:nth-child(n+2),.itemWrap a:nth-child(n+2){margin-left: .30rem   }
+.btn-box a.active{background: #005d8e;}
+.tel-box {position: absolute;width: 100%;left: 0;bottom:.46rem ;text-align: center}
+.tel-box a{display: inline-block;width: 6.1rem;height: .62rem;line-height:.62rem;font-size:.3rem;background: #005d8e;color: #fff;border-radius: .6rem;}
+.itemWrap{position: absolute;width: 100%;left: 0;bottom:2.4rem ;text-align: center}
+.itemWrap a{display: inline-block;width: 1.8rem;font-size:.38rem;color: #000;}
+.itemWrap a img{width: 100%;}

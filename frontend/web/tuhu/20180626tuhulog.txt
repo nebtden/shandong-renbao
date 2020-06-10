@@ -1,0 +1,1 @@
+{"serviceCode":"FW1402509243","shopId":"15333","shopName":"晋江崇德路店","verifyTime":"20180626160950","region":"福建省泉州市晋江市","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"6957bbdf7e0c985c34d2160697071af396bf088f9d28e1173dbe661a39c99889"}

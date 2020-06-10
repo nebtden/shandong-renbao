@@ -1,0 +1,1 @@
+{"serviceCode":"FW0127211191","shopId":"17021","shopName":"丰泽华大街道店","verifyTime":"20180707182440","region":"福建省泉州市丰泽区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"e28daf943b1f51ffa647cf09195bfba892ee127724199a1c613bf887c34f1f83"}

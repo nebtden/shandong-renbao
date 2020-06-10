@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="Tencent-CP" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta content="yes" name="mobile-web-app-capable" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title>幸福锦鲤 "鼠"于你</title>
+  <link rel="stylesheet" href="./css/content.css" />
+  <!-- tc -->
+  <script src="./js/jquery-2.2.0.min.js"></script>
+  <script src="./js/tc-show.js"></script>
+  <script src="./js/content.js"></script>
+</head>
+
+<body>
+  <div class="index-bigbox">
+    <header>
+      <h1 class="hide">幸福锦鲤 "鼠"于你</h1>
+      <img src="./img/index-header.png" alt="" />
+    </header>
+    <main>
+      <div class="index-mainbg message-bg">
+        <span>
+          <b>姓名:</b><input type="text" placeholder="请输入您的姓名">
+        </span>
+        <span>
+          <b>联系方式:</b> <input type="text" placeholder="请输入您的号码">
+        </span>
+        <a href="active-1.html">提交</a>
+        <!-- 已领过显示弹窗状态 -->
+        <!-- <a href="javascript:popShow('pop_per');" >提交</a> -->
+      </div>
+    </main>
+  </div>
+  <!-- 弹窗 -->
+  <div class="pop " id="pop_per">
+    <div class="message-tc">
+      <a href="message.html" class="msg-btn">好的</a>
+    </div>
+    <a href="javascript:popHide();" title="点击关闭" class="btn close"></a>
+    <div class="msg__overlay"></div>
+  </div>
+
+</body>
+
+</html>

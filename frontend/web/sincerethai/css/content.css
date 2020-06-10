@@ -1,0 +1,179 @@
+/*reset*/
+::-webkit-input-placeholder {color: #999; }
+input[type="text"],input[type="password"],select {-webkit-appearance: none;appearance: none;outline: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);border-radius: 0;font-family:
+'\5FAE\8F6F\96C5\9ED1';box-sizing: border-box;}
+html,body,div,p,ul,li,dl,dt,dd,em,i,span,a,img,input,h1,h2,h3,h4,h5 {margin: 0;padding: 0; line-height: 1;}
+img {border: 0;display: block; }
+a,button,input {-webkit-tap-highlight-color: rgba(255, 0, 0, 0);}
+ol,ul {list-style: none;}
+table { border-collapse: collapse;border-spacing: 0;}
+html {-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;font-size: 100px;background: #840f1c;}
+body,html {-webkit-tap-highlight-color: transparent;-webkit-user-select: none;width: 100%;font-size:0.18rem;color: #fff;text-align: center;background-color: #54826f;}
+.c:after { content: '\20'; display: block; height: 0; line-height: 0; visibility: hidden;clear: both;}
+.hide {height:0.1rem;font-size: 0;line-height: 0;visibility: hidden;overflow: hidden;}
+a{text-decoration: none;display: block;}
+a:focus { outline: none}
+.fl {float: left;}
+.fr {float: right;}
+.pr { position: relative;}
+.pa {position: absolute;}
+.t { text-indent: -9999rem; display: block;}
+#afooter {color: #d1cfcf;font-size: 0.18rem;background: #000;line-height: 0.25rem;text-align: center;padding:
+0.12rem 0;width: 100%;}
+/* 首页 */
+.hyxc-index,.hyxc-member{
+    background: url('../img/beijing-1.png')no-repeat;
+    background-size: contain;
+    width: 100%;
+    height:14rem;
+}
+.xiche{
+    background: url('../img/bg-explain-.png')no-repeat;
+    background-size: 100%;
+    width: 1.68rem;
+    height: 0.75rem;
+    font-size: 0.3rem;
+    color: #6c4b33;
+    line-height: 0.75rem;
+    position: relative;
+    top: 0.28rem;
+    left: 5.5rem;
+    font-weight: bolder;
+}
+.import-box{
+    width: 6.55rem;
+    height: 3.85rem;
+    margin: 7.5rem auto 0;
+}
+.import-box .import-frame,.import-yzm input{
+    width: 6.28rem;
+    height: 1rem;
+    line-height: 1rem;
+    color: #000;
+    font-size: 0.3rem;
+    padding-left:0.25rem;
+    border: 1px solid #fff;
+    border-radius: 0.1rem;
+    background-color: #Fff;
+}
+.import-yzm{
+    width: 6.55rem;
+    height: 1rem;
+    display: block;
+    text-align: left;
+    margin-top: 0.4rem;
+    display: flex;
+}
+.import-yzm input{
+    width: 4rem;
+    height: 1.1rem;
+    flex: 2;
+}
+.import-btn{
+    background: url(../img/hyxc-import.png)no-repeat;
+    background-size: 100%;
+    width: 2.4rem;
+    height: 1.1rem;
+    font-size: 0.26rem;
+    color: #6c4b33;
+    line-height: 1.1rem;
+    text-align: center;
+    font-weight: bolder;
+    margin-left: 0.2rem;
+
+}
+.import-submit{
+    background: url('../img/submit-btn.png')no-repeat;
+    background-size: 100%;
+    width: 6.5rem;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.3rem;
+    color: #6c4b33;
+    font-weight: bolder;
+    margin-top: 0.4rem;
+}
+/* tc */
+/* tc */
+.pop{
+    display: none;
+   
+}
+.close{
+    background: url('../img/hyxc-close.png')no-repeat;
+    background-size: 100%;
+    width: 0.35rem;
+    height: 0.35rem;
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+}
+.fuwu-tc{
+    width:7.5rem;
+    height: 11rem;
+    background-color: #fff;
+    border-radius: 0.25rem;
+    font-size: 0.24rem;
+    color: #181818;
+    position: relative;
+    
+}
+.fuwu-tc b{
+    font-size: 0.3rem;
+    padding-top: 0.4rem;
+    display: block;
+    font-weight: bold;
+}
+.fuwu-box{
+    width: 6.82rem;
+    text-align: justify;
+    margin: 0.6rem auto 0;
+}
+.fuwu-box span{
+   margin-top: 0.5rem;
+   display: block;
+   font-weight: bold;
+   line-height: 0.28rem;
+}
+.fuwu-box span:nth-child(1){
+    margin-top:0 ;
+}
+/* 会员专享页面 */
+.hyxc-member{
+    background: url('../img/beijing-2.png')no-repeat;
+    background-size:contain;
+}
+.member-box{
+    width: 6.1rem;
+    margin: 0 auto;
+    position: relative;
+    top: 3.86rem;
+}
+.member-frame{
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    color: #000;
+    font-size: 0.3rem;
+    border: 1px solid #fff;
+    border-radius: 0.1rem;
+    margin-top: 0.4rem;
+    text-align: center;
+    background-color: #fff;
+}
+.member-btn{
+    width: 100%;
+}
+.hyxc-hint{
+    text-align: justify;
+    font-size: 0.24rem;
+    font-weight: bold;
+    line-height: 0.5rem;
+}
+.hyxc-hint p{
+    line-height: 0.34rem;
+}
+.disable {
+    pointer-events: none;
+    cursor: default;
+}

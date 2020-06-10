@@ -1,0 +1,1 @@
+{"serviceCode":"FW0185553146","shopId":"11427","shopName":"泉州淮云路店","verifyTime":"20180730113938","region":"福建省泉州市丰泽区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"4210cc11a0065c85e08a0437f4ba20d7cab3376acef66b2044f1b5dc9b9101e8"}

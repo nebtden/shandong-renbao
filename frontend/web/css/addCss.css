@@ -1,0 +1,199 @@
+/* 汽车服务卡回购第一步 */
+.input-title{
+    padding:.4rem 0 .2rem .24rem;
+    color: #79787e;
+}
+.bind-phone-ul{
+    background: #fff;
+    padding-left:.24rem;
+}
+.bind-phone-ul>li{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right:.24rem;
+}
+.bind-phone-ul>li+li{
+    border-top: 1px solid #eee;
+}
+.bind-phone-ul>li>span{
+    flex:0 0 1.4rem;
+}
+.bind-phone-ul>li>input{
+    flex: 1;
+    width:100%;
+    height: 1rem;
+    border: none;
+    font-size: .3rem;
+}
+.bind-phone-ul>li>.send-code{
+    height: .4rem;
+    line-height: .4rem;
+    padding: 0 .15rem;
+    color: #14a0ff;
+    border-left:1px solid #d9d9d9;
+    border-radius:0;
+}
+.bind-phone-ul>li>.btn-disabled{
+    color: #bbbdc5; 
+    background-color:transparent;
+}
+.send-comfirm{
+    padding:0 .24rem;
+}
+.send-comfirm>button{
+    background-color: #e74240;
+    height:.86rem;
+    line-height: .86rem;
+    color: #fff;
+}
+.send-comfirm>button:active{
+    background-color: rgba(231,66,64,.8);
+}
+.alert-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .38rem;
+    color: #282828;
+}
+.alert-title>i::before{
+    font-size:.40rem;
+}
+.alert-title>i{
+    color:#e74240; 
+}
+.alert-tip{
+    font-size:.3rem;
+    color: #282828;
+}
+.alert-hot-line{
+    margin-top:.4rem;
+}
+.alert-hot-line>a{
+    color:#e74240; 
+}
+/* 汽车服务卡回购第二步 */
+.bind-phone-ul>li.plateNumber-input{
+    display: block;
+}
+.bind-phone-ul>li.plateNumber-input>span{
+    display: inline-flex;
+    align-items: center;
+}
+.bind-phone-ul>li.plateNumber-input>span>em{
+    background-color: #e74240;
+    color:#fff;
+    height:.45rem;
+    line-height:.45rem;
+    padding: 0 .08rem;
+    border-radius:.06rem;
+}
+.bind-phone-ul>li.plateNumber-input>span+span{
+    margin-left:.2rem;
+}
+.bind-phone-ul>li.plateNumber-input>input{
+    width: 3.5rem;
+    height: 1rem;
+    border: none;
+    font-size: .3rem;
+    padding-right:.24rem;
+    padding-left:.3rem;
+}
+.m-actionsheet{
+    background-color:#fff;
+}
+.same-actionSheet-ul{
+    display: flex;
+    flex-wrap: wrap;
+    padding: .24rem .12rem 0rem .12rem; 
+}
+.same-actionSheet-ul>li{
+    height:.8rem;
+    line-height:.8rem;
+    border-radius: .1rem;
+    border:1px solid #d9d9d9;
+    padding: 0 .1rem;
+    font-size:.4rem;
+    margin-bottom:.3rem;
+    margin-left: .24rem;
+    min-width:.55rem;
+    color: #464b55;
+}
+.same-actionSheet-ul>li.active{
+    border:none;
+    background: #e74240;
+    color: #fff;
+}
+/* 汽车服务卡回购第三步 */
+.photoGraph-wrapper{
+    height:auto;
+    padding:.35rem .24rem;
+    background-color:#fff;
+}
+.photo-wrapper{
+    display: flex;
+    flex-flow: wrap;
+}
+.photo-wrapper>div{
+    flex:0 0 46%;
+    /* overflow-y: hidden;  */
+}
+.photo-wrapper>.img-wraper:nth-of-type(odd){
+    margin-right:8%;
+}
+.photo-wrapper>.img-wraper:nth-of-type(2n+3){
+    margin-top:.4rem;
+}
+.img-wraper{
+    position: relative;
+}
+.img-wraper>img{
+    display:block;
+    max-width:100%;
+    height:auto;
+}
+.img-wraper>i{
+    position: absolute;
+    top:-.15rem;
+    right:-.1rem;
+    z-index:30;
+    color:#e74240;
+    font-size: .5rem;
+}
+.upload-wrapper{
+    flex:0 0 46%;
+    width:46%;
+    min-height:3.16rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    border:1px dashed #81838e;
+}
+.upload-wrapper>input[type="file"]{
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:10;
+    width: 100%;
+    height:100%;
+    opacity:0;
+}
+.upload-wrapper>span{
+    display: block;
+    text-align: center;
+    color: #81838e;
+    font-size:.32rem;
+}
+.upload-wrapper>span>i.iconfont{
+    font-size:.7rem;
+}
+.upload-wrapper>span+span{
+    margin-top:.1rem;
+}
+.photoGraph-tip{
+    color: #79787e;
+    font-size: .26rem;
+    margin-top:.3rem;
+}

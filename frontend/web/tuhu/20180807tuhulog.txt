@@ -1,0 +1,1 @@
+{"serviceCode":"FW1325726625","shopId":"8871","shopName":"达兴汽服连锁普阳店","verifyTime":"20180807180213","region":"吉林省长春市绿园区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"8fec6a92202a065fffad2d4d493d89514aa8529900e307bc3f336cc3935f89b1"}

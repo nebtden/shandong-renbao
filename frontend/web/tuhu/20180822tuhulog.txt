@@ -1,0 +1,1 @@
+{"serviceCode":"FW0662333498","shopId":"8870","shopName":"达兴汽车服务连锁（长春店）","verifyTime":"20180822170250","region":"吉林省长春市南关区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"805a70a3f071eb61d85fbd82be47f16cebb56203eb279a83154a4c0fff0913e4"}

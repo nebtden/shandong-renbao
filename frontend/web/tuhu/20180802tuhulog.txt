@@ -1,0 +1,1 @@
+{"serviceCode":"FW1200890765","shopId":"24241","shopName":"途虎养车工场店（太原太榆路店）","verifyTime":"20180802174149","region":"山西省太原市小店区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"b25ad7c00876b93d2e35ae192f656c656009dbf1edb6f5b32a0478bbe5d0c5f5"}

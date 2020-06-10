@@ -1,0 +1,1 @@
+{"serviceCode":"FW1074114485","shopId":"30665","shopName":"晋江爱车坊汽车美容","verifyTime":"20180817085854","region":"福建省泉州市晋江市","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"ffe3603a4a57aeabc838ff4523cb943ec18c542f1411b59abec749a0094ccffd"}

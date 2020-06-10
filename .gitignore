@@ -4,6 +4,8 @@
 /public/storage
 /storage/*.key
 /vendor
+/frontend/web/log/*
+/backend/web/log/*
 /.idea
 /.git_china
 .env

@@ -1,0 +1,1 @@
+{"serviceCode":"FW1974564313","shopId":"7377","shopName":"石狮速美特","verifyTime":"20180727181705","region":"福建省泉州市石狮市","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"f05b0733edacb07a70d8086623e6a65d646d0e769d955704d7952b282c2714b3"}

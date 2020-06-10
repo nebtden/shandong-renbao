@@ -1,0 +1,1 @@
+{"serviceCode":"FW1789770413","shopId":"16985","shopName":"济南市仁丰前路-龙盛店","verifyTime":"20180721132928","region":"山东省济南市天桥区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"8c804dfe255a955e4dc6847b95561ec2f0cd603e103a5ec8a065a6d1c8cc38f8"}

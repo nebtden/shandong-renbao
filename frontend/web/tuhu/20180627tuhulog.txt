@@ -1,0 +1,1 @@
+{"serviceCode":"FW2138136933","shopId":"19239","shopName":"黄山屯溪新安大道店","verifyTime":"20180627081108","region":"安徽省黄山市屯溪区","serviceId":"FU-MD-DKHBZXC|1","serviceName":"鼎翰-标准洗车","price":"2700","signature":"27083c21b87facdea75ce362bc3e0fedea3bea83b3a557e61fcb87d97a2d70bb"}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>睡眠质量评估</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet/less" type="text/css" href="css/qa.less" />
+  <script src="lib/less.min.js" type="text/javascript"></script>
+  <script src="lib/fixScreen.js"></script>
+</head>
+<body>
+  <div id="app" ref="app" style="background-color: #4F88AB;">
+    <div id="main">
+      <div class="info-container">
+        <div class="uper">
+          <div class="swiper-container" :style="{height:switcherState==='down'?picHeight+'rem':'0'}">
+            <div class="swiper">
+              <div>
+                <div class="page">
+                  <img src="img/cover1.png">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="contents" :style="{opacity:switcherState==='down'?'0':'1'}">
+            <div id="detail" :style="{height:switcherState==='down'?picHeight+'rem':(picHeight+1.5)+'rem'}">
+              <ul>
+                <li class="content">
+                  <div class="content-title">
+                    <span>问卷简介</span>
+                  </div>
+                  <div class="content-text">匹兹堡睡眠质量指数适用于睡眠障碍患者、精神障碍患者评价睡眠质量，同时也适用于一般人睡眠质量的评估。</div>
+                </li>
+                <li class="content">
+                  <div class="content-title">
+                    <span>评估依据</span>
+                  </div>
+                  <div class="content-text">匹兹堡睡眠质量指数（Pittsburgh sleep quality index,PSQI）</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tooltips" :class="{'tooltips-shadow':switcherState==='down'}">
+          <div class="tooltip tooltip-0">
+            <span>31万+人完成</span>
+          </div>
+          <div class="tooltip tooltip-1">
+            <span>约3分钟</span>
+          </div>
+        </div>
+        <div class="downer" @click="switchText">
+          <div class="improve":style="{height:switcherState==='down'?1.5+'rem':'0'}">
+            <div>匹兹堡睡眠质量指数适用于睡眠障碍患者、精神障碍患者评价睡眠质量，同时也适用于一般人睡眠质量的评估。</div>
+          </div>
+          <div class="switcher">
+            <i></i><span>{{switcherTxt}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="start-button" @click="start">开始评估</div>
+      <div class="declaration">专家意见仅供参考，不代表医生诊断</div>
+    </div>
+  </div>
+</body>
+<script src="lib/vue.js"></script>
+<!-- 上生产环境用以下js替换上面的 -->
+<!--<script src="./lib/vue.min.js"></script>-->
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data() {
+      return {
+        picHeight: 5.76,
+        switcherState: "down",
+        switcherTxt: "查看更多"
+      }
+    },
+    methods: {
+      switchText: function() {
+        this.switcherState = this.switcherState === "up" ? "down" : "up";
+        this.switcherTxt = this.switcherState === "up" ? "我知道了" : "查看更多";
+      },
+      start: function(){
+        setTimeout(function(){
+          window.location.replace("qa.html")
+        },500)
+      }
+  }
+  })
+</script>
+</html>
