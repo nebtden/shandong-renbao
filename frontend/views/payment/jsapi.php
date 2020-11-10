@@ -19,13 +19,16 @@ use yii\helpers\Url;
 //  				alert(res.err_code+res.err_desc+res.err_msg);
 				 if(res.err_msg == "get_brand_wcpay_request:ok" ){
 					  var thd = '<?php echo $third;?>';
-					  if(thd=='yes'){
+                     if (thd == 'pay') {
+                         location.href = '<?php echo "http://www.yunche168.com/frontend/web/pay/index.html?id=12";?>';
+                     }else if(thd=='yes'){
 						  location.href='http://mswxgj.minshenglife.com/mslife_wx_web/html/blessingYear17/pay_transfer.html?openId=<?php echo $order['third_openId'];?>&orderId=<?php echo $order['orderId'];?>';
 						  //location.href='http://mswgj.minshenglife.com/mslife_wx_web/html/blessingYear17/pay_transfer.html?openId=<?php echo $order['third_openId'];?>&orderId=<?php echo $order['orderId'];?>';
 					  }else if(thd=='yet'){
 						  location.href='http://mswgj.minshenglife.com/mslife_wx_web/html/blessingYear17/pay_transfer.html?openId=<?php echo $order['third_openId'];?>&orderId=<?php echo $order['orderId'];?>';
 					  }else{
-						  location.href='<?php echo Url::toRoute('/mall/myorder');?>';
+                         location.href = '<?php echo "http://www.yunche168.com/frontend/web/pay/index.html?id=12";?>';
+						  //location.href='<?php echo Url::toRoute('/mall/myorder');?>';
 					  }
 				 }else{
 					 	alert("抱歉，微信支付失败!");

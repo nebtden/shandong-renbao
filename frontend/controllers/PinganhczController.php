@@ -231,6 +231,90 @@ class PinganhczController extends PController
         return $this->json($this->status, $this->msg,$responseData);
     }
 
+    public function actionNotice2()
+    {
+        set_time_limit(0);
+        $pingAn = new Pinganhcznew();
+        $postParam = $pingAn->postRequest();
+        $responseData = [];
+        try {
+            if(!$postParam){
+                $this->status = 1004;
+                throw new \Exception('sign验证错误');
+            }
+            if(!$pingAn->access_token){
+                $this->status = 1004;
+                throw new \Exception('access_token获取失败');
+            }
+            $couponDetail = $this->couponDetail($postParam['couponNo'],$postParam['storeName']);
+
+
+
+
+            if(!$couponDetail){
+                throw new \Exception($this->msg);
+            }
+            if($couponDetail['status'] !=0 ){
+                $this->status = 1002;
+                throw new \Exception('兑换码已经核销过');
+            }
+            //平安核销
+            $result = $pingAn->redemption($postParam,$couponDetail);
+            $result = json_decode($result,true);
+            if($result['data']['code'] != 200){
+                $this->status = 1003;
+                throw new \Exception($result['data']['message']);
+            }
+            if($result['data']['data']['status'] != 1){
+                $this->status = 1004;
+                throw new \Exception($result['data']['data']['messages']);
+            }
+            //将核销时间格式转化成时间戳
+            $verifytime=strtotime($postParam['verifytime']);
+            $insertData = [
+                'store_name'=> $postParam['storeName'],
+                'store_id'=> $postParam['storeId'],
+                'address'=> $postParam['address'],
+                'province'=> $postParam['province'],
+                'city'=> $postParam['city'],
+                'district'=> $postParam['district'],
+                'verifytime'=> $verifytime,
+                'date_month'=> date('Y-m',$verifytime),
+                'date_day'=> date('d',$verifytime),
+                'partner_order'=> $postParam['partnerOrder'],
+                'coupon_status' => $result['data']['data']['status'],
+                'order_id' => $result['data']['data']['orderId'],
+                'company_id' => $couponDetail['company_id'],
+                'status' => 2,
+                'c_time' => time(),
+                's_time' => time()
+            ];
+            $insertData = array_merge($couponDetail,$insertData);
+            $washObj = new Car_wash_pinganhcz();
+            $updateInfo = $washObj->myInsert($insertData);
+            if(!$updateInfo){
+                $this->status = 1004;
+                throw new \Exception('核销成功，数据更新失败');
+            }
+            $responseData = [
+                'couponId' => $insertData['coupon_id'],
+                'couponName' => $insertData['coupon_name'],
+                'productId' => $insertData['product_id'],
+                'productName' => $insertData['product_name'],
+                'mobileNo' => $insertData['mobile'],
+                'status' => $insertData['coupon_status'],
+            ];
+        } catch (\Exception $e){
+            $this->msg = $e->getMessage();
+        }
+        $data = json_encode($postParam,JSON_UNESCAPED_UNICODE);
+        $resData = json_encode($result,JSON_UNESCAPED_UNICODE);
+        $pingAn->log($this->status,$this->msg,$data,$resData);
+        $this->log(1,\GuzzleHttp\json_encode($responseData));
+
+        return $this->json($this->status, $this->msg,$responseData);
+    }
+
     /**
      * 核銷时冻结平安卡券
      * @return array

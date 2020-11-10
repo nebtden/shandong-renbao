@@ -15,13 +15,24 @@ use yii\helpers\Url;
 			'getBrandWCPayRequest',
 			<?php echo $pay['jsApiParameters']; ?>,
 			function(res){
+                var type = '<?php echo $third;?>'
+                if (type == 'pay') {
+                    location.href = '<?php echo "http://www.yunche168.com/frontend/web/pay/index.html?id=12";?>';
+                }else if(type=='product'){
+                    location.href='<?php echo "http://buyybn.yunche168.com/frontend/web/mobile/product/order.html";?>';
+                } else if(type=='shenzhen_guoshou'){
+                    location.href='<?php echo "http://buyybn.yunche168.com/frontend/web/mobile/shenzhen-guoshou/zhanglili.html?type=shenzhen_guoshou&pro_id=$product_id";?>';
+                }else {
+                    location.href = '<?php echo Url::toRoute('/mall/myorder');?>';
+                }
 //  				WeixinJSBridge.log(res.err_msg);
-//  				alert(res.err_code+res.err_desc+res.err_msg);
+ 				//alert(res.err_code+res.err_desc+res.err_msg);
 				 if(res.err_msg == "get_brand_wcpay_request:ok" ){
-					 location.href='<?php echo Url::toRoute('/mall/myorder');?>';
+                     location.href = '<?php echo "http://www.yunche168.com/frontend/web/pay/index.html?id=12";?>';
+					 //location.href='<?php echo Url::toRoute('/mall/myorder');?>';
 				 }else{
 					 alert("抱歉，微信支付失败!");
-					 history.back(1);
+                     history.back(1);
 				 }
 			}
 		);

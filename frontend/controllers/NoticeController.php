@@ -25,6 +25,7 @@ use common\models\Company;
 use common\models\Wash_shop;
 use common\models\WashOrder;
 use common\models\WashShop;
+use common\models\WashShopShandongTaibao;
 use Yii;
 use common\models\User;
 use frontend\util\FController;
@@ -713,7 +714,7 @@ class NoticeController extends PController
                 }
                 $address = explode(' ',$insData['address']);
                 $address = $address[3];
-                $shop = (new WashShop())->table()->select()->where(['like','shopAddress',$address])->one();
+                $shop = (new WashShopShandongTaibao())->table()->select()->where(['like','address',$address])->one();
                 if($shop){
                     $shop_name = $shop['shopName'];
                 }else{
