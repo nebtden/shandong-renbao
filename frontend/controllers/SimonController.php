@@ -29,7 +29,14 @@ class SimonController extends PController
     public $menuActive = 'caruorder';
 
     public function actionTest(){
-        $time = time();
+        $cache = Yii::$app->cache;
+        $key = "mobile_send_"."13937112203";
+        $cache->set($key,0);
+       $number = $cache->get($key);
+        var_dump($number);
+
+
+/*        $time = time();
         //过去二十分钟登录的，查一次，
         $old_time = $time-15*60;
 
@@ -39,7 +46,7 @@ class SimonController extends PController
             ->where(['>','tpy_fans_account.u_time', $old_time])
             ->andWhere(['tpy_car_mobile.uid'=>0])
             ->asArray()->all();
-        var_dump($users);
+        var_dump($users);*/
 
     }
 

@@ -106,17 +106,19 @@ use yii\helpers\Url;
 
     <!-- 代驾券弹窗 -->
 <?php if (empty($drivingCoupon )): ?>
-    <div class="commom-popup-outside  small-popup-outside" style="display:none;" >
-        <div class="commom-popup">
-            <div class="title title-nobg">
-                <i class="icon-error"></i>
-            </div>
+    <div class="commom-popup-outside  small-popup-outside" style="display: none;" >
+        <div class="commom-popup psell-popu">
+            <div class="title title-nobg "><i class="icon-error"></i></div>
             <div class="content">
-                <div class="up">
-                    您暂时还没有此类型的优惠券哦
+                <p class="sell-tc-txt">您暂时还没有此类型的优惠券<br/>
+                    无法使用权益
+                </p>
+                <div  class="sell-tc-iput">
+                    <input type="text" name="pwd" placeholder="请输入您的兑换码" >
                 </div>
-                <div class="commom-submit need-submit">
-                    <a class="btn-block btn-primary small-popup-btn" href="<?php echo Url::to(['caruser/accoupon'])?>" >去激活</a>
+                <div class="sell-btn">
+                    <a href="javascript:;" class="exchange-submit">激活</a>
+                    <a href='<?php echo Url::to(['carecarnew/index'])?>'>跳过</a>
                 </div>
             </div>
         </div>
@@ -196,6 +198,12 @@ use yii\helpers\Url;
                 <a href="javascript:;" class="driving-service">
                     <img src="/frontend/web/cloudcarv2/images/super_driving.png">
                     <span>代驾服务</span>
+                </a>
+            </li>
+            <li>
+                <a href="<?=$disurl?>" >
+                    <img src="/frontend/web/cloudcarv2/images/disinfectlog.png">
+                    <span>臭氧杀菌</span>
                 </a>
             </li>
             <?php foreach ($menulist as $menu): ?>
@@ -352,6 +360,7 @@ use yii\helpers\Url;
         </ul>
     </div>
 <?php endif; ?>
+    <p  class="yc-shuo-ul" style="color: #7e7e7e;padding-left: 20px">Copyright &copy; 2020 前海云车在线（深圳）信息技术有限公司 . <a href="http://beian.miit.gov.cn">粤ICP备18065077号</a>  </p>
 
 
     <!--<div class="commom-popup-outside  small-popup-outside" >
@@ -388,18 +397,36 @@ use yii\helpers\Url;
         </ul>
     </div>
 <?php endif;?>
+    <div class="commom-popup-outside  sell-popup-outside" style="display: none;" >
+        <div class="commom-popup psell-popu">
+            <div class="title title-nobg "><i class="icon-error"></i></div>
+            <div class="content">
+                <p class="sell-tc-txt">您暂时还没有此类型的优惠券<br/>
+                    无法使用权益
+                </p>
+                <div  class="sell-tc-iput">
+                    <input type="text" name="wash-pwd" placeholder="请输入您的兑换码" >
+                </div>
+                <div class="sell-btn">
+                    <a href="javascript:;" class="exchange-wash-submit">激活</a>
+                    <a href='<?php echo Url::to(['carwash/shoplistnew'])?>'>跳过</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 没有此优惠券弹窗  -->
 
     <!--<div style="height: 1.2rem"></div>-->
 
 <?php $this->beginBlock('script') ?>
     <script src="/frontend/web/cloudcarv2/js/swiper-3.0.4.min.js"></script>
     <script>
-
-
+        //服务暂停提示
+        //YDUI.dialog.alert('因春节期间，各地服务人员返乡，服务可能提供不了，敬请见谅，预计在 2020-02-09 08:00:00 恢复，感谢支持');
         //洗车服务 弹窗显示
         $('.yc-servise-ul>li>a.wash-service').on('click',function(){
             // runCommomLayer();
-            <?php if(count($washCoupon)==1): ?>
+            <?php if(count($washCoupon) != 0): ?>
             $.get('<?php echo Url::to(['carwash/checklimit'])?>',{},function(json){
                 if(json.status == 1){
                     window.location.href = json.url?json.url:"<?php echo $washCoupon[0]['show_coupon_url']?>";
@@ -409,7 +436,7 @@ use yii\helpers\Url;
             });
 
             <?php else: ?>
-            $('.commom-popup-outside').eq(0).show();
+            $('.sell-popup-outside').eq(0).show();
             <?php endif; ?>
         });
 
@@ -439,8 +466,58 @@ use yii\helpers\Url;
                 }
             })
         });
+        //洗车券激活
+        var isSubmit = false;
+        $('.exchange-wash-submit').on('touchstart', function () {
+            if (isSubmit) return false;
+            var pwd = $("input[name=wash-pwd]").val();
+            if (!pwd.length) {
+                YDUI.dialog.toast('请输入兑换码', 1000);
+                return false;
+            }
+            isSubmit = true;
+            YDUI.dialog.loading.open('正在提交');
+            $.post("<?php echo Url::to(['caruser/accoupon'])?>", {pwd: pwd}, function (json) {
+                YDUI.dialog.loading.close();
+                isSubmit = false;
+                if (json.status === 1) {
+                    YDUI.dialog.alert('兑换成功！',function () {
+                        window.location.href = "<?php echo Url::to(['caruser/coupon']);?>"
+                    });
 
+                } else if (json.status === 2) {
+                    window.location.href = "<?php echo Url::to(['caruser/meal']);?>"
+                } else {
+                    YDUI.dialog.alert(json.msg);
+                }
+            }, 'json');
+        });
+        //代驾券激活
+        var isSubmit1 = false;
+        $('.exchange-submit').on('touchstart', function () {
+            if (isSubmit1) return false;
+            var pwd = $("input[name=pwd]").val();
+            if (!pwd.length) {
+                YDUI.dialog.toast('请输入兑换码', 1000);
+                return false;
+            }
+            isSubmit1 = true;
+            YDUI.dialog.loading.open('正在提交');
+            $.post("<?php echo Url::to(['caruser/accoupon'])?>", {pwd: pwd}, function (json) {
+                YDUI.dialog.loading.close();
+                isSubmit1 = false;
+                if (json.status === 1) {
+                    YDUI.dialog.alert('兑换成功！',function () {
+                        window.location.href = "<?php echo Url::to(['caruser/coupon']);?>"
+                    });
 
+                } else if (json.status === 2) {
+                    window.location.href = "<?php echo Url::to(['caruser/meal']);?>"
+                } else {
+                    YDUI.dialog.alert(json.msg);
+                }
+            }, 'json');
+        });
         //代驾 弹窗显示
         $('.yc-servise-ul>li>a.driving-service').on('click',function(){
             $('.commom-popup-outside').eq(1).show();
@@ -453,6 +530,10 @@ use yii\helpers\Url;
         //关闭小弹窗
         $('.small-popup-outside>.commom-popup>.title>i').on('click',function(e){
             $('.small-popup-outside').hide();
+        });
+        //关闭优惠弹窗
+        $('.sell-popup-outside>.commom-popup>.title>i').on('click',function(e){
+            $('.sell-popup-outside').hide();
         });
         //初始化Swiper
         var mySwiper = new Swiper(".swiper-container", {

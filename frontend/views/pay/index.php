@@ -80,7 +80,8 @@ use yii\helpers\Url;
                         <span class="sp"><b>&yen;</b><?php echo $pro_info['price']?></span>
                         <div class="em webkitbox afterFour">
                             <i class="i1 minus"></i>
-                            <i class="i2">5</i>
+                            <input class="i2" value="5">
+                            <!--                            <i class="i2">5</i>-->
                             <i class="i3 add"></i>
                             个
                         </div>
@@ -152,17 +153,17 @@ use yii\helpers\Url;
 
 <script type="text/javascript">
     console.debug();
-/*    var swiper = new Swiper('.swiper-container', {
-        pagination: {
-            el: '.swiper-pagination',
-            dynamicBullets: true,
-        },
-    });*/
+    /*    var swiper = new Swiper('.swiper-container', {
+            pagination: {
+                el: '.swiper-pagination',
+                dynamicBullets: true,
+            },
+        });*/
 
     function changeNum(number){
         $('#product_number').val(number);
         var price = $('#product_price').val();
-        $('.i2').text(number);
+        $('.i2').val(number);
         console.log(parseFloat(price));
         var total = number*parseFloat(price);
         $('#allMoney').text(total);
@@ -173,6 +174,18 @@ use yii\helpers\Url;
         $('.add').click(function () {
             var number = $('#product_number').val();
             number = parseInt(number)+1;
+            changeNum(number);
+        });
+
+        // $('.i2').change(function () {
+        //     var number = $(this).val();
+        //     number = parseInt(number);
+        //     changeNum(number);
+        // });
+
+        $('.i2').on('input propertychange',function () {
+            var number = $(this).val();
+            number = parseInt(number);
             changeNum(number);
         });
 

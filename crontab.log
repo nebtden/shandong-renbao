@@ -1,0 +1,14 @@
+﻿//检查代驾券，每小时的第五分钟执行一次
+05 * * * * curl http://www.yunche168.com/frontend/web/cartask/checkecoupon.html?at=a32kfaai3kf32akfo0f23
+
+//检查救援券，每小时第十分钟执行一次
+10 * * * * curl http://www.yunche168.com/frontend/web/cartask/checksavecoupon.html?at=a32kfaai3kf32akfo0f23
+
+//检查洗车券，每月1号0点执行一次
+0 0 1 * * curl http://www.yunche168.com/frontend/web/cartask/checkwashcoupon.html?at=a32kfaai3kf32akfo0f23
+
+//检查代驾券是否使用或过期,通过接口，每隔5分钟执行一次
+*/5 * * * * curl http://www.yunche168.com/frontend/web/cartask/checkecar.html?at=a32kfaai3kf32akfo0f23
+
+//检查卡包，每天0点30分执行一次
+30 0 * * * curl http://www.yunche168.com/frontend/web/cartask/checkcouponpackage.html?at=a32kfaai3kf32akfo0f23

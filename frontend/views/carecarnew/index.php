@@ -187,7 +187,7 @@ use yii\helpers\Url;
 <!-- 代驾-初始阶段 -->
 <div class="bottom-place-order-fixed">
     <div class="driving-type">
-        <p class="driving-type-p"><span class="normal">日常</span> <span class="reserve">预约</span>  </p>
+         <!-- <p class="driving-type-p"><span class="normal">日常</span> <span class="reserve">预约</span>  </p>-->
         <p class="dj-xc"><a href="<?= Url::to(['carecarnew/list']) ?>" style="">代驾行程</a> </p>
     </div>
     <div class="commom-driving-popup init-popup place-order-fixed item-dailyLife" style="position: relative;bottom: 0px;padding-bottom: .6rem;">

@@ -35,7 +35,7 @@ use yii\helpers\Url;
     <button type="button" class="btn-block">出示服务码</button>
 </div>
 <div class="commom-tabar-height"></div>
-<?php if(isset($this->context->webUrl) && $is_weixin === false):?>
+<?php if(isset($this->context->webUrl)):?>
     <div class="m-actionsheet" id="J_ActionSheet">
         <a href="#" onclick="Navigate('bd')" class="actionsheet-item">百度地图</a>
         <a href="#" onclick="Navigate('gd')" class="actionsheet-item">高德地图</a>
@@ -66,10 +66,11 @@ use yii\helpers\Url;
     $('.commom-submit>.btn-block').on('click',function(){
         var couponId = '<?php echo $couponId; ?>';
         var shopId = '<?php echo $shopDetail['shopId']; ?>';
+        var shopName = '<?php echo $shopDetail['shopName']; ?>';
         YDUI.dialog.loading.open('服务码获取中');
         $.ajax({
             url: '<?php echo Url::to(['carwash/'.$url.'getcode'])?>',
-            data: {couponId:couponId, shopId:shopId},
+            data: {couponId:couponId, shopId:shopId,shopName:shopName},
             type: 'POST',
             dataType: 'json',
             timeout:60000,
@@ -78,13 +79,13 @@ use yii\helpers\Url;
                 if(json.status == 1){
                         showServiceCode(json.data);
                 }else{
-                    YDUI.dialog.toast(json.msg,'error', 1500);
+                    YDUI.dialog.toast(json.msg,'error', 15000);
                 }
             },
             complete: function(XMLHttpRequest,status){
                 if(status == 'timeout'){
                     YDUI.dialog.loading.close();
-                    YDUI.dialog.toast('请求错误'+status, 'error',1500 );
+                    YDUI.dialog.toast('请求错误'+status, 'error',15000 );
                 }
             }
         });
@@ -124,7 +125,7 @@ use yii\helpers\Url;
         <?php endif; ?>
     }
 
-    <?php if(isset($this->context->webUrl) && $is_weixin === false):?>
+    <?php if(isset($this->context->webUrl)):?>
     var shopInof='';
     //web端地图导航，弹出选择地图下拉菜单。
     function locate(){

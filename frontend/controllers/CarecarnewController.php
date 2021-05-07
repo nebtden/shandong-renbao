@@ -202,7 +202,7 @@ class CarecarnewController extends CloudcarController
 //        $phone = $fans['mobile'];
 
         $bonus_sn = $data['bonus_sn'];
-        $coupon = (new CarCoupon())->table()->where(['bonus_sn' => $bonus_sn,'uid'=>$user['uid']])->one();
+        $coupon = (new CarCoupon())->table()->where(['coupon_sn' => $bonus_sn,'uid'=>$user['uid']])->one();
         $token = $edr->get_authen_token($coupon['mobile']);
 
         if ($token === false) {
@@ -316,8 +316,8 @@ class CarecarnewController extends CloudcarController
         $user = $this->isLogin();
 
         $estimated_cost =   floatval($request->post('fee')) ;
-
-        $coupon = (new CarCoupon())->table()->where([
+        $couponModel = new CarCoupon();
+        $coupon = $couponModel->table()->where([
             'id'  => $data['coupon_id'],
             'uid' => $user['uid'],
             'status' => 1,
@@ -333,6 +333,21 @@ class CarecarnewController extends CloudcarController
             return $this->json(0, '用户授权失败');
         }
 
+
+
+
+        //查询优惠券是否可用；
+        $checkres2 = $edr->checkCouponAll($coupon['mobile'],2);
+        if(in_array($coupon['coupon_sn'],$checkres2['code']) ){
+            $couponModel->myUpdate(['status'=>2,'remark'=>'其它渠道使用','use_time'=>$checkres2['used'][$coupon['coupon_sn']]],['coupon_sn'=>$coupon['coupon_sn']]);
+            return $this->json(0, '此券已在其它渠道使用,不可重复使用！');
+        }
+        $checkres3 = $edr->checkCouponAll($coupon['mobile'],3);
+        if(in_array($coupon['coupon_sn'],$checkres3['code'])){
+            $couponModel->myUpdate(['status'=>3,'use_limit_time'=>strtotime($checkres3['limitTime'][$coupon['coupon_sn']])],['coupon_sn'=>$coupon['coupon_sn']]);
+            return $this->json(0, '卡券已过期');
+        }
+        
         $trans = Yii::$app->db->beginTransaction();
         try {
             //使用优惠券

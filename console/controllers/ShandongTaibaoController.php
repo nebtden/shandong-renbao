@@ -39,8 +39,13 @@ class ShandongTaibaoController extends Controller
         $cities = CarWashArea::find()->select(['id','name','code'])
             ->where([
                 'type_id'=>2,
+//                'id'=>675,
                 'parent_id'=>46, //山东省
             ])
+//            ->where([
+//                'type_id'=>3,
+//                'parent_id'=>675, //山东省
+//            ])
             ->andWhere([
                 '!=','id','47'  //排查青岛市
             ])
@@ -52,7 +57,8 @@ class ShandongTaibaoController extends Controller
         foreach ($cities as $city){
 
             //查找地区，
-            echo 1;
+            echo $city['name'];
+            echo "\n\r";;
 
             $areas = CarWashArea::find()->where([
                 'type_id'=>3,
@@ -74,6 +80,8 @@ class ShandongTaibaoController extends Controller
                 }
 
             }
+            echo $city['name'].'--end';
+            echo "\n\r";
 
         }
 
@@ -83,7 +91,7 @@ class ShandongTaibaoController extends Controller
     //更新
     public function area($city,$area){
         // $trans = Yii::$app->db->beginTransaction();
-
+        echo "\n\r";
         $postData = [];
 
         $postData['sourceCode'] = Yii::$app->params['shengda_sourceApp_new'];
@@ -113,12 +121,23 @@ class ShandongTaibaoController extends Controller
 
 
         if(!$shopList){
-            $area_model = AreaTaibao::findOne($area['id']);
+            echo "area_id".$area['id'].'----';
+            echo "\n\r";
+            $area_model = CarWashArea::findOne($area['id']);
             $area_model->is_get = -1;  //这个地区的-1，表示没数据，要小心
             $area_model->save();
+            //批量更新，对于没有获取到的，is_get = -1;
+            $conditions['is_get']=0;
+
+            print_r('$conditions');
+            print_r($conditions);
+            WashShopShandongTaibao::updateAll(['is_get'=>-1,'is_del'=>1,'is_post'=>0],$conditions);
+
             //$trans->commit();
             return false;
         }
+        echo "area_id  continue";
+        echo "\n\r";
 
         $shengDa->log('',\GuzzleHttp\json_encode($postData,JSON_UNESCAPED_UNICODE),\GuzzleHttp\json_encode($shopList,JSON_UNESCAPED_UNICODE));
 //                    print_r($shopList);
@@ -221,18 +240,21 @@ class ShandongTaibaoController extends Controller
 
 
     public function actionUpdate(){
-        $map = [
-            'prov' =>'山东省',
-//            'city' =>'烟台市',
-            'id'=>328
-        ];
-
-        //首先所有数据删除一次 //  1 新增  2 更新 3删除
-        $shopStatus = 3;
-        //$map['is_get']=-1;
-        $res = $this->delete($map,$shopStatus);
-        print($res);
-
+        $list = WashShopShandongTaibao::find()
+            ->where([
+                'is_get'=>1,
+                'yunche_delete'=>0, //山东省
+            ])
+            ->andWhere([
+                '!=','city','青岛市'  //排查青岛市
+            ])
+            ->asArray()
+            ->all();
+        foreach ($list as $value){
+            $map = ['id'=>$value['id']];
+            $shop_status = 2;
+            $res = $this->send($map,$shop_status);
+        }
     }
 
 
@@ -278,23 +300,14 @@ class ShandongTaibaoController extends Controller
 
             //首先所有数据删除一次 //  1 新增  2 更新 3删除
             $shopStatus = 3;
-//           $map['is_get']=-1;
             $res = $this->delete($map,$shopStatus);
-            if($res){
-//                Yii::$app->db->createCommand()
-//                    ->update(WashShopShandongTaibao::tableName(),
-//                        [ 'is_post'=>1 ], //columns and values
-//                        $map) //condition, similar to where()
-//                    ->execute();
-            }
+
 
             //  1 新增  2 更新 3删除
             $shopStatus = 1;
             $map['is_get']=1;  //表示删除了，重新上传
-            $map['yunche_delete']=1;  //表示删除了，重新上传
+            $map['yunche_delete']=0;  //表示删除了，重新上传
             $res = $this->send($map,$shopStatus);
-
-
             print_r($res);
             if($res){
                 if($res['ReturnCode']==1){
@@ -305,17 +318,19 @@ class ShandongTaibaoController extends Controller
                             $map) //condition, similar to where()
                         ->execute();
 
-                }else{
-                    // continue;
-                    //die('111');
                 }
             }
+
+            $shopStatus = 2;
+            $map['is_get']=1;  //表示删除了，重新上传
+            $map['yunche_delete']=0;  //表示删除了，重新上传
+            $res = $this->send($map,$shopStatus);
+
 
             //  1 新增  2 更新 3删除
             $shopStatus = 1;
             $map['is_get']=2;
             $res = $this->send($map,$shopStatus);
-
 
             print_r($res);
             if($res){
@@ -336,7 +351,6 @@ class ShandongTaibaoController extends Controller
 
         }
     }
-
     private function send($map,$shopStatus){
         $shopList = WashShopShandongTaibao::find()->where($map)->asArray()->all();
 
@@ -429,7 +443,6 @@ class ShandongTaibaoController extends Controller
                 'spCode' => $spCode,
                 'storePictures' => 'http://www.yunche168.com/'.$valavator,
                 'serverType' => '05',
-
             ];
 
             $params = [
@@ -449,6 +462,7 @@ class ShandongTaibaoController extends Controller
             $params = json_encode($repuestData,JSON_UNESCAPED_UNICODE);
             $res = W::http_post($url,$params);
             $res = json_decode($res,true);
+            print_r($res);
 
             if($res['ReturnCode']!=1){
                 echo '删除失败！';
@@ -460,7 +474,24 @@ class ShandongTaibaoController extends Controller
 
 
     public function actionTest(){
-        WashShopShandongTaibao::updateAll(['is_get'=>0]);
+        $map = [
+            'prov' =>'山东省',
+            'city' =>'日照市',
+            'is_post'=>1,
+            'id'=>148,
+        ];
+
+        //首先所有数据删除一次 //  1 新增  2 更新 3删除
+        $shopStatus = 3;
+        $res = $this->delete($map,$shopStatus);
+        print_r($res);
+        if($res){
+            Yii::$app->db->createCommand()
+                ->update(WashShopShandongTaibao::tableName(),
+                    [ 'is_del'=>1 ], //columns and values
+                    $map) //condition, similar to where()
+                ->execute();
+        }
     }
 
 }

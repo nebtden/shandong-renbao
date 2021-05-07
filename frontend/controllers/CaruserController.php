@@ -124,6 +124,33 @@ class CaruserController extends CloudcarController
         if ($this->mobile_is_exist($mobile)) {
             return $this->json(0, '手机号码被占用，请更换手机号码！');
         }
+
+        //检测手机号码
+        $cache = Yii::$app->cache;
+        $key = "mobile_send_".$mobile;
+        $number = $cache->get($key);
+        if(!$number){
+            $number = 0;
+            $cache->set($key, $number+1, 3600*12);
+        }else{
+            if ($number>=2) {
+
+                return $this->json(0, '手机号码一天内发送次数太多，请晚点再试!！');
+            }else{
+                $cache->set($key, $number+1, 3600*12);
+            }
+        }
+
+        $key = "mobile_time_limit_".$mobile;
+        $number = $cache->get($key);
+        if($number){
+            return $this->json(0, '手机号码发送太快，请隔一分钟后再试!！');
+        }else{
+            $cache->set($key, 1, 60);
+        }
+
+
+
         $f = W::sendSms($mobile);
         if (!$f) return $this->json(0, '验证码发送失败，请重试！');
         return $this->json(1, 'ok');
@@ -307,6 +334,7 @@ class CaruserController extends CloudcarController
                     //对这个批次中的优惠券，取最近一条记录，进行激活
                     $package_info = $package->table()->where(
                         [
+                            'status'=>1,
                             'uid' => 0,
                             'batch_nb' => $coupon['coupon_batch_no']
                         ]
@@ -407,6 +435,14 @@ class CaruserController extends CloudcarController
 //洗车券每月限制激活3张
             if(count($washPackage) >= 3){
                 return $this->json(0,'本月已激活3次洗车卡券，本月无法继续激活');
+            }
+//筛选出包含代驾券的券包 20210106 许雄泽添加
+            $daijiaPackage = array_filter($packages,function($val,$key){
+                return stripos($val['meal_info'],'"type":"1"') !== false;
+            },ARRAY_FILTER_USE_BOTH);
+//代驾券每月限制激活10张
+            if(count($daijiaPackage) >= 10){
+                return $this->json(0,'本月已激活10次代驾卡券，本月无法继续激活');
             }
             $jinyong=(new FansAccount())->select('status',['status' => 0 , 'uid'=>$user['uid']])->one();
             if($jinyong){

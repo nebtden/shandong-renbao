@@ -21,7 +21,7 @@ use yii\helpers\Url;
 <div class="m-actionsheet ActionProvince"  style="height: 60%">
     <div id="getpro" style="overflow-y: scroll ;height: 85%;">
         <?php foreach($province as $val): ?>
-            <a href="#" class="actionsheet-item" data-pid="<?= $val['pid']?>" data-name="<?= $val['name']?>" data-code="<?= $val['code']?>"><?php echo $val['name'] ?></a>
+            <a href="#" class="actionsheet-item" data-pid="<?= $val['id']?>" data-name="<?= $val['name']?>" data-code="<?= $val['code']?>"><?php echo $val['name'] ?></a>
         <?php endforeach;?>
     </div>
     <a href="javascript:;" class="actionsheet-action" >取消</a>
@@ -204,7 +204,7 @@ use yii\helpers\Url;
            //var lng = 116.327805;
         //   var lat = 30.22914400;//
           // var lat = 39.901209;
-
+        
         var company = '<?= $company;?>';
         YDUI.dialog.loading.open('洗车门店加载中');
         $.ajax({
@@ -354,19 +354,10 @@ use yii\helpers\Url;
         var code = $(this).attr('data-code');
         var pid = $(this).attr('data-pid');
         setdata('area-name',name,code,pid);
-        <?php if($company == 1): ?>
+
         var province_id = $('.province span').attr('data-code');
         var city_id = $('.city-name span').attr('data-code');
         var area_id = $('.area-name span').attr('data-code');
-        <?php elseif($company == 2): ?>
-        var province_id = $('.province span').attr('data-name');
-        var city_id = $('.city-name span').attr('data-name');
-        var area_id = $('.area-name span').attr('data-name');
-        <?php elseif($company == 3): ?>
-        var province_id = $('.province span').attr('data-pid');
-        var city_id = $('.city-name span').attr('data-pid');
-        var area_id = $('.area-name span').attr('data-pid');
-        <?php endif; ?>
 
         $('.ActionArea').actionSheet('close');
         getareashop(province_id,city_id,area_id);
@@ -382,16 +373,19 @@ use yii\helpers\Url;
 
     //获取市级
     function getCity(pid){
+
         $.ajax({
             url:'<?php echo Url::to(['carwash/city']) ?>',
             type:'POST',
             dataType: 'json',
             data:{pid:pid},
+
             success: function (data) {
+                console.log(data);
                 $(".city-name span").html(data['city'][0]['name']);
                 $(".city-name span").attr('data-code',data['city'][0]['code']);
                 $(".city-name span").attr('data-name',data['city'][0]['name']);
-                $(".city-name span").attr('data-pid',data['city'][0]['pid']);
+                $(".city-name span").attr('data-pid',data['city'][0]['id']);
                 eachcity('city-list',data['city']);
                 eachcity('area-list',data['area']);
             }
@@ -416,7 +410,7 @@ use yii\helpers\Url;
         var html = '';
         $('.'+ city +'').empty();
         $.each(data, function(index, val){
-            html+='<a href="#" class="actionsheet-item" data-code="'+ val['code'] +'" data-pid="'+ val['pid'] +'" data-name="'+ val['name']+'">' +
+            html+='<a href="#" class="actionsheet-item" data-code="'+ val['code'] +'" data-pid="'+ val['id'] +'" data-name="'+ val['name']+'">' +
              val['name'] +'</a>';
         });
         $('.'+ city +'').html(html);

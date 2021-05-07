@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\components\Payments;
+use common\models\PayCode;
 use frontend\util\PController;
 use common\models\PayCompany;
 use common\models\PayOrder;
@@ -21,6 +22,9 @@ class PayController extends CloudcarController {
         $request = Yii::$app->request;
         $id= $request->get('id');
         $product_info=  PayProduct::findOne($id)->toArray();
+        if($product_info->status!=1){
+            return '商品已下架！';
+        }
         $head_imgs = $product_info['head_img'];
         $images = explode(',',$head_imgs);
 
@@ -31,6 +35,22 @@ class PayController extends CloudcarController {
         ])->asArray()->all();
 
         return $this->render('index',array('pro_info'=>$product_info,'companies'=>$companies,'images'=>$images));
+    }
+
+    public function actionTest() {
+        $request = Yii::$app->request;
+        $id= $request->get('id');
+        $product_info=  PayProduct::findOne($id)->toArray();
+        $head_imgs = $product_info['head_img'];
+        $images = explode(',',$head_imgs);
+
+
+        //公司显示检测
+        $companies = PayCompany::find()->where([
+            'status'=>1
+        ])->asArray()->all();
+
+        return $this->render('test',array('pro_info'=>$product_info,'companies'=>$companies,'images'=>$images));
     }
 
 
@@ -58,6 +78,14 @@ class PayController extends CloudcarController {
             //逻辑查询，查询库存数量
             $product = PayProduct::findOne($product_id);
             $product_number = $product->product_number;
+            //检查name，code
+            $code_model = PayCode::find()->where([
+                'name'=>$name,
+                'code'=>$code,
+            ])->one();
+            if(!$code_model){
+                throw new \Exception('姓名、代码不匹配，请联系相应负责人！');
+            }
 
             if($product->status!=1){
                 throw new \Exception('不好意思，您的商品已经下架，请联系店铺管理员');

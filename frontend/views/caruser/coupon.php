@@ -52,8 +52,7 @@ use frontend\controllers\CaruserController;
         <li><a href="javascript:;" data-inner-nav="2">救援</a></li>
         <li><a href="javascript:;" data-inner-nav="5">加油</a></li>
         <li><a href="javascript:;" data-inner-nav="7">年检</a></li>
-        <li><a href="javascript:;" data-inner-nav="8">代步车</a></li>
-        <li><a href="javascript:;" data-inner-nav="9">ETC</a></li>
+        <li><a href="javascript:;" data-inner-nav="10">杀菌</a></li>
         <li><a href="javascript:;" data-inner-nav="3">其他</a></li>
     </ul>
     <div class="tab-panel tab-panel-outer" style="
@@ -68,7 +67,7 @@ use frontend\controllers\CaruserController;
                     <ul class="card-list-ul">
                         <?php foreach ($list as $val): ?>
                             <li data-type="<?= $val['coupon_type'] ?>"  data-status="<?= $val['status'] ?>"
-                                class="<?= CaruserController::$couponTypeCss[$val['coupon_type']]?> <?= ($val['status']==2||$val['status']==3)?'invalid':''?>">
+                                class="<?= CaruserController::$couponTypeCss[$val['coupon_type']]?> <?= (($val['status']==2 && $val['show_button'] != 'show')||$val['status']==3)?'invalid':''?>">
                                 <div class="title ">
                                     <i><?= $val['name'] ?></i>
                                     <?php switch($val['coupon_type']):case 1:?>
@@ -77,7 +76,7 @@ use frontend\controllers\CaruserController;
                                         <?php case 2:?>
                                             <span>包年</span>
                                             <?php break;?>
-                                        <?php case 4:?>
+                                        <?php case (4 || 10):?>
                                             <span>剩余<?= intval($val['show_coupon_left']) ?>次</span>
                                             <?php break;?>
                                         <?php case INSPECTION:?>
@@ -85,6 +84,8 @@ use frontend\controllers\CaruserController;
                                         <?php case 9:?>
                                             <span><?= intval($val['amount']) ?>次</span>
                                             <?php break;?>
+
+
                                         <?php default:?>
                                             <span>￥<?= $val['amount'] ?></span>
                                             <?php break;?>
@@ -93,11 +94,8 @@ use frontend\controllers\CaruserController;
                                 <div class="content">
                                     <div class="up">
                                         <div class="left">
-                                            <?php if(empty($val['servicecode']) && $val['coupon_type']==4): ?>
-                                            <span>&nbsp;</span>
-                                            <?php  elseif($val['coupon_type']==4 ): ?>
-                                                <span>服务码: <?= $val['servicecode'] ?></span>
-
+                                            <?php if($val['coupon_type']==4 || $val['coupon_type']==10 ): ?>
+                                                <span>券码: <?= $val['coupon_sn'] ?></span>
                                             <?php  else: ?>
                                                 <span>服务码: <?= $val['coupon_sn'] ?></span>
                                             <?php endif; ?>
@@ -106,22 +104,26 @@ use frontend\controllers\CaruserController;
                                             <?php if ($val['status'] ==2):?>
                                                 <span>使用日期：<?= $val['show_coupon_usetime'] ?></span>
                                             <?php endif;?>
-                                            <?php  if($val['coupon_type']==4 ): ?>
+                                            <?php  if($val['coupon_type']==4 || $val['coupon_type']==10): ?>
                                             <span><?= $val['show_coupon_desc'] ?></span>
                                             <?php endif; ?>
                                         </div>
                                         <div class="right">
                                             <?php if($val['status']<2 && $val['show_coupon_url']): ?>
                                                 <?php  if($val['coupon_type']==1 && $val['company']==1 ):  ?>
-                                                   <a data-url=<?= $val['show_coupon_url'] ?> href="javascript:;" class="btn didi">选择</a>
-                                                <?php elseif($val['coupon_type']==4 && $val['w_status']==2 && $val['is_mensal']==1):?>
+                                                   <a data-url="<?= $val['show_coupon_url'] ?>" href="javascript:;" class="btn didi">选择</a>
+                                                <?php elseif(($val['coupon_type']==4 || $val['coupon_type']==10) && $val['w_status']==2 && $val['is_mensal']==1):?>
                                                     <a class="btn " href="javascript:;">本月已使用</a>
                                                 <?php else: ?>
                                                     <a class="btn wash-click"  data-url="<?= $val['show_coupon_url'] ?>" href="javascript:;">使用</a>
                                                 <?php endif;?>
 
                                             <?php elseif ($val['status']==2):?>
-                                                <a class="btn" href="javascript:;">已使用</a>
+                                                <?php if($val['show_button'] == 'show'){?>
+                                                    <a data-show="<?= $val['show_button']?>" data-url="<?= $val['show_coupon_url'] ?>" href="javascript:;" class="btn didi">选择</a>
+                                                <?php }else{?>
+                                                    <a class="btn" href="javascript:;">已使用</a>
+                                                <?php }?>
                                             <?php elseif ($val['status']==3):?>
                                                 <a class="btn " href="javascript:;">已失效</a>
                                             <?php endif; ?>
@@ -160,6 +162,10 @@ use frontend\controllers\CaruserController;
 </div>
 <?php $this->beginBlock('script'); ?>
 <script>
+    //服务暂停提示1611676800
+    <?php  if(time() > 1611676800 && time() < 1614384000){?>
+        YDUI.dialog.alert('因春节期间，各地服务人员返乡或疫情限制出行，2021-01-27至2021-02-26服务可能提供不了，敬请见谅，预计在 2021-02-27 08:00:00 恢复，感谢支持');
+    <?php }?>
     //内嵌选项卡1点击
     $('.tab-nav .tab-nav-item').on('click',function(e){
         //设置状态为0，即全部
@@ -174,6 +180,11 @@ use frontend\controllers\CaruserController;
     //滴滴代驾点击
     $('.didi').on('click',function(){
         var url = $(this).data('url');
+        var show = $(this).data('show');
+        if(show == 'show'){
+            window.location.href = url;
+            return;
+        }
         $.get(url,{},function (json) {
             if(json.status == 1){
                 window.location.href = json.url;
