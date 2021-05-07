@@ -1,0 +1,38 @@
+html,body{
+	width:100%;
+	height: 100%;
+	margin: 0;
+}
+.imgWrap{
+	width:100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+.imgWrap>img{
+	width: 100%;
+}
+.btn-item{
+	width: 100%;
+	position: absolute;
+	top: 42%;
+	left: 0;
+	padding: 0 .77rem;
+}
+.btn-item>a{
+	display: block;
+	height: 1rem;
+	line-height: 1rem;
+	text-align: center;
+	border: 2px solid #fff;
+	font-size: .4rem;
+	border-radius: .5rem;
+}
+.btn-item>a.parking-btn{
+	color: #fff;
+}
+.btn-item>a.voucher-btn{
+	color: #327ef5;
+	background-color: #fff;
+	margin-top: .34rem;
+}

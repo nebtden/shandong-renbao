@@ -1,0 +1,103 @@
+html,body{width:100%;height: 100%;overflow: hidden}
+.bg-o{background: url("../../images/law/bg.jpg") no-repeat center / 100% 100%}
+.bg-t{background: url("../../images/law/bg1.jpg") no-repeat center / 100% 100%}
+.login-content .tit-img{text-align: center;padding-top: 1.30rem}
+.login-content .tit-img img{display: inline-block;width:4.69rem }
+.login-content .login-form{margin-top: .60rem;padding: 0  15.6%;box-sizing: border-box}
+.login-content .login-form  .iptBox{display: -webkit-flex;display: flex;margin-top: .06rem;}
+.login-content .login-form  .iptBox span{display: inline-block;font-size: .30rem;height: .60rem;line-height: .60rem;color: #fff;width: 1.14rem;text-align: center}
+.login-content .login-form  .iptBox .yzm{min-width:1.10rem;display:inner-block;padding:0 .05rem;height:.60rem;line-height:.60rem;background:#0089A7;margin-left:.05rem;font-size:.22rem;color:#fff;text-align:center;}
+.login-content .login-form  .iptBox:nth-child(even) span{background: #47AF01}
+.login-content .login-form  .iptBox:nth-child(odd) span{background: #0089A7}
+.login-content .login-form  .iptBox input{width: 100%;-webkit-flex: 1;flex: 1;font-size: .30rem;height: .60rem;background: #fff;padding-left: .30rem;border: none;outline: none;box-sizing: border-box}
+.btn-box{text-align: center}
+.login-content .login-form  .btn-box{margin-top: .32rem}
+.btn-box a{display:block;width:100%;height: .60rem;line-height: .60rem;background: #0089A7;color: #fff;font-size: .30rem;letter-spacing: .08rem;text-align: center; -webkit-box-shadow: 0 .06rem 0 #5DC2D6 ;box-shadow: 0 .06rem 0 #5DC2D6 ;cursor: pointer}
+.test-content .tit-img{text-align: center;padding-top:.50rem}
+.test-content .tit-img img{display: inline-block;width:2.98rem }
+.test-content .test-form{margin-top: .14rem;padding:0  9.3%;box-sizing: border-box;}
+.test-content .test-form .test-form-c{padding: .50rem .40rem;background:#fff;position: relative}
+.test-content .test-form .test-form-c:after{
+    position: absolute;
+    content: '';
+    width: 1.14rem;
+    height: 1.14rem;
+    top:-0.57rem;
+    right:  -.2rem;
+    background: url("../../images/law/toux.png") no-repeat  center / 100% 100%;
+    z-index: 2
+}
+.test-content .test-form .test-form-c .questions-num{text-align: center;font-size: .34rem;color: #008eaa;font-weight: 700;}
+.test-content .test-form .test-form-c .questions-num span{display: inline-block;width: .36rem;height: .36rem;line-height: .35rem;text-align: center;color: #fff;border-radius: 50%;background: #47AF01;margin: 0 .08rem}
+.test-content .test-form .test-form-c .questions-tit{font-size: .24rem;color: #000;line-height:1.5;margin-top: .20rem}
+.test-content .test-form .test-form-c .questions-option{padding: .40rem .46rem  .80rem}
+.test-content .test-form .test-form-c  .questions-option p{margin-top: .30rem}
+.test-content .test-form .test-form-c .questions-option  p *{vertical-align: middle}
+.test-content .test-form .test-form-c .questions-option em{display: inline-block;width: .28rem;height: .28rem;border: 1px solid #BFBFBF;border-radius: 50%;position: relative;cursor: pointer}
+.test-content .test-form .test-form-c .questions-option em.active:before{
+    position: absolute;
+    content: '';
+    width: .20rem;
+    height:.20rem;
+    border-radius: 50%;
+    top:50%;
+    left:50%;
+    margin-top: -.10rem;
+    margin-left: -.10rem;
+    background:#47AF01;
+}
+.test-content .test-form .test-form-c .questions-option span{width: 100%;-webkit-flex: 1;flex: 1;font-size: .24rem;margin-left: .24rem}
+.test-content .test-form .btn-box{margin-top: .25rem}
+
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    background: #ccc!important;
+    box-shadow: none!important;
+}
+section{height: 100%;overflow-y: scroll ;overflow-x: hidden;padding-bottom: .6rem;}
+.test-result-box{margin-top: 1.36rem;position: relative;}
+.test-result-box .txt-img{position: absolute; width:102%;left: -1%;top:-1.1rem}
+.test-result-box .txt-img img{width: 100%}
+.test-result-box .test-result-c {padding: 0 .50rem;}
+.test-result-box .test-result-c .test-result-center{background: #fff;padding-top: 1.2rem;overflow: hidden;}
+.test-result-box .test-result-c .test-result-center p{text-align: center;font-size:0;}
+.test-result-box .test-result-c .test-result-center p *{vertical-align: middle}
+.test-result-box .test-result-c .test-result-center p span{display: inline-block;font-size: .34rem;height: .50rem;line-height: .50rem;padding: 0 .1rem;color: #fff}
+.test-result-box .test-result-c .test-result-center p.fx{margin-top: .06rem}
+.test-result-box .test-result-c .test-result-center p.df span{background: #47AF01}
+.test-result-box .test-result-c .test-result-center p.fx span{background: #0082A2}
+.test-result-box .test-result-c .test-result-center p em{display: inline-block;font-size: .40rem;height: .50rem;line-height: .50rem;padding: 0 .1rem}
+.test-result-box .test-result-c .test-result-center p.df em{background:#D6FABE;color: #47AF01}
+.test-result-box .test-result-c .test-result-center p.fx em{background: #D5EDFB;color: #0082A2}
+.test-result-box .test-result-c .mainRisk{margin-top: .12rem;background: #fff;text-align: center;font-size: .24rem;color: #dc483c;font-weight: bold;padding: .36rem 0;position: relative}
+.test-result-box .test-result-c .mainRisk:after{
+    position: absolute;
+    content: '主要风险';
+    width: 1.6rem;
+    height:.50rem;
+    background: #DC483C;
+    color: #fff;
+    font-weight: bold;
+    font-size: .34rem;
+    top:-0.31rem;
+    left:50%;
+    margin-left: -.8rem;
+
+}
+.test-result-box .test-result-c  .btn-box{margin-top: .08rem}
+.errorResultMask{position: fixed;width: 100%;height: 100%;left: 0;top: 0;background: rgba(0,0,0,0.7);z-index: 999;display: none}
+.errorResultMask .errorResult-center{position: absolute;width: 100%;left: 0;top: 50%;-webkit-transform: translate(0,-50%);transform: translate(0,-50%)}
+.errorResultMask .errorResult-center .errorResult-tit{position: absolute;width: 100%;top: -1.6rem;left: 0;z-index: 2}
+.errorResultMask .errorResult-center .errorResult-tit img{width: 100%}
+.errorResultMask .errorResult-center .errorResult-content{width: 62%;margin:0 auto;;background: #fff;min-height: 5rem;position: relative}
+.errorResultMask .errorResult-center .errorResult-close{position: absolute;width: .50rem;height: .95rem;left: 50%;margin-left: -.25rem;bottom: -.95rem;cursor: pointer}
+.errorResultMask .errorResult-center .errorResult-close img{width: 100%}
+.errorResultMask .errorResult-center  .errorResult-content{font-size: .22rem;color: #000;padding: .86rem  0.28rem 1rem .28rem;line-height: 1.5}
+.errorResultMask .errorResult-center  .errorResult-content p{margin-top: .10rem}
+img{pointer-events: none}
+#container{width:80%;height:300px;margin-left: .20rem; margin-top: .30rem;}
+.lawyer-comment{background: #fff;text-align: left;color: #333;font-size: .22rem;padding: .1rem .50rem}
+.lawyer-comment h1{font-size: .34rem;font-weight: bold}
+.lawyer-comment p{margin-top: .1rem}
