@@ -9,11 +9,13 @@ class Eddriving
 {
     //const HOST = "http://open.d.api.edaijia.cn/";
     const DEVELOP = "http://open.d.api.edaijia.cn/";
-    const NORMAL = "http://open.api.edaijia.cn/";
+    const NORMAL = "http://open.api.edaijia.cn/";//http://open.api.edaijia.cn
     const COUPON_RECHARGE = "customer/coupon/recharge/bind";
     const COUNPON_LIST = "customer/coupon/list";
     const COUNPON_BIND = "customer/coupon/binding";
     const COUNPON_ALLINFO = 'oapi/customer/coupon/allInfo';
+    //优惠券查询-新
+    const COUPON_INFO = 'customer/coupon/list';
     //获取周边空闲的司机
     const NEARBY_DRIVER = "driver/idle/list";
 
@@ -650,4 +652,49 @@ class Eddriving
         }
         return false;
     }
+
+
+    /**
+     * 取消订单
+     * @param $token 令牌
+     * @param $phone 客户手机号
+     * @param string $reasonCode
+     * @param string $reasonDetail
+     * @return bool
+     */
+    public function checkCoupon($phone,$status = 1)
+    {
+        $data = [
+            'token' => $this->get_authen_token($phone),
+            'pageNo' => 0,
+            'pageSize' => 1000,
+            'status' => $status,
+            'phone' => $phone
+        ];
+        $data = $this->get_sign($data);
+        $url = $this->host . self::COUPON_INFO;
+        $res = W::http_post($url,$data);
+        if($res){
+            $res = json_decode($res,true);
+            $this->errCode = $res['code'];
+            $this->errMsg = $res['message'];
+            if(0 === (int)$res['code']){
+                return $res['data'];
+            }
+        }
+        return false;
+    }
+    public function checkCouponAll($phone,$status)
+    {
+        $couponall= [];
+        $res = $this->checkCoupon($phone,$status);
+        if($res){
+            $couponall['code'] = array_column($res,'sn');
+            $couponall['limitTime'] = array_column($res,'limitTime','sn');
+            $couponall['used'] = array_column($res,'used','sn');
+        }
+        return $couponall;
+    }
+
+
 }

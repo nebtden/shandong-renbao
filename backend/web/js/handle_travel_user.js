@@ -143,6 +143,7 @@ $('#sousuo').click(function(){
         code:opt2,
         orgain:opt3,
         jigou:opt4
+
     }},function(row){
         console.log(row);
     });

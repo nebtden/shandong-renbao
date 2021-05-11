@@ -104,7 +104,7 @@ function queryParams(params) {
     var opt6 = $("#amount").val();
     var opt7 = $("#batch_no").val();
     var opt8 = $("#coupon_id").val();
-    var opt9 = $("#companyid").val();
+    var opt9 =  $("#companyid").attr('data-id');
     var opt10 = $("#start_time").val();
     var opt11 = $("#end_time").val();
     var opt12 = $("#s_time").val();
@@ -172,7 +172,7 @@ $('#sousuo').click(function(){
     var opt6 = $("#amount").val();
     var opt7 = $("#batch_no").val();
     var opt8 = $("#coupon_id").val();
-    var opt9 = $("#companyid").val();
+    var opt9 =  $("#companyid").attr('data-id');
     var opt10 = $("#start_time").val();
     var opt11 = $("#end_time").val();
     var opt12 = $("#s_time").val();

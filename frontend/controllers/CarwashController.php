@@ -6,6 +6,7 @@ use common\components\AlxgBase;
 use common\components\BaiduMap;
 use common\components\CarCouponAction;
 use common\components\DianDianWash;
+use common\components\DianDian;
 use common\components\Helpper;
 use common\models\Car_coupon_explain;
 use common\models\Car_tuhunotice;
@@ -23,8 +24,10 @@ use common\models\WashShop;
 use common\models\WashShopService;
 use common\components\W;
 use common\components\ShengDaCarWash;
+use common\components\ShengDaCarNewApi;
 use common\components\NationalLife;
 use common\models\Car_paternalor;
+use common\models\CarWashArea;
 use yii\helpers\Url;
 use Yii;
 use yii\db\Exception;
@@ -33,7 +36,7 @@ use yii\web\Response;
 class CarwashController extends CloudcarController
 {
 
-    protected $uid;
+    protected $uid = '0';
     public $menuActive = 'caruser';
     public $layout = "cloudcarv2";
     public $site_title = '洗车服务';
@@ -129,7 +132,7 @@ class CarwashController extends CloudcarController
         $company = $request->get('company');
 
         $alxg_sign = W::getJSAPIShare(Yii::$app->session['token']);
-        $areaObj = new Car_washarea();
+        $areaObj = new CarWashArea();
         $province = $areaObj->getProvince();
         $info = (new CarCoupon())->table()->select('companyid')->where(['id'=>$couponId])->one();
         if($info['companyid'] == Yii::$app->params['national_life']['companyid'] ){
@@ -148,7 +151,7 @@ class CarwashController extends CloudcarController
     public function actionShoplistnew()
     {
         $alxg_sign = W::getJSAPIShare(Yii::$app->session['token']);
-        $areaObj = new Car_washarea();
+        $areaObj = new CarWashArea();
         $province = $areaObj->getProvince();
         $is_weixin = $this->is_weixin();
         return $this->render('shoplistnew',compact('is_weixin','alxg_sign','province'));
@@ -168,9 +171,7 @@ class CarwashController extends CloudcarController
                 'lat' => $post['lat'],
                 'lng' => $post['lng']
             ];
-			// if($post['lng']=='112.93134'){
-				// return '非法请求';
-			// }
+            $post['pagesize'] = 10;
             switch($post['company']){
                 case 1:
                     $data = $session['wash_dd_shop_list'];
@@ -179,9 +180,11 @@ class CarwashController extends CloudcarController
                     }
                     break;
                 case 2:
-                    $data = $session['wash_sd_shop_list'];
-                    if($data['limit_time']<$now){
+                    $data = $session['wash_sd_shop_list_lat'];
+                    if($data['limit_time'] < $now){
                         $data =  $this->shengDaShopList($post);
+                    }else{
+                        $session['wash_sd_shop_list'] = $session['wash_sd_shop_list_lat'];
                     }
                     break;
                 case 3:
@@ -206,6 +209,7 @@ class CarwashController extends CloudcarController
         $request = Yii::$app->request;
         if($request->isPost){
             $post = $request->post();
+            $post['pagesize'] = 50;
             switch($post['company']){
                 case 1:
                     $data = $this->dianDianShopList($post);
@@ -365,13 +369,12 @@ class CarwashController extends CloudcarController
         $data = [];
         //盛大请求数据
         $postData = [
-            'source' => Yii::$app->params['shengda_sourceApp'],
-           // 'pro' => $post['pro'],
-            'isMap' => 1,
-            'page' => '1',
-            'pageSize' => '50'
+            'sourceCode' => Yii::$app->params['shengda_sourceApp_new'],
+            'serviceId' => '5044',
+            'pageNo' => '1',
+            'pageSize' => $post['pagesize']
         ];
-
+        set_time_limit(0);
         try {
             //经纬度查询门店
             if($post['lng'] && $post['lat']){
@@ -384,62 +387,66 @@ class CarwashController extends CloudcarController
                 if(!$address){
                     throw new \Exception('经纬度转换地理位置失败');
                 }
-                $location = (new Car_washarea())->getLocation($address);
+                (new DianDian())->requestlog('getshoplist.html', json_encode($address), '', 'Shengda', 0, 'Shengda');
+                $location = (new CarWashArea())->getLocation($address);
+                $iscun = 1;
             }else {
                 //地理位置查询门店
-                $postData['city'] = $post['city'];
-                $postData['area'] = $post['area'];
+                $postData['cityNumber'] = $post['city'];
+                $postData['areaNumber'] = $post['area'];
                 $address = [
                     'province' => $post['province'],
                     'city' => $post['city'],
                     'district' => $post['area'],
                 ];
                 //获取省市区
-                $location = (new Car_washarea())->getLocation($address);
+                $location = (new CarWashArea())->getLocation($address);
+                $iscun = 2;
             }
- 
- 
-            $shengDa = new ShengDaCarWash();
+
+
+            $shengDa = new ShengDaCarNewApi();
             $result = $shengDa->merchantDistanceList($postData);
+
             if(!$result){
                 throw new \Exception('服务器连接失败');
             }
-			
-			// if($post['lng']=='112.93134'){
-				// return '非法请求4444';
-			// }
 
-
-            $result = strstr($result['encryptJsonStr'],'|',true);
-            $result = json_decode($result,true);
-            $shopList = $result['coEnterprises'];
+            $res=$result['data'];
+            $resultarr = json_decode( $res,true);
+            $resultJson = $shengDa->decrypt($resultarr['encryptJsonStr']);
+            $resultdata = explode('|',$resultJson);
+            $shoparr = json_decode( $resultdata[0],true);
+            $shopList = $shoparr['coEnterprises'];
             if(empty($shopList)){
                 throw new \Exception('没有门店数据');
             }
             $newData = [];
             $now = time();
             $wash_point = Yii::$app->session['wash_point'];
-			
+
             foreach($shopList as $val){
-                $point = $this->changePoint($val['map']['longitude'],$val['map']['latitude']);
+
+                $coordinate=explode(',',$val['coordinate']);
+                $point = $this->changePoint($coordinate[0],$coordinate[1]);
                 if($wash_point){
                     $val['distance'] = BaiduMap::getDistance($wash_point['lat'], $wash_point['lng'], $point['lat'], $point['lng']);
                 }
                 $newData[] = [
-                    'shopName' => $val['name'],
-                    'shopId' =>intval($val['map']['latitude']*1000000),
-                    'prov' => $location['province']['name'],
-                    'city' => $location['city']['name'],
-                    'district' => $location['area']['name'],
+                    'shopName' => $val['shopName'],
+                    'shopId' =>$val['shopId'],
+                    'prov' =>$val['proName'] ,
+                    'city' =>$val['cityName'] ,
+                    'district' =>$val['areaName'] ,
                     'shopLng' => $point['lng'],
                     'shopLat' => $point['lat'],
                     'distance' => round($val['distance'],2),
-                    'shopAvator' => $val['logo'],
-                    'images' => $val['logo'],
+                    'shopAvator' => $val['logoPath'],
+                    'images' => $val['logoPath'],
                     'shopTel' => $val['telephone'],
                     'shopAddress' => $val['address'],
-                    'serviceStartTime' => '09:00',
-                    'serviceEndTime' => '18:00',
+                    'serviceStartTime' => $val['openTime'],
+                    'serviceEndTime' => $val['restTime'],
                     'score' => 4,
                     'c_time' => $now,
                     'u_time' => $now,
@@ -455,7 +462,11 @@ class CarwashController extends CloudcarController
                 'limit_time' => time()+300,
                 'wash_point'=>$wash_point
             ];
+
+            if( $iscun === 1 )Yii::$app->session['wash_sd_shop_list_lat'] = $data;
             Yii::$app->session['wash_sd_shop_list'] = $data;
+
+
         } catch (\Exception $e){
             $this->status = 0;
             $this->msg = $e->getMessage();
@@ -565,6 +576,7 @@ class CarwashController extends CloudcarController
 
         $shopObj = new WashShop();
         $shopDetail = [];
+
         switch($company) {
             //典典洗车门店列表
             case 1:
@@ -593,12 +605,14 @@ class CarwashController extends CloudcarController
                     }
                 }
 
-                //插入或者更新门店
-                $shopObj->insertOrUpdate($shopDetail,'shopName',$shopDetail['shopName']);
+
                 //如果没有门店图片就显示默认图片
                 if(empty($shopDetail['images'])){
                     $shopDetail['images'] = '/frontend/web/images/qiche.jpg';
                 }
+                if(empty($shopDetail))  break;
+                //插入或者更新门店
+                $shopObj->insertOrUpdate($shopDetail,'shopId',$shopId);
                 break;
             case 3:
                 $shopInfo = (new Wash_shop())->select('*','id = '.$shopId)->one();
@@ -616,12 +630,12 @@ class CarwashController extends CloudcarController
         }
         $url = WashOrder::$company[$company];
         $coupon = (new CarCoupon())->table()->where(['id'=>$couponId,'uid'=>$this->uid])->one();
-
         $alxg_sign = W::getJSAPIShare(Yii::$app->session['token']);
         if($coupon['companyid'] == Yii::$app->params['national_life']['companyid'] ){
             $footer = 'hidden';
             $this->site_title = '中国人寿综合服务平台';
         }
+
         return $this->render('shopdetail',compact('shopDetail','couponId','alxg_sign','url','coupon','footer'));
     }
 
@@ -633,20 +647,26 @@ class CarwashController extends CloudcarController
     {
         $request = Yii::$app->request;
         $session = Yii::$app->session;
-        $shopId = $request->get('shopId',null);
+        $shopId = (int)$request->get('shopId',null);
         $company = $request->get('company',null);
 
         $shopObj = new WashShop();
         $shopDetail = [];
         $shopInfo = $session['wash_sd_shop_list'];
-        foreach ($shopInfo['shopList'] as $val){
-            if($val['shopId'] == $shopId){
-                $shopDetail = $val;
-                break;
+        if($shopInfo){
+            foreach ($shopInfo['shopList'] as $val){
+                if($val['shopId'] == $shopId){
+                    $shopDetail = $val;
+                    break;
+                }
             }
+            //插入或者更新门店
+            $shopObj->insertOrUpdate($shopDetail,'shopId',$shopDetail['shopId']);
+        }else{
+            $shopDetail = $shopObj->table()->select('*')->where(['shopId'=>$shopId])->one();
         }
-        //插入或者更新门店
-        $shopObj->insertOrUpdate($shopDetail,'shopName',$shopDetail['shopName']);
+        if(empty($shopDetail)) exit('没有门店数据');
+
         //如果没有门店图片就显示默认图片
         if(empty($shopDetail['images'])){
             $shopDetail['images'] = '/frontend/web/images/qiche.jpg';
@@ -729,7 +749,7 @@ class CarwashController extends CloudcarController
     {
         $user = $this->fans_account();
         $shopDetail = (new WashShop())->table()->select()->where(['shopId' => $data['shopId']])->one();
-        $shopDetail['service'] = (new WashShopService())->table()->select()->where(['shopId' => $data['shopId'], 'lv2ServiceTypeId' =>1036 ])->one();
+        $shopDetail['service'] = (new WashShopService())->table()->select()->where(['shopId' => $data['shopId'], 'lv2ServiceTypeId' =>5044 ])->one();
         //查询用户绑定的优惠券 并比较剩余次数是否为0
         $couponlist = (new CarCoupon())->get_user_bind_coupon_list($this->uid);
         $key = array_search($data['couponId'],array_column($couponlist, 'id'));
@@ -743,7 +763,7 @@ class CarwashController extends CloudcarController
         $dianDianWash = new DianDianWash();
         $data['phone'] = $user['mobile'];
         $data['lv1ServiceTypeId'] = 1;
-        $data['lv2ServiceTypeId'] = 1036;
+        $data['lv2ServiceTypeId'] = 5044;
 
         $now =time();
         try {
@@ -779,7 +799,7 @@ class CarwashController extends CloudcarController
                 'c_time' => $now,
                 'date_day' => date('d', $now),
                 'date_month' => date('Ym', $now),
-                'serverType' => 1036,
+                'serverType' => '5044',
                 'amount' => $shopDetail['service']['price']?:'30.00',
                 'serviceName' => $shopDetail['service']['serviceName']?:'普洗（轿车）',
                 'status' => ORDER_HANDLING,
@@ -816,6 +836,7 @@ class CarwashController extends CloudcarController
         if($request->isPost){
             $shopId = trim($request->post('shopId',null));
             $couponId = trim($request->post('couponId',null));
+            $shopName = trim($request->post('shopName',null));
             $status = 1;
             $msg = '';
             try {
@@ -850,6 +871,15 @@ class CarwashController extends CloudcarController
                         throw new \Exception($res['msg']);
                     }
                 }
+                //洗车券每天限制一次 20210115 许雄泽
+                $checkOrder = $obj->table()->where([
+                    'uid' => $this->uid,
+                    'status' => ORDER_SUCCESS,
+                    'date_day' => date('d'),
+                    'date_month' => date('Ym')
+                ])->count();
+                if($checkOrder >= 1)  throw new \Exception('洗车券每天限制使用1次');
+
                 //如果当月已经使用过卡券
                 if($washOrder['status'] == ORDER_SUCCESS){
                     //当月限制使用1次返回信息，否则继续下单
@@ -863,10 +893,10 @@ class CarwashController extends CloudcarController
                         }
                     }
                 }
-                if($washOrder['shopId'] != $shopId){
-                    $shop = (new WashShop())->getShop($shopId);
+                if($washOrder['shopId'] != $shopId || empty($washOrder['shopName'])){
+
                     $washOrder['shopId'] = $shopId;
-                    $washOrder['shopName'] = $shop['shopName'];
+                    $washOrder['shopName'] = $shopName;
                     $obj->myUpdate($washOrder);
                     if($coupon['companyid'] == Yii::$app->params['national_life']['companyid']){
                         $datags = [
@@ -943,37 +973,39 @@ class CarwashController extends CloudcarController
                 throw new \Exception('卡券核销失败');
             }
             //通过盛大接口下单
-            $sourceApp = Yii::$app->params['shengda_sourceApp'];
+            $sourceApp = Yii::$app->params['shengda_sourceApp_new'];
             $param = [
-                'source' => $sourceApp,
-                'orgSource' => $sourceApp,
-                'order' => $sourceApp.$mainOrder['order_no'],
-                'randStr' => $mainOrder['order_no'],
-                'carType' => '03',
-                'userInfo' => $user['mobile'],
-                'endTime' => date('Y-m-t',$now),
-                'userOrderType' => 'order',
-                'generationRule' => '02',
+                'sourceCode'   => $sourceApp,
+                'orgSource'    => $sourceApp,
+                'order'        => $sourceApp.$mainOrder['order_no'],
+                'phoneNum'     => $user['mobile'],
+                'randStr'      => $mainOrder['order_no'],
+                'carType'      => '03',
+                'endTime'      => date('Y-m-t',$now),
+                'activityType' => '5044'
             ];
-            $washObj = new ShengDaCarWash();
-            $result = $washObj->receiveOrder($param);
 
-            if($result['resultCode'] != 'SUCCESS'){
+            $washObj = new ShengDaCarNewApi();
+            $result = $washObj->receiveOrder($param);
+            $res=$result['data'];
+            $resultarr = json_decode($res,true);
+            if($resultarr['resultCode'] != 'SUCCESS'){
                 throw new \Exception('服务器响应失败');
             }
 
-            $resultJson = strstr($result['encryptJsonStr'],'|',true);
             $mcity = (new CarMobile())->table()->select('city')->where(['package_id'=>$coupon['package_id']])->one();
             $city = $mcity['city'] ? $mcity['city'] : '';
-            $resultCode = json_decode( $resultJson,true);
+            $resultJson = $washObj->decrypt($resultarr['encryptJsonStr']);
+            $resultdata = explode('|',$resultJson);
+            $resultCode = json_decode( $resultdata[0],true);
             $insertData = [
-                'consumerCode' => $resultCode['order'],
+                'consumerCode' => $resultCode['orderEncrypt'],
                 'expiredTime' => strtotime(date('Y-m-t',$now)),
                 'uid' => $this->uid,
                 'mobile' => $user['mobile'],
                 'mainId' => $mainOrder['id'],
                 'mainOrderSn' => $mainOrder['order_no'],
-                'outOrderNo' => $resultCode['encryptCode'], //盛大订单编号
+                'outOrderNo' => $resultCode['orderCode'], //盛大订单编号
                 'couponId' => $coupon['id'],
                 'shopId' => $shopId,
                 'shopName' => $shopDetail['shopName'],
@@ -981,7 +1013,7 @@ class CarwashController extends CloudcarController
                 'c_time' => $now,
                 'date_day' => date('d', $now),
                 'date_month' => date('Ym', $now),
-                'serverType' => 1036,
+                'serverType' => '5044',
                 'amount' => $shopDetail['service']['price']?:'30.00',
                 'serviceName' => $shopDetail['service']['serviceName']?:'普洗（轿车或SUV）',
                 'status' => ORDER_HANDLING,
@@ -1128,7 +1160,7 @@ class CarwashController extends CloudcarController
                 'c_time' => $now,
                 'date_day' => date('d', $now),
                 'date_month' => date('Ym', $now),
-                'serverType' => 1036,
+                'serverType' => '5044',
                 'promotion_price' => $shopDetail['promotion_price'],
                 'amount' => $shopDetail['price'],
                 'serviceName' => '普洗（轿车）',
@@ -1265,40 +1297,46 @@ class CarwashController extends CloudcarController
     public function cancelShengDaOrder($washOrder)
     {
         $user = $this->isLogin();
-        $sourceApp = Yii::$app->params['shengda_sourceApp'];
+        $sourceApp = Yii::$app->params['shengda_sourceApp_new'];
         $param = [
-            'source' => $sourceApp,
-            'order' => $washOrder['outOrderNo'],
-            'refundStatus' => 2
+            'sourceCode' => $sourceApp,
+            'orderId' => $washOrder['outOrderNo']
         ];
-        $washObj = new ShengDaCarWash();
+
+        $washObj = new ShengDaCarNewApi();
         $result = $washObj->cancelOrder($param);
-        $resultJson = strstr($result['encryptJsonStr'],'|',true);
-        $resultCode = json_decode( $resultJson,true);
-        $resultCode['resultCode'] = 'SUCCESS';
-        $resultCode['failNum'] = 0;
-        $resultCode['succNum'] = 1;
+        $res=$result['data'];
+        $resultCode = json_decode( $res,true);
+
         try {
             if(!$resultCode){
                 throw new \Exception('接口连接失败');
             }
             $trans = Yii::$app->db->beginTransaction();
             //resultCode状态 SUCCESS=成功 ERROR=错误 FAIL=已使用
+
+            $orderModel = new WashOrder();
             switch($resultCode['resultCode']){
-                case 'FAIL':
+                case 'ERROR':
+                    throw new \Exception('订单取消失败');
+                    break;
+                case 'IS_CANCEL':
+
+                    $washOrder['status'] = ORDER_CANCEL;
+                    $washOrder['s_time'] = time();
+                    $r = $orderModel -> myUpdate($washOrder);
+                    throw new \Exception('订单已取消');
+                    break;
+                case 'IS_USE':
                     $washOrder['status'] = ORDER_SUCCESS;
                     $washOrder['s_time'] = time();
-                    $r = (new WashOrder())->myUpdate($washOrder);
+                    $r = $orderModel -> myUpdate($washOrder);
                     throw new \Exception('服务码已使用');
                     break;
                 case 'SUCCESS':
-                    if($resultCode['failNum'] ==1 ){
-                        throw new \Exception('订单取消失败');
-                    }
-                    if($resultCode['succNum'] ==1){
                         $washOrder['status'] = ORDER_CANCEL;
                         $washOrder['s_time'] = time();
-                        $r = (new WashOrder())->myUpdate($washOrder);
+                        $r = $orderModel -> myUpdate($washOrder);
                         if($washOrder['companyid'] == Yii::$app->params['national_life']['companyid']){
                             $couponinfo = (new CarCoupon())->table()->select('coupon_sn')->where(['id'=>$washOrder['couponId']])->one();
                             $datags = [
@@ -1321,7 +1359,6 @@ class CarwashController extends CloudcarController
                         if($useCoupon == false){
                             throw new \Exception('卡券恢复失败');
                         }
-                    }
                     break;
             }
             $trans->commit();
@@ -1480,7 +1517,7 @@ class CarwashController extends CloudcarController
     //获取省份
     public function actionPro()
     {
-        $areaObj = new Car_washarea();
+        $areaObj = new CarWashArea();
         $province = $areaObj->getProvince();
 
         return $this->render('city',['province' => $province]);
@@ -1494,19 +1531,12 @@ class CarwashController extends CloudcarController
     {
         $request = Yii::$app->request;
         if($request->isPost){
-            //type区分典典和其他平台，典典区域数据使用Car_washarea表
-            $type = $request->post('type',null);
-            $pid = Yii::$app->request->post('pid',null);
-            if(!$type){
-                $areaObj = new Car_washarea(); //典典区域数据表
-                $city = $areaObj->getCity($pid);
-                $area = $areaObj->getArea($city[0]['pid']);
-            }else{
-                $areaObj = new Wash_area();
-                $city = $areaObj->getCity($pid);
-                $area = $areaObj->getArea($city[0]['code']);
-            }
 
+            $pid = $request->post('pid',null);
+
+            $areaObj = new CarWashArea();
+            $city = $areaObj->getCity($pid);
+            $area = $areaObj->getArea($city[0]['id']);
             $data = [
                 'city' => $city,
                 'area' => $area
@@ -1525,14 +1555,8 @@ class CarwashController extends CloudcarController
     {
         $request = Yii::$app->request;
         if($request->isPost){
-            //type区分典典和其他平台，典典区域数据使用Car_washarea表
-            $type = $request->post('type',null);
             $pid = Yii::$app->request->post('pid',null);
-            if(!$type){
-                $areaObj = new Car_washarea(); //典典区域数据表
-            }else{
-                $areaObj = new Wash_area();
-            }
+            $areaObj = new CarWashArea();
             $area = $areaObj->getArea($pid);
             return json_encode($area);
         }

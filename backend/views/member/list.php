@@ -24,7 +24,12 @@ use yii\helpers\Url;
                 <option value="2">取消关注</option>
             </select>
         </div>
-
+        <div class="form-group">
+            <input type="text" class=" form-control" name="s_time" id="s_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索录入开始时间">
+        </div>
+        <div class="form-group">
+            <input type="text" class=" form-control" name="e_time" id="e_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索录入结束时间">
+        </div>
         <button type="button" class="btn btn-info" id="msousuo"><span class="glyphicon glyphicon-search"></span> 搜索</button>
         <button type="button" class="btn btn-info" id="download"> 导成excel</button>
     </form>
@@ -54,6 +59,7 @@ use yii\helpers\Url;
 </table>
 <input type="hidden" id="card" value="">
 <script src="../js/layer/layer.js"></script>
+<script src="../js/laydate/laydate.js" type="text/javascript"></script>
 <script type="text/javascript">
     var type='id',stext,order='desc',ids='',imgcon=1,more,eurl="<?php echo Url::to(['member/edit']);?>",
         listurl='<?php echo Url::to(['member/list']); ?>',
@@ -62,7 +68,15 @@ use yii\helpers\Url;
         var keywords=$('input[name=keywords]').val();
         var card=$('#card').val();
         var status=$("select[name=status]").val();
-        $.post('<?php echo Url::to(['member/download']);?>',{keywords:keywords,status:status,card:card},function(s){
+        var opt11 = $("#s_time").val();
+        var opt12 = $("#e_time").val();
+        $.post('<?php echo Url::to(['member/download']);?>',{
+            keywords:keywords,
+            status:status,
+            card:card,
+            s_time:opt11,
+            e_time:opt12
+        },function(s){
             layer.open({
                 type: 1,
                 title: '<font style="font-weight:bold;font-size:14px;">导出数据</font>',

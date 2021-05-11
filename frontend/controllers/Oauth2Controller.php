@@ -57,6 +57,7 @@ class Oauth2Controller extends Controller
                 $user['headimgurl'] = $wx['headimgurl'];
                 $user['nickname'] = $wx['nickname'];
                 $user['source'] = '网页授权';
+                $user['subscribe_time'] = time();
             }
             $id = $fansModel->myInsert($user);
             if(!$id) return false;

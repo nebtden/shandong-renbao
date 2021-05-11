@@ -26,6 +26,7 @@ use yii\helpers\Url;
         <div class="form-group"><input type="text" id="apply_phone" name="apply_phone"  class="form-control"  placeholder="客户电话"></div>
         <div class="form-group"><input type="text" id="car_no" name="car_no"  class="form-control"  placeholder="车牌号"></div>
         <div class="form-group"><input type="text" id="encrypt_code" name="encrypt_code"  class="form-control"  placeholder="洗车凭证"></div>
+        <div class="form-group"><input type="text" id="shop_name" name="shop_name"  class="form-control"  placeholder="门店名称"></div>
         <div class="form-group">
             <select id="status" name="status"  placeholder="状态"  class="form-control">
                 <option value="">状态 </option>
@@ -34,12 +35,22 @@ use yii\helpers\Url;
                 <?php endforeach;?>
             </select>
         </div>
+
         <div class="form-group">
-            <input type="text" class=" form-control" name="start_time" id="start_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索创建开始时间">
+            <input type="text" class=" form-control" name="s_time" id="s_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索创建开始时间">
         </div>
         <div class="form-group">
-            <input type="text" class=" form-control" name="end_time" id="end_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索创建结束时间">
+            <input type="text" class=" form-control" name="e_time" id="e_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索创建结束时间">
         </div>
+
+        <div class="form-group">
+            <input type="text" class=" form-control" name="start_time" id="start_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索完成开始时间">
+        </div>
+        <div class="form-group">
+            <input type="text" class=" form-control" name="end_time" id="end_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索完成结束时间">
+        </div>
+
+
         <button type="button" class="btn btn-info" id="sousuo"><span class="glyphicon glyphicon-search"></span> 搜索</button>
         <button type="button" class="btn btn-info" id="download"> 导成excel</button>
 
@@ -55,12 +66,14 @@ use yii\helpers\Url;
         <th data-field="apply_phone">客户电话</th>
         <th data-field="car_rental_vehicle_no">车牌号</th>
         <th data-field="point_time">预约时间</th>
-        <th data-field="service_type">服务类型</th>
-        <th data-field="address">地址</th>
+        <th data-field="address">门店区域</th>
+<!--        <th data-field="addressdesc">门店地址</th>-->
+        <th data-field="shop_name">门店名称</th>
         <th data-field="encrypt_code">洗车凭证</th>
         <th data-field="consumer_code">盛大核销码</th>
         <th data-field="status">状态</th>
         <th data-field="c_time">创建时间</th>
+        <th data-field="u_time">完成时间</th>
         <!--<th data-field="action" data-align="center" data-formatter="actionFormatter" data-events="actionEvents">操作</th>-->
     </tr>
     </thead>
@@ -82,6 +95,9 @@ use yii\helpers\Url;
         var opt6 = $("#status").val();
         var opt7 = $("#start_time").val();
         var opt8 = $("#end_time").val();
+        var opt9 = $("#s_time").val();
+        var opt10 = $("#e_time").val();
+        var opt11 = $("#shop_name").val();
         var url = '<?php echo Url::to(["order/taibaodownload"]);?>';
         var content = "<ul style='padding:10px 20px;'>";
         $.getJSON(url,{
@@ -92,7 +108,11 @@ use yii\helpers\Url;
             encrypt_code:opt5,
             status:opt6,
             start_time:opt7,
-            end_time:opt8
+            end_time:opt8,
+            s_time:opt9,
+            e_time:opt10,
+            shop_name:opt11
+
         },function(json){
             if(json.status == 1){
                 $.each(json.data,function(){

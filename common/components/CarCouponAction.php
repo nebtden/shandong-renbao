@@ -661,15 +661,14 @@ class CarCouponAction extends Component
                 $val['mobile'] = $this->user['mobile'];
                 //如果不限制每月使用次数，则根据优惠券的exprie_days来设置过期时间
                 if($val['is_mensal'] == 0){
-                    $val['use_limit_time'] = $now + $val['expire_days'] * 24 * 3600;
+                    $ac_end_time= $now + $val['expire_days'] * 24 * 3600;
+                    //激活日期结束时间戳 20201225 许雄泽
+                    $val['use_limit_time'] = mktime(23,59,59,date("m",$ac_end_time),date("d",$ac_end_time),date("Y",$ac_end_time));
                 }else{
                     //洗车券过期时间是按自然月计算，所以激活要根据amount设置过期时间
                     $amount = (int)$val['amount'];
-//                    $endDate = strtotime("+{$amount} month", strtotime(date("Ym") . '01000000')) - 1;
-//                    $val['use_limit_time'] = $endDate;
-//                     @todo simon.zhang 用户投诉，失效
-                    $val['use_limit_time']  = $now + $amount * 24 * 3600 * 31;
-
+                    $endDate = strtotime("+{$amount} month", strtotime(date("Ym") . '01000000')) - 1;
+                    $val['use_limit_time'] = $endDate;
                 }
                 $val['package_id'] = $this->package['id'];
                 $val['companyid'] = $this->package['companyid'];

@@ -29,7 +29,9 @@ class CarCoupon extends AlxgBase
         '5' => '油卡充值券',
         '7' => '年检券',
         '8' => '代步券',
-        '9' => 'ETC兑换券'
+        '9' => 'ETC兑换券',
+        '10' => '臭氧杀菌券',
+        '11' => '爱奇艺',
     ];
 
     //优惠券类型，0未知，1代驾券，2救援券，3积分券，4洗车券
@@ -42,7 +44,9 @@ class CarCoupon extends AlxgBase
         '6' => '在线洗车券',
         '7' => '年检券',
         '8' => '代步券',
-        '9' => 'ETC兑换券'
+        '9' => 'ETC兑换券',
+        '10' => '臭氧杀菌券',
+        '11' => '爱奇艺',
     ];
 
     //优惠券类型，0未知，1代驾券，2救援券，3积分券，4洗车券
@@ -134,7 +138,17 @@ class CarCoupon extends AlxgBase
             ],
             'showkey'=>'etcinfo',
             'showtext'=>'ETC兑换券详情（面额，数量）'
-        ]
+        ],
+        '10' => [
+            'name'=>'臭氧杀菌券',
+            'company'=>[
+                '2' => '盛大'
+            ],
+            'showkey'=>'disinfection',
+            'showtext'=>'臭氧杀菌兑换券详情（面额，数量）'
+        ],
+
+
     ];
 
 
@@ -253,6 +267,7 @@ class CarCoupon extends AlxgBase
     public function get_user_bind_coupon_list($uid = 0, $type = null,$is_web=0)
     {
         $map = ['uid' => $uid];
+        $map['status'] = [1,2,3];
         if ($type) $map['coupon_type'] = $type;
         $temp = $this->table()->where($map)->orderBy('`status` asc,coupon_type asc,use_limit_time asc')->all();
         $list = [];
@@ -323,6 +338,13 @@ class CarCoupon extends AlxgBase
                 $info['show_coupon_style'] = 'testing-wrapper';
                 $info['show_coupon_short'] = '立减';
                 break;
+            case 10:
+                $info['show_coupon_type_text'] = '臭氧杀菌券';
+                $info['show_coupon_name'] = '<em>' . floatval($coupon['amount']) . '</em>次';
+                $info['show_coupon_desc'] = '仅用于抵扣使用臭氧杀菌服务时所产生的费用';
+                $info['show_coupon_style'] = 'washCar-wrapper';
+                $info['show_coupon_short'] = '全额';
+                break;
         }
         $coupon = array_merge($coupon, $info);
         return $coupon;
@@ -366,7 +388,13 @@ class CarCoupon extends AlxgBase
                     if($coupon['company']==0 ){
                         $url = 'http://'.$_SERVER['HTTP_HOST'].'/frontend/web/carecarnew/index.html?coupon_id='.$coupon['id'];
                     }elseif($coupon['company']==1){
-                        $url = 'http://'.$_SERVER['HTTP_HOST'].'/frontend/web/didi/index.html?coupon_id='.$coupon['id'];
+                        $order = (new CarSubstituteDriving())->table()->select('url,status')->where(['coupon_id'=>$coupon['id']])->one();
+                        if($coupon['status'] == 2 && $order['status'] == 0){
+                            $info['show_button'] = 'show';
+                            $url = $order['url'];
+                        }else{
+                            $url = 'http://'.$_SERVER['HTTP_HOST'].'/frontend/web/didi/index.html?coupon_id='.$coupon['id'];
+                        }
                     }
                 }
                 $info['show_coupon_type_text'] = '代驾券';
@@ -375,6 +403,7 @@ class CarCoupon extends AlxgBase
                 $info['show_coupon_style'] = 'daijia';
                 $info['show_coupon_url'] = $url;
                 $info['company'] = $coupon['company'];
+
                 break;
             case 2:
                 if ($coupon['amount'] < 0) {
@@ -419,7 +448,7 @@ class CarCoupon extends AlxgBase
                         case 2: //盛大洗车
                             $info['show_coupon_url'] = Url::to(['carwash/shoplist', 'couponId' => $coupon['id'],'company'=>2]);
                             $wash_info = (new WashOrder())->getconsCode($coupon['uid'], $coupon['id'],2);
-                            $wash_info['sn'] = $wash_info['consumerCode'];
+                            $wash_info['sn'] = $coupon['coupon_sn'];
                             $text= '';
                             break;
                         case 3: //自营洗车
@@ -446,7 +475,8 @@ class CarCoupon extends AlxgBase
                         $num = $coupon['amount'] - $coupon['used_num'];
                         $all = $num;
                     }
-                    $desc = "本月剩余免费洗车<i>{$num}</i>次&nbsp;&nbsp;&nbsp;共计剩余<i>{$all}</i>次</span>";
+                    $desc = "剩余免费洗车<i>{$num}</i>次</span>";
+                    if($coupon['is_mensal'] == 1)$desc = "本月剩余免费洗车<i>{$num}</i>次&nbsp;&nbsp;&nbsp;共计剩余<i>{$all}</i>次</span>";
                 }
                 $info['show_coupon_type_text'] = '洗车券';
                 $info['show_coupon_company'] = self::$wash_company[$coupon['company']];
@@ -517,6 +547,50 @@ class CarCoupon extends AlxgBase
                 $info['show_coupon_short'] = '全额';
                 $info['show_coupon_desc'] = '仅用于兑换平台ETC';
                 $info['show_coupon_style'] = 'etc';
+            case 10:
+                $w_sn = '';
+                $w_stauts = '';
+                $all = 0;
+                $desc = '仅用于抵扣使用臭氧消毒服务时所产生的费用';
+                if ($w_sn) $coupon['coupon_sn'] = $w_sn;
+                //在未失效的情况下
+
+                if($coupon['status'] == COUPON_ACTIVE){
+                    $info['show_coupon_url'] = Url::to(['car-disinfect/shoplist', 'couponId' => $coupon['id'],'company'=>2]);
+                    $wash_info = (new WashOrder())->getconsCode($coupon['uid'], $coupon['id'],2);
+                    $wash_info['sn'] = $wash_info['consumerCode'];
+                    $text= '';
+                    if(is_array($wash_info)) {
+                        $w_sn = $wash_info['sn'];
+                        $w_stauts = $wash_info['status'];
+                    }else {
+                        $w_sn = $text;
+                    }
+                    $num = ($w_stauts > 1) ? 0 : 1;
+                    list($today['y'], $today['m']) = explode('-', date("Y-m", time()));
+                    list($active['y'], $active['m']) = explode('-', date('Y-m', $coupon['active_time']));
+                    $e_num = ($today['y'] - $active['y']) * 12 + $today['m'] - $active['m'];
+                    if (!$num) $e_num++;
+                    $all = floatval($coupon['amount'] - $e_num);
+                    //是否限制每个月必须使用一次
+                    if($coupon['is_mensal'] == 0){
+                        $num = $coupon['amount'] - $coupon['used_num'];
+                        $all = $num;
+                    }
+                    $desc = "剩余免费消毒<i>{$num}</i>次</span>";
+                    if($coupon['is_mensal'] == 1)$desc = "本月剩余免费消毒<i>{$num}</i>次&nbsp;&nbsp;&nbsp;共计剩余<i>{$all}</i>次</span>";
+                }
+                $info['show_coupon_type_text'] = '洗车券';
+                $info['show_coupon_company'] = self::$wash_company[$coupon['company']];
+                $info['show_coupon_left'] = $all;
+                $info['coupon_sn'] = $w_sn;
+                $info['w_status'] = $w_stauts;
+                $info['servicecode'] = $w_sn;
+                $info['show_coupon_all'] = $all;
+                $info['show_coupon_desc'] = $desc;
+                $info['show_coupon_style'] = 'etc';
+                $info['show_coupon_short'] = '全额';
+                break;
         }
         $coupon = array_merge($coupon, $info);
         return $coupon;

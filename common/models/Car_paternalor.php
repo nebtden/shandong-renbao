@@ -20,6 +20,7 @@ class Car_paternalor extends AlxgBase
         6=>'',
         INSPECTION=>'年检服务',
         SEGWAY=>'代步服务',
+        10=>'臭氧杀菌服务',
     ];
 
 
@@ -33,6 +34,7 @@ class Car_paternalor extends AlxgBase
         6=>"",
         INSPECTION=>"/frontend/web/cloudcarv2/images/agency-yearly-inspection.png",
         SEGWAY=>"/frontend/web/cloudcarv2/segway/img/daibu.png",
+        10=>"/frontend/web/cloudcarv2/images/disinfect.png",
     ];
 
     /**

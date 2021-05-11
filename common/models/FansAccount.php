@@ -19,6 +19,7 @@ class FansAccount extends Base_model
     public static $userstatus = [
         '0' => '禁用',
         '1' => '正常',
+        '2' => '风控'
     ];
     public static $useris_web = [
         '0' => '微信',

@@ -103,8 +103,6 @@ function queryParams(params) {
     var opt5 = $("#status").val();
     var opt6 = $("#start_time").val();
     var opt7 = $("#end_time").val();
-
-
     return {
         pageSize: params.limit,
         pageNumber: params.pageNumber,

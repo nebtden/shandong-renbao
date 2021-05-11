@@ -98,6 +98,8 @@ function queryParams(params) {
     var opt1 = $('#uname').val();
     var opt2 = $('#sec').val();
     var opt3 = $('#status').val();
+    var opt11 = $("#s_time").val();
+    var opt12 = $("#e_time").val();
     return {
         pageSize: params.limit,
         pageNumber: params.pageNumber,
@@ -108,7 +110,9 @@ function queryParams(params) {
         ids: ids,
         uname: opt1,
         id: opt2,
-        status: opt3
+        status: opt3,
+        s_time:opt11,
+        e_time:opt12
     };
 }
 
@@ -136,7 +140,16 @@ $('#saveupt').click(function () {
     var op1 = $('#name').val();
     var op2 = $('#sort').val();
     var id = $('#id').val();
-    $.post(upturl, {op1: op1, op2: op2, id: id}, function (s) {
+    var opt11 = $("#s_time").val();
+    var opt12 = $("#e_time").val();
+    $.post(upturl, {
+        op1: op1,
+        op2: op2,
+        id: id,
+        s_time:opt11,
+        e_time:opt12
+
+    }, function (s) {
         console.log(s);
         $('.table').bootstrapTable('refresh');
     });

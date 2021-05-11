@@ -217,13 +217,12 @@ class DiDi
     {
 //        $params['customerKey'] = $params['customerKey'];
 //        $params['privilegeId'] = $params['privilegeId'];
-
         $aPlatParams = $this->_genPlatParams($params['ttid'], $this->key, 'lj.nbs.u.loginbyTp', '1.0.0');
 
         $result = $this->_request($aPlatParams, $params, $this->secret);
 
-
-
+        //写入日志
+        $this->datalog(\GuzzleHttp\json_encode($aPlatParams),\GuzzleHttp\json_encode($params),\GuzzleHttp\json_encode($result));
         //如果登录之后，可以不再登录
         if ($result && $result['code'] == 200) {
             $data = $result['data'];
@@ -366,6 +365,27 @@ class DiDi
             return false;
 
         }
+    }
+    /**
+     * 写入日志
+     * @param $status
+     * @param $msg
+     * @param $data
+     */
+    private function datalog($params,$data,$result='')
+    {
+
+        $path = Yii::$app->basePath.'/web/log/diandian/'.date('Y-m').'/';
+        if(!is_dir($path)){
+            mkdir($path,0755);
+        }
+        $file = fopen($path.date('Y-m-d').'.log','a+');
+        $content = '======================'.date('Y-m-d H:i:s').'======================'.PHP_EOL;
+        $content.= 'params:'.$params.PHP_EOL;
+        $content.= 'data:'.$data.PHP_EOL;
+        $content.= 'result:'.$result.PHP_EOL;
+        fwrite($file,$content);
+        fclose($file);
     }
 }
 

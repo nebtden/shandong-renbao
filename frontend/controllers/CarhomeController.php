@@ -35,7 +35,7 @@ class CarhomeController extends CloudcarController
 
     public function actionIndex()
     {
-        $uid = Yii::$app->session['wx_user_auth']['uid'];
+        $uid = Yii::$app->session['wx_user_auth']['uid'] ? Yii::$app->session['wx_user_auth']['uid'] : '-1' ;
 
         //在首页列出所有的代驾优惠券
         $companys = (new CarCoupon())->getDrivingCompanyList($uid);

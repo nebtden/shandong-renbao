@@ -44,10 +44,14 @@ class CaruorderController extends CloudcarController
         $w_st = WashOrder::$status_text;
 
         $model = new CarPaternalor();
-        $main = $model->select("{{%car_paternalor}}.id,{{%car_paternalor}}.c_time,{{%car_paternalor}}.coupon_amount,{{%car_paternalor}}.type,{{%car_coupon}}.name as coupon_name", "{{%car_paternalor}}.uid = " . $user['uid'])
-            ->join('LEFT JOIN', '{{%car_coupon}}', '{{%car_paternalor}}.coupon_id = {{%car_coupon}}.id')
-            ->orderBy('{{%car_paternalor}}.id desc')
-            ->all();
+        $main = [];
+        if($user['uid']){
+            $main = $model->select("{{%car_paternalor}}.id,{{%car_paternalor}}.c_time,{{%car_paternalor}}.coupon_amount,{{%car_paternalor}}.type,{{%car_coupon}}.name as coupon_name", "{{%car_paternalor}}.uid = " . $user['uid'])
+                ->join('LEFT JOIN', '{{%car_coupon}}', '{{%car_paternalor}}.coupon_id = {{%car_coupon}}.id')
+                ->orderBy(' {{%car_paternalor}}.id DESC ')
+                ->all();
+        }
+
         $rescue = new Car_rescueor();
         $oil = new CarOilor();
         $insorder = new CarInsorder();

@@ -70,30 +70,7 @@ function uploadImg_dan(fid,tid,w,h){
         }
     });
 }
-function uploadImg_xu(fid,tid,w,h){
-    $('#'+fid).diyUpload({
-        url:'/backend/web/server/fileupload.php?w='+w+'&h='+h,
-        success:function( data ) {
-            if(data.error)
-            {
-                alert(data.error.message)   ;
-                history.go(0);
-            }
-            else
-            {
-                console.info( data );
-                $('input[name="'+tid+'"]').val(data.result);
-                //  $('input[name="'+tid+'"]').next('img').remove();
-                //  $('#'+fid).hide();
-            }
 
-        },
-        error:function( err ) {
-            // console.info( err );
-            //alert(err);
-        }
-    });
-}
 
 //$('#hadpic').diyUpload({
 //	url:'/backend/web/server/fileupload.php',

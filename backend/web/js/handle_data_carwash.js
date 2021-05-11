@@ -100,7 +100,7 @@ function queryParams(params) {
     var opt1 = $("#servicecode").val();
     var opt2 = $("#end_time").val();
     var opt3 = $("#status").val();
-    var opt4 = $("#companyid").val();
+    var opt4 = $("#companyid").attr('data-id');
     var opt5 = $("#start_time").val();
     return {
         pageSize: params.limit,
@@ -148,7 +148,7 @@ $('#sousuo').click(function(){
     var opt1 = $("#servicecode").val();
     var opt2 = $("#end_time").val();
     var opt3 = $("#status").val();
-    var opt4 = $("#companyid").val();
+    var opt4 = $("#companyid").attr('data-id');
     var opt5 = $("#start_time").val();
     $('.table').bootstrapTable('refresh',{query:{
         servicecode:opt1,

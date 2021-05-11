@@ -60,11 +60,7 @@ use yii\helpers\Html;
         <div class="form-group">
             <label for="inputPassword3" class="col-sm-2 control-label">公司名称</label>
             <div class="col-sm-3">
-                <select  name="company" id="companyid"  placeholder="公司名称"  class="form-control">
-                    <?php foreach ($companys as $key => $val):?>
-                        <option value="<?=$val['id']?>"><?=$val['name']?></option>
-                    <?php endforeach;?>
-                </select>
+                <input type="text" id="companyid" name="company"  class="form-control"  placeholder="客户公司">
             </div>
         </div>
         <div class="form-group">
@@ -153,8 +149,19 @@ use yii\helpers\Html;
 <div class="yinying" style="
 position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opacity: 0.6;z-index: 1000; display:none;"><span ></span>
 </div>
+<script src="../js/complete.js" ></script>
 <script src="/backend/web/js/laydate/laydate.js" type="text/javascript"></script>
 <script>
+    $("#companyid").bigAutocomplete({
+        width: 604,
+        url: "<?php echo Url::to(['coupon/get-new-company']); ?>",
+        before: function () {
+        },
+        callback: function (data) {
+            $("#companyid").attr('data-id',data.id);
+
+        }
+    });
     $(function(){
 
         $("#ajax-post").click(function(){
@@ -173,9 +180,11 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
                 num = $("input[name=num]").val(),
                 generate_num = $("input[name=generate_num]").val(),
                 batch_no = $("input[name=batch_no]").val(),
-                companyid = $("#companyid").val(),
+                companyid = $("#companyid").attr('data-id'),
                 scene = $("#scene").val(),
-                scene_text =$("#scene").find("option:selected").text();
+                scene_text =$("#scene").find("option:selected").text(),
+                use_limit_time = $("#use_limit_time").val()
+                ;
 
             if(coupon_type === '5'){
                 amount = $("#oil_type").val();
@@ -184,7 +193,10 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
                 alert('请输入正确的面额或使用次数');
                 return false;
             }
-
+            if(!use_limit_time){
+                alert('请选择过期时间');
+                return false;
+            }
             if(coupon_type === '2' && Number(amount) > 366){
                 alert('道路救援券使用次数不能大于366');
                 return false;
@@ -217,6 +229,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
                 coupon_num:num,
                 generate_num:generate_num,
                 scene:scene,
+                use_limit_time:use_limit_time,
                 amount:amount
             }, function (json) {
                 if (json.status === 1) {
@@ -282,7 +295,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
         var generate_num = $("#generate_num").val(),
             use_limit_time = $("#use_limit_time").val(),
             province = $("#province").val(),
-            companyid = $("#companyid").val(),
+            companyid = $("#companyid").attr('data-id'),
             is_redeem = $("#is_redeem").val(),
             gu_amount = $("#gu_amount").val(),
             couponinfo =  new Array;

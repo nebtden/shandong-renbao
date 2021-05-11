@@ -51,6 +51,15 @@ use yii\helpers\Url;
                 <?php endforeach;?>
             </select>
         </div>
+        <div class="form-group">
+            <select id="service_text" name="service_text"  placeholder="商品名称"  class="form-control">
+                <option value="">商品名称</option>
+                <?php foreach ($service_text as $key => $val):?>
+                    <option value="<?=$key?>"><?=$val?></option>
+                <?php endforeach;?>
+            </select>
+        </div>
+        <div class="form-group"><input type="text" id="store_name" name="store_name"  class="form-control"  placeholder="网点名称"></div>
         <button type="button" class="btn btn-info" id="sousuo"><span class="glyphicon glyphicon-search"></span> 搜索</button>
         <button type="button" class="btn btn-info" id="download"> 导成excel</button>
 
@@ -98,6 +107,8 @@ use yii\helpers\Url;
         var opt8  = $("#s_time").val();
         var opt9 = $("#e_time").val();
         var opt10 = $("#companyid").val();
+        var opt11 = $("#service_text").val();
+        var opt12 = $("#store_name").val();
         var url = '<?php echo Url::to(["order/porderdownload"]);?>';
         var content = "<ul style='padding:10px 20px;'>";
         $.getJSON(url,{
@@ -110,7 +121,9 @@ use yii\helpers\Url;
             end_time:opt7,
             s_time:opt8,
             e_time:opt9,
-            companyid:opt10
+            companyid:opt10,
+            service_text:opt11,
+            store_name:opt12
         },function(json){
             if(json.status == 1){
                 $.each(json.data,function(){

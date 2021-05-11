@@ -91,7 +91,7 @@ class BController extends BaseController {
                 '途虎在线洗车订单管理' => array('url' => 'order/washpaylist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '年检订单管理' => array('url' => 'order/asorderlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '盛大洗车订单管理' => array('url' => 'order/dianwashlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
-                '代步车订单管理' => array('url' => 'order/segorderlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
+                //'代步车订单管理' => array('url' => 'order/segorderlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '平安洗车订单管理' => array('url' => 'order/pinganorlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '平安洗车网点管理' => array('url' => 'order/wangdianlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '太保推送记录管理' => array('url' => 'order/taibaoorlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
@@ -109,8 +109,8 @@ class BController extends BaseController {
             'icon' => 'kzt.png',
             'subs' => array(
                 '券包管理' => array('url' => 'coupon/packagelist', 'class' => 'glyphicon glyphicon-shopping-cart'),
-                '申请管理' => array('url' => 'coupon/apply-list', 'class' => 'glyphicon glyphicon-shopping-cart'),
-                '审核管理' => array('url' => 'coupon/examine-list', 'class' => 'glyphicon glyphicon-shopping-cart'),
+                //'申请管理' => array('url' => 'coupon/apply-list', 'class' => 'glyphicon glyphicon-shopping-cart'),
+                //'审核管理' => array('url' => 'coupon/examine-list', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '券包生成' => array('url' => 'coupon/packagegenerate', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '优惠券管理' => array('url' => 'coupon/index', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '洗车券管理' => array('url' => 'coupon/carwashlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
@@ -123,9 +123,8 @@ class BController extends BaseController {
                 '人保兑换码管理' => array('url' => 'coupon/codelist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '券包使用率查询' => array('url' => 'coupon/ratiocheck', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '优惠券使用率查询' => array('url' => 'coupon/ratiocouponcheck', 'class' => 'glyphicon glyphicon-shopping-cart'),
-                'ETC设备码管理' => array('url' => 'coupon/etccodelist', 'class' => 'glyphicon glyphicon-shopping-cart'),
-                '诚泰客户信息管理' => array('url' => 'coupon/ctlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
-                //'第三方需求管理' => array('url' => 'coupon/demandlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
+                '国寿电商码管理' => array('url' => 'coupon/gscodelist', 'class' => 'glyphicon glyphicon-shopping-cart'),
+
             )
         ),
         '财务相关' => array(

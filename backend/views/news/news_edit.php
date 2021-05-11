@@ -108,7 +108,6 @@ use yii\helpers\Html;
                         <label>资讯详情</label>
                         <textarea  name="content" id="discrible" style="width: 800px;" placeholder="资讯详情描述"><?php echo $news['content']; ?></textarea>
                     </div>
-
                     <div class="formConfirm webkitbox">
                         <label>排序</label>
                         <input type="text" class="spName"   name="sort" type="text"  placeholder="50" value="<?php echo $news['sort']; ?>">
@@ -173,7 +172,5 @@ use yii\helpers\Html;
                 $("#curpiclist").remove();
             }
         }
-        $(function(){
-            uploadImg('hadpic','menu_img');
-        });
+
     </script>

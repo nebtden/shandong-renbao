@@ -62,10 +62,10 @@ class ShengDaCarWash
             ],
             'body' => $postData
         ];
-        $this->log($url,$postData,'ceshi');
+
         $res = $client->request('post',$url,$options);
         $data = $res->getBody()->getContents();
-        $this->log($url,$postData,$data);
+        //$this->log($url,$postData,$data);
         $data = json_decode($data,true);
 
         if($data['encryptJsonStr']){

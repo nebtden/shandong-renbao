@@ -1,4 +1,4 @@
-/**
+ /**
  * Created by Administrator on 2019/6/12 0012.
  */
 
@@ -90,6 +90,9 @@ function queryParams(params) {
     var opt6 = $("#status").val();
     var opt7 = $("#start_time").val();
     var opt8 = $("#end_time").val();
+    var opt9 = $("#s_time").val();
+    var opt10 = $("#e_time").val();
+    var opt11 = $("#shop_name").val();
     return {
         pageSize: params.limit,
         pageNumber: params.pageNumber,
@@ -102,7 +105,10 @@ function queryParams(params) {
         encrypt_code:opt5,
         status:opt6,
         start_time:opt7,
-        end_time:opt8
+        end_time:opt8,
+        s_time:opt9,
+        e_time:opt10,
+        shop_name:opt11
 
     };
 }
@@ -145,6 +151,9 @@ $('#sousuo').click(function(){
     var opt6 = $("#status").val();
     var opt7 = $("#start_time").val();
     var opt8 = $("#end_time").val();
+    var opt9 = $("#s_time").val();
+    var opt10 = $("#e_time").val();
+    var opt11 = $("#shop_name").val();
     $('.table').bootstrapTable('refresh',{query:{
         ticket_id:opt1,
         apply_name:opt2,
@@ -153,7 +162,10 @@ $('#sousuo').click(function(){
         encrypt_code:opt5,
         status:opt6,
         start_time:opt7,
-        end_time:opt8
+        end_time:opt8,
+        s_time:opt9,
+        e_time:opt10,
+        shop_name:opt11
     }},function(row){
         console.log(row);
     });

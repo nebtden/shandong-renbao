@@ -15,6 +15,7 @@ use common\models\CarCoupon;
 use common\models\CarCouponPackage;
 use common\models\CarPaternalor;
 use common\models\CarSubstituteDriving;
+use common\models\FansAccount;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Response;
@@ -314,6 +315,9 @@ class CarecarnewController extends CloudcarController
         $data = $request->post();
         $edr = $this->get_edd();
         $user = $this->isLogin();
+        //风险控制  20210106 许雄泽
+        $riskmsg = $this->riskManagement($user);
+        if($riskmsg['status'] === 1)  return $this->json(0,$riskmsg['msg']);
 
         $estimated_cost =   floatval($request->post('fee')) ;
         $couponModel = new CarCoupon();
@@ -332,9 +336,6 @@ class CarecarnewController extends CloudcarController
         if ($token === false) {
             return $this->json(0, '用户授权失败');
         }
-
-
-
 
         //查询优惠券是否可用；
         $checkres2 = $edr->checkCouponAll($coupon['mobile'],2);
@@ -398,7 +399,56 @@ class CarecarnewController extends CloudcarController
             return $this->json(0, $e->getMessage());
         }
     }
+    /**
+     * 风险控制针对代驾订单用户 20210106 许雄泽
+     * @param 用户信息  $user
+     * @return 风控信息 $riskmsg
+     * 风控状态    0 => '派单中',
+                101 => '派单中',
+                102 => '开始派单',
+                201 => '派单中',
+                301 => '司机已接单',
+                302 => '司机已就位',
+                303 => '司机已开车',
+                304 => '代驾结束',
+                501 => '服务结束',
+     **/
+    private function riskManagement($user){
+        $riskmsg=[
+            'status'=> 0,
+            'msg' => '未风控'
+        ] ;
+        $account=(new FansAccount())->select('status',['uid'=>$user['uid']])->one();
+        if($account['status'] == 0){
+            $riskmsg['status'] = 1;
+            $riskmsg['msg'] = '鉴于之前的违规操作，此账号不可核销卡券';
+        }
+        $daiModel = new CarSubstituteDriving();
+        $now = time();
+        $map2 = ['between','start_time',strtotime(date('Y-m-d 00:00:00',$now)),strtotime(date('Y-m-d 23:59:59',$now))];
+        $riskstatus = [0,101,102,201,301,302,303,304,501];
+        $conductobj = $daiModel->table()->where(['uid' => $user['uid']])->andWhere(['status'=>$riskstatus]);
+        $conduct = $conductobj->andWhere($map2)->count();
+        //每人每天最多呼叫1次代驾，针对分控名单
+        if($conduct >= CarSubstituteDriving::DAY_LIMIT && $account['status'] == 2){
+            $riskmsg['status'] = 1;
+            $riskmsg['msg'] = '您已进入风控名单，每天最多叫'.CarSubstituteDriving::DAY_LIMIT.'次代驾';
+        }
 
+        //每人每月最多呼叫10次代驾，针对分控名单
+        $mapmonth = ['date_month'=>date('Ym')];
+        $mobthconduct = $daiModel->table()
+            ->where(['uid' => $user['uid']])
+            ->andWhere(['status'=>$riskstatus])
+            ->andWhere($mapmonth)
+            ->count();
+        if($mobthconduct >= CarSubstituteDriving::MONTH_LIMIT  && $account['status'] == 2 ){
+            $riskmsg['status'] = 1;
+            $riskmsg['msg'] = '您本月呼叫的代驾次数过多，请下月再来！';
+        }
+
+        return $riskmsg;
+    }
     /**
      * 拉取订单信息
      */

@@ -13,6 +13,40 @@ use yii\helpers\Url;
         padding-left:23px;
     }
     .layui-layer-rim{ font-size: 14px;}
+
+    .bigautocomplete-layout{
+        display: none;;
+        background-color: #ffffff;
+        border: 1px solid #BCBCBC;
+        position: fixed;
+        z-index: 100;
+        height: 300px;
+        max-height: 220px;
+        overflow-x:hidden;
+        overflow-y:auto;
+        box-shadow: 0 2px 5px 2px rgba(0,0,0,.1);
+    }
+    .bigautocomplete-layout table{
+        border-collapse: collapse;
+        border-spacing: 0;
+        background: none repeat scroll 0 0 ;
+        width: 100%;
+        cursor: default;
+    }
+
+    .bigautocomplete-layout table tr{
+        background: none repeat scroll 0 0;
+    }
+
+    .bigautocomplete-layout .ct{
+        background: none repeat scroll 0 0 #D2DEE8 !important;
+    }
+    .bigautocomplete-layout div{
+        word-wrap:break-word;
+        word-break:break-all;
+        padding:1px 5px;
+    }
+
 </style>
 <div class="page-header am-fl am-cf">
     <h4>券包管理 <small>&nbsp;/&nbsp;列表页面</small></h4>
@@ -29,12 +63,7 @@ use yii\helpers\Url;
         </div>
 
         <div class="form-group">
-            <select id="companyid" name="companyid"  placeholder="客户公司"  class="form-control">
-                <option value="">客户公司</option>
-                <?php foreach ($companys as $key => $val):?>
-                    <option value="<?=$val['id']?>"><?=$val['name']?></option>
-                <?php endforeach;?>
-            </select>
+            <input type="text" id="companyid" name="companyid"  class="form-control"  placeholder="客户公司">
         </div>
 
         <div class="form-group"><input type="text" id="batch_nb" name="batch_nb"  class="form-control"  placeholder="券包批号"></div>
@@ -44,10 +73,10 @@ use yii\helpers\Url;
         <div class="form-group"><input type="number" min="10000000000" max="19999999999" id="mobile" name="mobile"  class="form-control"  placeholder="激活手机"></div>
         <div class="form-group"><input type="text" id="c_batch_no" name="c_batch_no"  class="form-control"  placeholder="优惠券批号"></div>
         <div class="form-group">
-            <input type="text" class=" form-control" name="s_time" id="s_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索券包使用开始时间">
+            <input type="text" class=" form-control" name="s_time" id="s_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索券包激活开始时间">
         </div>
         <div class="form-group">
-            <input type="text" class=" form-control" name="e_time" id="e_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索券包使用结束时间">
+            <input type="text" class=" form-control" name="e_time" id="e_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索券包激活结束时间">
         </div>
         <div class="form-group">
             <input type="text" class=" form-control" name="start_time" id="start_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索券包生成开始时间">
@@ -76,7 +105,7 @@ use yii\helpers\Url;
         <th  data-field="package_pwd">卡包兑换码</th>
         <th data-field="info">券信息（面值，数量，券批号）</th>
         <th data-field="use_limit_time">过期时间</th>
-        <th data-field="use_time">使用时间</th>
+        <th data-field="use_time">激活时间</th>
         <th  data-field="c_time">生成时间</th>
         <th data-field="nickname">微信昵称</th>
         <th  data-field="status">状态</th>
@@ -89,19 +118,29 @@ use yii\helpers\Url;
     </thead>
 </table>
 <script src="../js/layer/layer.js"></script>
+<script src="../js/complete.js" ></script>
 <script src="../js/handle_data_package.js" ></script>
 <script src="../js/laydate/laydate.js" type="text/javascript"></script>
 <script type="text/javascript">
     var type='id',stext,order='desc',ids='',imgcon=1,more,eurl="<?php echo Url::to(['coupon/packageedit']);?>",
         listurl='<?php echo Url::to(['coupon/packagelist']); ?>',
         durl="<?php echo Url::to(['coupon/coupon_del']); ?>";
+    $("#companyid").bigAutocomplete({
+        width: 604,
+        url: "<?php echo Url::to(['coupon/get-new-company']); ?>",
+        before: function () {
+        },
+        callback: function (data) {
+            $("#companyid").attr('data-id',data.id);
 
+        }
+    });
     $("#download").click(function(){
         var opt1 = $("#_status").val();
         var opt2 = $("#batch_nb").val();
         var opt3 = $("#package_sn").val();
         var opt4 = $("#user_id").val();
-        var opt5 = $("#companyid").val();
+        var opt5 = $("#companyid").attr('data-id');
         var opt6 = $("#mobile").val();
         var opt7 = $("#start_time").val();
         var opt8 = $("#end_time").val();

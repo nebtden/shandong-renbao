@@ -22,6 +22,12 @@ use yii\helpers\Url;
                 <?php endforeach;?>
             </select>
         </div>
+        <div class="form-group">
+            <input type="text" class=" form-control" name="s_time" id="s_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索录入开始时间">
+        </div>
+        <div class="form-group">
+            <input type="text" class=" form-control" name="e_time" id="e_time"  readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" placeholder="搜索录入结束时间">
+        </div>
         <button type="button" class="btn btn-info" id="sousuo"><span class="glyphicon glyphicon-search"></span> 搜索</button>
         <button type="button" class="btn btn-info"  onclick="window.location.href='<?php echo Url::to(['member/editvip']);?>';">
             <i class="glyphicon glyphicon-plus"></i> 添加
@@ -62,5 +68,6 @@ use yii\helpers\Url;
         durl="";
 </script>
 <script src="../js/handle_data.js" ></script>
+<script src="../js/laydate/laydate.js" type="text/javascript"></script>
 
 

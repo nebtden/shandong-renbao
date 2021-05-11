@@ -196,6 +196,7 @@ use yii\helpers\Url;
         $.post("<?php echo Url::to(['washpay']);?>",data,function(json){
              isSubmit = false;
             YDUI.dialog.loading.close();
+            //console.log(json.data);
             if(json.status === 1){
                 wxpay($.parseJSON(json.data),json.url);
             }else{

@@ -91,6 +91,9 @@ function queryParams(params) {
     var opt8  = $("#s_time").val();
     var opt9 = $("#e_time").val();
     var opt10 = $("#companyid").val();
+    var opt11 = $("#service_text").val();
+    var opt12 = $("#store_name").val();
+
     return {
         pageSize: params.limit,
         pageNumber: params.pageNumber,
@@ -105,7 +108,9 @@ function queryParams(params) {
         end_time:opt7,
         s_time:opt8,
         e_time:opt9,
-        companyid:opt10
+        companyid:opt10,
+        service_text:opt11,
+        store_name:opt12
 
     };
 }
@@ -150,6 +155,8 @@ $('#sousuo').click(function(){
     var opt8  = $("#s_time").val();
     var opt9 = $("#e_time").val();
     var opt10 = $("#companyid").val();
+    var opt11 = $("#service_text").val();
+    var opt12 = $("#store_name").val();
     $('.table').bootstrapTable('refresh',{query:{
         coupon_code:opt1,
         mobile:opt2,
@@ -160,7 +167,9 @@ $('#sousuo').click(function(){
         end_time:opt7,
         s_time:opt8,
         e_time:opt9,
-        companyid:opt10
+        companyid:opt10,
+        service_text:opt11,
+        store_name:opt12
     }},function(row){
         console.log(row);
     });

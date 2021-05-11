@@ -78,7 +78,7 @@ use yii\helpers\Url;
         <th  data-field="companyid">客户公司</th>
         <th  data-field="company_id">供应商</th>
         <th  data-field="errmsg">错误信息</th>
-
+        
 <!--        <th data-field="itemname">商品名称</th>-->
 <!--        <th  data-field="price">供货价</th>-->
 <!--        <th data-field="action" data-align="center" data-formatter="actionFormatter" data-events="actionEvents">操作</th>-->

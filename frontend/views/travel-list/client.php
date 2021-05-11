@@ -417,7 +417,7 @@ use yii\helpers\Url;
     <script type="text/javascript">
         function audioAutoPlay(id){
             var audio = document.getElementById(id);
-
+           
             document.addEventListener("WeixinJSBridgeReady", function () {
                 audio.play();
             }, false);

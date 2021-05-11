@@ -26,13 +26,13 @@ use yii\helpers\Url;
                     location.href = '<?php echo Url::toRoute('/mall/myorder');?>';
                 }
 //  				WeixinJSBridge.log(res.err_msg);
- 				//alert(res.err_code+res.err_desc+res.err_msg);
+ 				alert(res.err_code+res.err_desc+res.err_msg);
 				 if(res.err_msg == "get_brand_wcpay_request:ok" ){
                      location.href = '<?php echo "http://www.yunche168.com/frontend/web/pay/index.html?id=12";?>';
-					 //location.href='<?php echo Url::toRoute('/mall/myorder');?>';
+					 location.href='<?php echo Url::toRoute('/mall/myorder');?>';
 				 }else{
 					 alert("抱歉，微信支付失败!");
-                     history.back(1);
+
 				 }
 			}
 		);

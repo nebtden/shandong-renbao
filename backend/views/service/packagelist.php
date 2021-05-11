@@ -39,7 +39,7 @@ use yii\helpers\Url;
         <th  data-field="package_pwd">卡包兑换码</th>
         <th data-field="info">券信息（面值，数量，券批号）</th>
         <th data-field="use_limit_time">过期时间</th>
-        <th data-field="use_time">使用时间</th>
+        <th data-field="use_time">激活时间</th>
         <th data-field="nickname">微信昵称</th>
         <th  data-field="status">状态</th>
         <th  data-field="batch_nb">批号</th>

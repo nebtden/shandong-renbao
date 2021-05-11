@@ -19,6 +19,7 @@ class WxPay
         $openid = $data['openid'];
 
         $input = new \WxPayUnifiedOrder();
+
         $input->SetBody($data['body']);
         if(isset($data['attach'])){
             $input->SetAttach($data['attach']);

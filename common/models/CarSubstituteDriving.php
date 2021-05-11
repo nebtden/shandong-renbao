@@ -9,6 +9,9 @@ class CarSubstituteDriving extends AlxgBase
 {
     protected $currentTable = '{{%car_substitute_driving}}';
 
+    const DAY_LIMIT = 1;//每天限制次数，针对分控用户
+    const MONTH_LIMIT = 10;//每月限制次数，针对所有用户
+
     public static $company=[
         '1'=>'典典',
         '2'=>'滴滴',

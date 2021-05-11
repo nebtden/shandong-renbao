@@ -136,12 +136,12 @@ class ShengDaCarNewApi
         $postJson = json_encode($data,256);
         $md5Json = strtoupper(md5($postJson.$this->key));
         $str = base64_encode(openssl_encrypt($postJson.'|'.$md5Json, 'DES-EDE3', $this->key3Des, OPENSSL_RAW_DATA, ''));
-         $this->log($url,$postJson,'11--'.$str);
+
         $jia= [];
         $jia['encryptJsonStr'] = str_replace(array('+','/','='), array('-','_','.'), $str);
-        $this->log($url,$postJson,'22--'.'--');
+
         $res = $this->httpRequest('POST',$this->url,json_encode($jia));
-        $this->log($url,$postJson,'22--'.\GuzzleHttp\json_encode($res));
+        $this->log($url,$postJson,\GuzzleHttp\json_encode($res));
 
         return $res;
     }

@@ -51,6 +51,8 @@ use yii\helpers\Url;
         <th data-field="c_time">添加时间</th>
         <th  data-field="batch_no">手机批号</th>
         <th  data-field="company_id">公司名称</th>
+        <th  data-field="uid">用户ID</th>
+        <th  data-field="package_id">券包ID</th>
         <th  data-field="city">区域</th>
         <th data-field="action" data-align="center" data-formatter="actionFormatter" data-events="actionEvents">操作</th>
     </tr>

@@ -45,6 +45,9 @@ use yii\helpers\Url;
       </span>
         <a href="javascript:;" class="import-submit" id="submit">提交</a>
     </div>
+    <span class="chentai-kq">
+           <a  href="javascript:;"  >查看我的卡券 ></a>
+        </span>
 </div>
 <!-- 弹窗 -->
 <div class="pop " id="pop_per">
@@ -82,6 +85,7 @@ use yii\helpers\Url;
         </div>
         <a href="javascript:popHide();" title="点击关闭" class="btn close"></a>
     </div>
+
 </div>
 <!-- 错误提示框 -->
 
@@ -161,6 +165,7 @@ use yii\helpers\Url;
             }
             isSubmit = true;
             $.post("<?php echo Url::to(['webcarlogin/chengtailogin'])?>",{mobile:mobile,code:code},function(json){
+
                 isSubmit = false;
                 if(json.status == 1){
                     window.location.href = json.url;
@@ -169,7 +174,32 @@ use yii\helpers\Url;
                 }
             },'json');
         });
+
+
+        //提交验证
+        var is_Submit = false;
+        $('.chentai-kq').on('touchstart',function(){
+            style = "border:1px solid #fff";
+            if(is_Submit) return false;
+            if(is_Submit){
+                swal('服务器繁忙，请重新提交！');
+                return false;
+            }
+            is_Submit = true;
+            $.post("<?php echo Url::to(['webcarlogin/checkuser'])?>",{},function(json){
+                is_Submit = false;
+                if(json.status == 1){
+                    window.location.href = json.url;
+                }else{
+                    swal(json.msg);
+                }
+            },'json');
+        });
+
     });
+
+
+
 </script>
 </body>
 

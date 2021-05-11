@@ -59,8 +59,9 @@ use yii\helpers\Html;
             <label for="inputPassword3" class="col-sm-2 control-label">状态</label>
             <div class="col-sm-3">
                 <select name="status" class="form-control">
-                    <option value="1" <?php if($data['status']==1) echo 'selected'; ?>>正常</option>
-                    <option value="0" <?php if($data['status']== 0) echo 'selected';  ?>>不可用</option>
+                    <?php foreach ($status as $key => $val):?>
+                        <option value="<?=$key?>" <?php if($data['status']==$key) echo 'selected'; ?>><?=$val?></option>
+                    <?php endforeach;?>
                 </select>
             </div>
         </div>

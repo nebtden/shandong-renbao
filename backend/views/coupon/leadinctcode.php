@@ -113,7 +113,8 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
                 mimeTypes: 'application/vnd.ms-excel'
             },
             success:function( data ) {
-                alert('文件上传成功，点击执行进行导入');
+                alert('文件上传成功，点击执行进行导入'+data.path);
+                console.log( data.path );
                 filepath = data.path;
             },
             error:function( err ) {

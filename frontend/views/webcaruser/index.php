@@ -16,9 +16,9 @@ use yii\helpers\Url;
         <span class="icon-cloudCar2-wodeqiaquan"></span>
         <i>我的卡券</i>
     </a>
-    <a href="<?php echo Url::to(['accoupon']); ?>" >
+    <a href="javascript:;" class="out-submit">
         <span class="icon-cloudCar2-duihuanfuwu"></span>
-        <i>兑换服务</i>
+        <i>退出登录</i>
     </a>
     <?php if($shoper['shop_status'] == 2):?>
         <a href="<?php echo Url::to(['car/recovery']); ?>" >
@@ -77,3 +77,24 @@ use yii\helpers\Url;
 </div>
 
 <div style="height: 1.2rem"></div>
+
+<?php $this->beginBlock('script'); ?>
+    <script>
+        //提交确认
+        var isSubmit = false;
+        $('.out-submit').on('touchstart', function () {
+            if (isSubmit) return false;
+            isSubmit = true;
+            $.post("<?php echo Url::to(['webcarlogin/outlogin'])?>", {}, function (json) {
+                isSubmit = false;
+                if (json.status === 1) {
+                    YDUI.dialog.alert('退出登陆成功！',function () {
+                        window.location.href = json.url;
+                    });
+                } else {
+                    YDUI.dialog.alert(json.msg);
+                }
+            }, 'json');
+        });
+    </script>
+<?php $this->endBlock('script'); ?>

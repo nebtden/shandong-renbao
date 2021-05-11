@@ -114,7 +114,8 @@ class ZhongYouController extends BaseController
             //授权后回跳地址
             $reUrl = urlencode( 'http://www.yunche168.com/backend/web/login.html');
             $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $appId . '&redirect_uri=' . $reUrl . '&response_type=code&scope=' . $base . '&state=state#wechat_redirect';
-
+            echo $url;
+            die();
 
             Yii::$app->response->redirect($url)->send();
 

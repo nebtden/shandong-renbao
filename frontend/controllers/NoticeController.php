@@ -25,7 +25,6 @@ use common\models\Company;
 use common\models\Wash_shop;
 use common\models\WashOrder;
 use common\models\WashShop;
-use common\models\WashShopShandongTaibao;
 use Yii;
 use common\models\User;
 use frontend\util\FController;
@@ -47,6 +46,7 @@ use yii\db\Expression;
 use yii\helpers\Url;
 use yii\web\Response;
 use common\components\NationalLife;
+use common\models\WashShopShandongTaibao;
 
 class NoticeController extends PController
 {
@@ -502,17 +502,23 @@ class NoticeController extends PController
                 $tbObj = new Car_wash_order_taibao();
                 $tbOrder = $tbObj->table()->where([
                     'consumer_code'=>$postParam['order'],
-                    'apply_phone'=>$postParam['userInfo']
+                    'apply_phone'=>$postParam['userInfo'],
+                    'status'=>3
                 ])->one();
                 $disObj = new CarDisinfectionOrder();
                 $disOrder = $disObj->table()->select()->where([
                     'consumer_code'=>$postParam['order'],
-                    'mobile'=>$postParam['userInfo']
+                    'mobile'=>$postParam['userInfo'],
+                    'status'=>1
                 ])->one();
                 if(!$tbOrder && !$disOrder){
                     throw new \Exception('订单不存在');
                 }
                 if($tbOrder){
+                    //黑名单
+                    if($tbOrder['apply_phone'] == '15095128226' || $tbOrder['car_rental_vehicle_no'] == '鲁GY280R'){
+                        throw new \Exception('您已进入黑名单');
+                    };
                     $result = $this->tbOrderStatus($tbOrder,'DW01002','1006','0');
                     if(!$result){
                         throw new \Exception('太保接口调用失败');
@@ -630,46 +636,37 @@ class NoticeController extends PController
             //订单状态ticketType 0-受理 1-取消
             if($postBody['TicketType'] == 0){
                 //暂停服务时间段
-                if($now > 1578986566 && $now < 1581350400){
-                    throw new Exception('因春节假期为全国家庭的团圆日，大部分门店都会有员工提前回家过节，自2020年1月8日至2020年2月10日，盛大汽车部分合作服务网点将暂时休业或不能正常接待各项汽车服务，自2月11日起逐渐恢复正常营业。对您造成的不便，敬请见谅！');
+                $jinzhitime =   strtotime($postBody['PointTime']);
+                if($jinzhitime >= 1611676800 && $jinzhitime < 1614355200){
+                    throw new Exception('临近春节服务网点人员返乡，洗车服务将于2021年1月27日-2021年2月26日暂停服务，在此期间系统暂停预约及使用，因此给您带来的不便深表歉意，敬请谅解！恭祝尊敬的客户春节快乐、阖家幸福！');
                 }
-                //查询用户洗车推送订单
-                $order = $orderObj->table()->select()->where([
-                    'car_rental_vehicle_no'=>$postBody['CarRentalVehicleNo'],
-                    'apply_phone'=>$postBody['ApplyPhone']
+                //时间范围限制
+                $datetime = strtotime(date('Y-m-d'));
+                if($jinzhitime < $datetime )throw new Exception('预约时间不能在当天之前，请重新选择预约时间！');
+                $year = $datetime+30*86400;
+                if($jinzhitime > $year) throw new Exception('预约时间不能在30天之后，请重新选择预约时间！');
+
+                //检查订单号是否重复 20201103 许雄泽
+                $check = $orderObj->table()->select()->where([
+                    'ticket_id'=>$postBody['TicketId']
                 ])->one();
-                //如果有推送订单，根据状态返回信息
-                if($order){
-                    if($order['status'] == 1 || $order['status'] == 3){
-                        throw new Exception('当前用户还有正在进行中的订单');
-                    }
-                    //洗车限制判断，每年限制一次
-//                    if($order['status'] == 2 && $order['u_time']>(time()-60*60*24*365)){
-//                        throw new Exception('洗车次数限制');
-//                    }
-                }
-                //从券包中取出一张没用使用过的券
-//                $packageInfo = $package->table()->where(['mobile'=>0,'companyid'=>$company])->one();
-//                if(!$packageInfo){
-//                    throw new Exception('找不到优惠券');
+                if($check) throw new Exception('当前订单已存在，无需重新下单');
+
+                //查询用户洗车推送订单 20201103 许雄泽  1111 注释
+//                $order = $orderObj->table()->select()->where([
+//                    'car_rental_vehicle_no'=>$postBody['CarRentalVehicleNo'],
+//                    'apply_phone'=>$postBody['ApplyPhone'],
+//                    'status' => [1,3]
+//                ])->order('id DESC')->one();
+//                //如果有推送订单，根据状态返回信息
+//                if($order){
+//                    throw new Exception('当前用户还有正在进行中的订单');
+//                    //洗车限制判断，每天限制一次
+////                    if($order['status'] == 2 && $order['u_time']>(time()-60*60*24)){
+////                        throw new Exception('洗车次数限制');
+////                    }
 //                }
-//
-//                $insData = [
-//                    'ticket_id' => $postBody['TicketId'],
-//                    'branch_code' => $postBody['BranchCode'],
-//                    'unit_code' => $postBody['UnitCode'],
-//                    'apply_name' => $postBody['ApplyName'],
-//                    'apply_phone' => $postBody['ApplyPhone'],
-//                    'car_rental_vehicle_no' => $postBody['CarRentalVehicleNo'],
-//                    'point_time' => $postBody['PointTime'],
-//                    'service_type' => $postBody['ServiceType'],
-//                    'address' => $postBody['Address'],
-//                    'package_id' => $packageInfo['id'],
-//                    'package_pwd' => $packageInfo['package_pwd'],
-//                    'status' => 1, //订单状态 -1-取消 1-进行中 2-完成
-//                    'c_time' => $now,
-//                    'u_time' => $now,
-//                ];
+
                 //通过盛大接口下单
                 $sourceApp = Yii::$app->params['shengda_sourceApp'];
                 $param = [
@@ -690,6 +687,19 @@ class NoticeController extends PController
                 }
                 $resultJson = strstr($result['encryptJsonStr'],'|',true);
                 $resultCode = json_decode( $resultJson,true);
+                //添加网点名称和ID  20201104 许雄泽
+                $address = explode(' ',$postBody['Address']);
+                $address = $address[3];
+                $where = " address LIKE '%".$address."%' ";
+                $shop = (new WashShopShandongTaibao())->select('*',$where)->orderBy(' id DESC ')->one();
+                if($shop){
+                    $shop_name = $shop['name'];
+                    $shop_id = $shop['id'];
+                }else{
+                    $shop_name = ' ';
+                    $shop_id = 0;
+                }
+
                 $insData = [
                     'ticket_id' => $postBody['TicketId'],
                     'branch_code' => $postBody['BranchCode'],
@@ -705,6 +715,8 @@ class NoticeController extends PController
                     'status' => 1, //订单状态 -1-取消 1-进行中 2-完成
                     'c_time' => $now,
                     'u_time' => $now,
+                    'shop_name'=>$shop_name,
+                    'shop_id'=>$shop_id
                 ];
 
                 //写入太保洗车订单
@@ -712,24 +724,9 @@ class NoticeController extends PController
                 if(!$res){
                     throw new \Exception('数据写入失败');
                 }
-                $address = explode(' ',$insData['address']);
-                $address = $address[3];
-                $shop = (new WashShopShandongTaibao())->table()->select()->where(['like','address',$address])->one();
-                if($shop){
-                    $shop_name = $shop['shopName'];
-                }else{
-                    $shop_name = ' ';
-                }
-//                //更新券包信息
-//                $result = $package->myUpdate(['mobile'=>$insData['apply_phone']],['id'=>$packageInfo['id']]);
-//                if(!$result){
-//                    throw new \Exception('卡券信息写入失败');
-//                }
 
-//                $f = W::sendSms($postBody['ApplyPhone'],'【云车驾到】您的洗车券激活码为：'.$insData['package_pwd'].
-//                    '，复制激活码后微信关注云车驾到公众号进行激活使用。如有疑问请拨打客服电话：400-617-1981。');
-                $f = W::sendSms($postBody['ApplyPhone'],'【云车驾到】尊敬的客户，您已获得太平洋产险山东分公司（盛大）赠送的“洗车”服务，核销码为：'.$insData['encrypt_code'].'，请在预约时间（'.$param['endTime'].'）前往使用，券码当天有效，如有疑问请拨打客服电话：400-617-1981。'.'门店名称：'.$shop_name.',门店地址：'.$insData['address'].'。');
-
+                //$f = W::sendSms($postBody['ApplyPhone'],'【云车驾到】尊敬的客户，您已获得太平洋产险山东分公司（盛大）赠送的“洗车”服务，核销码为：'.$insData['encrypt_code'].'，请在预约时间（'.$param['endTime'].'）前往使用，券码当天有效，如有疑问请拨打客服电话：400-617-1981。'.'门店名称：'.$shop_name.'，门店地址：'.$insData['address'].'。');
+                $f = W::sendSms($postBody['ApplyPhone'],'【云车驾到】您已获得太平洋产险山东分公司赠送的洗车券：'.$insData['encrypt_code'].'，请在'.$param['endTime'].'前往'.$shop_name.'（'.$address.'）使用，券码当天有效，如有疑问请拨打：400-617-1981。');
             }elseif($postBody['TicketType'] == 1) {
                 $order = $orderObj->table()->select()->where(['ticket_id'=>$postBody['TicketId']])->one();
                 if(!$order){
@@ -741,7 +738,11 @@ class NoticeController extends PController
                 if($order['status'] == -1){
                     throw new \Exception('该订单已取消，请勿重复取消');
                 }
-
+                //太保取消订单同时通知盛大也取消 20201118 许雄泽
+                $cancelres = $this->cancelShengDaOrder($order);
+                if($cancelres['resultCode'] != 'SUCCESS'){
+                    throw new \Exception('订单取消失败');
+                }
                 $order['status'] = ORDER_CANCEL;
                 $order['u_time'] = time();
                 $r = $orderObj->myUpdate($order);
@@ -1278,5 +1279,30 @@ class NoticeController extends PController
         //删除未加密的数组元素
         unset($result['result']);
         return json_encode($result);
+    }
+
+
+    /**
+     * 取消盛大订单
+     * @param $washOrder
+     * @return mixed
+     * @throws Exception
+     */
+    private function cancelShengDaOrder($washOrder)
+    {
+        $sourceApp = Yii::$app->params['shengda_sourceApp'];
+        $param = [
+            'source' => $sourceApp,
+            'order' => $washOrder['encrypt_code'],
+            'refundStatus'=>2
+        ];
+        $washObj = new ShengDaCarWash();
+        $result = $washObj->cancelOrder($param);
+        $encryp= strstr($result['encryptJsonStr'],'|',true);
+        $resultCode = json_decode($encryp,true);
+        if(!$resultCode){
+            throw new \Exception('接口连接失败');
+        }
+        return $resultCode;
     }
 }

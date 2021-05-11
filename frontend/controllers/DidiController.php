@@ -43,7 +43,9 @@ class DidiController extends CloudcarController
         $coupon_id = $request->get('coupon_id', null);
 
         try {
-
+            if(!$user){
+                throw new \Exception('登录已失效，请重新登录。');
+            }
             //如果有没完成的滴滴订单，需要完成订单，才可以进入下一步
             $model = new CarSubstituteDriving();
             $didi_info = $model->table()->where("company_id = 1 and status in (-2,0,301,302,303) and uid = ".$user['uid'])->one();

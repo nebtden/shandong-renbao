@@ -30,4 +30,13 @@ class CarWashPinganhcz extends AlxgBase
         '6' => '已冻结',
         '7' => '未激活'
     ];
+
+    //服务类型
+    public static $service_text = [
+        '云车驾到洗车'      => '云车驾到洗车',
+        '前海云车一次洗车'  => '前海云车一次洗车',
+        '十元洗车'         => '十元洗车',
+        '普洗轿车'         => '普洗轿车'
+    ];
+
 }

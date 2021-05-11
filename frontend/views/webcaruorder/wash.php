@@ -87,14 +87,14 @@
             success: function(json){
                 if(json.status == 1){
                     YDUI.dialog.loading.close();
-                    YDUI.dialog.toast('订单取消成功', 'success',1000, function(){
+                    YDUI.dialog.toast('订单取消成功', 'success',1500, function(){
                         $('#cancel').parent().remove();
                         window.location.href = '<?php echo Url::to(['webcaruser/coupon']) ?>'
                     });
 
                 } else {
                     YDUI.dialog.loading.close();
-                    YDUI.dialog.toast('订单取消失败', 'error',1000, function(){
+                    YDUI.dialog.toast(json.msg, 'error',1500, function(){
 
                     });
                 }

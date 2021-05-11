@@ -10,6 +10,7 @@ namespace common\models;
 
 use Yii;
 use common\components\AlxgBase;
+use yii\db\Expression;
 use common\components\W;
 
 class CarCompany extends AlxgBase
@@ -22,7 +23,14 @@ class CarCompany extends AlxgBase
     ];
 
     public function getCompany($fields=[],$where=[]){
-        $companys=  $this->table()->select($fields)->where($where)->all();
+        $companys=  $this->table()->select($fields)->where($where)->orderBy('browse_num DESC')->all();
         return $companys;
     }
+    //累加客户公司查询次数
+    public function browseNum($id){
+        if(empty($id)) return false ;
+        $this->myUpdate(['browse_num' => new Expression("browse_num + 1")],['id'=>$id]);
+        return true;
+    }
+
 }

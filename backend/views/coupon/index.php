@@ -30,12 +30,7 @@ use yii\helpers\Url;
             </select>
         </div>
         <div class="form-group">
-            <select id="companyid" name="companyid"  placeholder="客户公司"  class="form-control">
-                <option value="">客户公司</option>
-                <?php foreach ($companys as $key => $val):?>
-                    <option value="<?=$val['id']?>"><?=$val['name']?></option>
-                <?php endforeach;?>
-            </select>
+            <input type="text" id="companyid" name="companyid"  class="form-control"  placeholder="客户公司">
         </div>
         <div class="form-group"><input type="text" id="mobile" name="mobile"  class="form-control"  placeholder="搜索兑换手机号"></div>
         <div class="form-group"><input type="text" id="coupon_sn" name="coupon_sn"  class="form-control"  placeholder="搜索优惠券号码"></div>
@@ -100,6 +95,7 @@ use yii\helpers\Url;
     </thead>
 </table>
 <script src="../js/layer/layer.js"></script>
+<script src="../js/complete.js" ></script>
 <script src="../js/handle_data_coupon.js" ></script>
 <script src="../js/laydate/laydate.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -107,7 +103,16 @@ use yii\helpers\Url;
     var type='id',stext,order='desc',ids='',imgcon=1,more,eurl="<?php echo Url::to(['coupon/couponedit']);?>",
         listurl='<?php echo Url::to(['coupon/index']); ?>',
         durl="<?php echo Url::to(['coupon/coupon_del']); ?>";
+    $("#companyid").bigAutocomplete({
+        width: 604,
+        url: "<?php echo Url::to(['coupon/get-new-company']); ?>",
+        before: function () {
+        },
+        callback: function (data) {
+            $("#companyid").attr('data-id',data.id);
 
+        }
+    });
     $("#download").click(function(){
         var opt1 = $("#coupon_type").val();
         var opt2 = $("#mobile").val();
@@ -117,7 +122,7 @@ use yii\helpers\Url;
         var opt6 = $("#amount").val();
         var opt7 = $("#batch_no").val();
         var opt8 = $("#coupon_id").val();
-        var opt9 = $("#companyid").val();
+        var opt9 = $("#companyid").attr('data-id');
         var opt10 = $("#start_time").val();
         var opt11 = $("#end_time").val();
         var opt12 = $("#s_time").val();

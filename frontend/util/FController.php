@@ -1,6 +1,8 @@
 <?php
 namespace frontend\util;
 
+use common\models\Fans;
+use common\models\FansAccount;
 use Yii;
 use common\components\BaseController;
 use common\components\W;
@@ -19,17 +21,21 @@ class FController extends BaseController {
 	public function beforeAction($action = NULL){
 
 		Yii::$app->session['token'] = $token = 'dhcarcard';
-//		if($_GET['alxg'] == 'zhouzhouxs'){
-//            Yii::$app->session['openid'] = 'oVkGm0RmhqUK5qX3EujOwClpdFzg';
-//        }
-//        if($_GET['alxg'] == 'zyj'){
-//            Yii::$app->session['openid'] = 'oVkGm0U0HN-mJIQAFU1hNpl4BpCc';
-//        }
+		
+		//测试专用
+		$mobile = $_GET['m'];
+		if(!empty($mobile)){
+		    $fansac = (new FansAccount())->select('*',['mobile'=>$mobile,'is_web'=>0])->one();
+            $openid = (new Fans())->select('*',['id'=>$fansac['uid']])->one();
+            if(!empty($fansac) && !empty($openid)){
+                Yii::$app->session['openid'] = $openid['openid'];
+                unset(Yii::$app->session['wx_user_auth']);
+            }
+        }
         //如果是web端传过来的链接，
         $is_web = $this->checkWeb();
         if(!$is_web){
-//            Yii::$app->session['openid'] = 'oVkGm0bs3UIT9r9Esm0oAY-Rh27w';
-              Yii::$app->session['openid'] = 'oVkGm0djGbBhMhw8K3SiK3UWaeCA';
+           
             if(!Yii::$app->session['openid']){
                 W::getOpenid($token,'snsapi_userinfo');
             }

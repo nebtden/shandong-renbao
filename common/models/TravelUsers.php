@@ -6,9 +6,7 @@
  * Time: 上午 8:50  tpy_travel_users
  */
 namespace common\models;
-
 use Yii;
-
 class TravelUsers extends Base_model
 {
     public $tablePK = 'id';//设置本表我主键

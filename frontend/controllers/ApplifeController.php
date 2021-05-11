@@ -91,7 +91,7 @@ class ApplifeController extends PController
         $tmp['coupon_type'] = 4;
         $tmp['name'] = '1次洗车服务';
         $tmp['amount'] = $amount;
-        $tmp['expire_days'] = '45';
+        $tmp['expire_days'] = $amount*30+15;
         $tmp['c_time'] = $now;
         $tmp['coupon_sn'] = $coupon_sn;
         $tmp['batch_no'] = Yii::$app->params['natLife']['batch_no'];
@@ -115,7 +115,9 @@ class ApplifeController extends PController
         $tmp['package_sn'] =$str.$newNumber;
         $tmp['package_pwd'] = $flowcode['package_pwd'];
         $tmp['batch_nb'] = Yii::$app->params['natLife']['batch_nb'];
-        $tmp['use_limit_time'] = $now+($amount+1)*30*86400;
+        $time = $now+($amount+1)*30*86400;
+        $end = mktime(23,59,59,date("m",$time),date("d",$time),date("Y",$time));
+        $tmp['use_limit_time'] = $end;
         $tmp['c_time'] = $now;
         $tmp['companyid'] = $companyinfo['id'];
         return $tmp;

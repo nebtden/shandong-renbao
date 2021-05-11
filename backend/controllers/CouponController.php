@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\components\Aiqiyi;
+use common\models\CarLifeCode;
 use yii;
 use yii\helpers\Url;
 use yii\web\Response;
@@ -28,14 +30,15 @@ use common\models\CarMobile;
 use common\models\CarChengtaiCode;
 use common\models\CarCouponPackageExamine;
 use backend\models\Admin;
-
+use common\components\Eddriving;
 
 class CouponController extends BController {
 
-    private  $couponMpagesize=1000;
+    private  $couponMpagesize=10000;
     private  $cacheTime=7200;
     private  $maxInsertNum=1000;
     public $title = '优惠券';
+    public $enableCsrfValidation = false;
     /**
      * 优惠券查询条件
      * @return string
@@ -90,6 +93,7 @@ class CouponController extends BController {
         }
         if(! empty($companyid)){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         $where=$this->getTimeWhere($where,'use_time',$start_time,$end_time);
         $where=$this->getTimeWhere($where,'c_time',$s_time,$e_time);
@@ -263,7 +267,7 @@ class CouponController extends BController {
             $tmp['use_limit_time'] = ! empty($e['use_limit_time']) ? date("Y-m-d H:i:s",$e['use_limit_time']) : '--';
             $tmp['use_time'] = ! empty($e['use_time']) ? date("Y-m-d H:i:s",$e['use_time']) : '--';
             $tmp['mobile']=$e['mobile'];
-            $tmp['used_num']=$e['coupon_type']=='2'?$e['used_num']:'--' ;
+            $tmp['used_num']=$e['coupon_type']=='2' || $e['coupon_type']=='4' ?$e['used_num']:'--' ;
             $tmp['use_scene']=$e['coupon_type']=='2'?$coupon_faulttype[$e['use_scene']]:'--' ;
             $tmp['nickname']=$nicknamearr[$e['uid']];
             $tmp['batch_no']=$e['batch_no'];
@@ -291,6 +295,8 @@ class CouponController extends BController {
         $oil_type=CarCoupon::$oil_xxz;
         $oil_company=CarCoupon::$oil_company;
         $wash_company=CarCoupon::$wash_company;
+        $aiqiyi_coupon_types = Aiqiyi::$types;
+
         $driving_coupon_type=Yii::$app->params['driving_coupon_type'] ;
         $driving_coupon_amount=Yii::$app->params['driving_coupon_amount'];
         $ins_company=CarCoupon::$ins_company;
@@ -379,6 +385,7 @@ class CouponController extends BController {
                 'coupon_type'=>$coupon_type,
                 'coupon_faulttype'=>$coupon_faulttype,
                 'driving_coupon_type'=>$driving_coupon_type,
+                'aiqiyi_coupon_types'=>$aiqiyi_coupon_types,
                 'oil_type'=>$oil_type,
                 'oil_company'=>$oil_company,
                 'wash_company'=>$wash_company,
@@ -433,6 +440,7 @@ class CouponController extends BController {
         $c_batch_no = trim($request->get('c_batch_no',null));
         $package_pwd = trim($request->get('package_pwd',null));
         $where=' id<>0 ';
+
         if(!empty($status) || $status=='0' ){
             $where.=' AND  status ="'.$status.'"';
         }
@@ -450,6 +458,7 @@ class CouponController extends BController {
         }
         if(!empty($companyid)){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         if(!empty($mobile)){
             $where.=' AND  mobile ="'.$mobile.'"';
@@ -467,6 +476,27 @@ class CouponController extends BController {
         return $where;
 
     }
+    //获取客户公司
+    public function actionGetNewCompany() {
+
+        $request = Yii::$app->request;
+        $keyword = $request->post('keyword',null);
+        $model = new CarCompany;
+        $where = '';
+        if(!empty($keyword)) {
+            $where =' `name` LIKE "%'.trim($keyword).'%" ';
+            $companys=  $model->table()->select('id,name')->where($where)->orderBy('browse_num DESC , id DESC ')->all();
+        }else{
+            $companys=  $model->table()->select('id,name')->where($where)->orderBy('browse_num DESC , id DESC ')->page(1, 10)->all();
+        }
+        foreach($companys as $key=>$val){
+            $companys[$key]['title'] =  $val['name'];
+        }
+
+        return json_encode(['data'=>$companys]);
+    }
+
+
     public function actionPackagelist() {
         $status=CarCouponPackage::$status;
         $coupon_faulttype=CarCoupon::$coupon_faulttype;
@@ -536,7 +566,7 @@ class CouponController extends BController {
         $total = $cot['cot'];
         if(!$total) return $this->json(0,'没有数据');
         $title = '券包列表-';
-        $pagesize = $this->couponMpagesize;
+        $pagesize = 20000;
         $data = [];
         if($total < $pagesize){
             $title .= '1';
@@ -591,7 +621,7 @@ class CouponController extends BController {
     public function actionPackagedown(){
         $request = Yii::$app->request;
         $where = $this->setPackageWhere();
-        $pagesize = $this->couponMpagesize;
+        $pagesize = 20000;
         $page = $request->get('page',1);
         $allcompany=CarCoupon::$coupon_company_info;
 
@@ -1450,15 +1480,30 @@ class CouponController extends BController {
         $data = $request->post();
         if(empty($data['company'])) return $this->json(0,'请选选择公司');
         if(empty($data['batch_no'])) return $this->json(0,'批号不能为空');
+        if(empty($data['use_limit_time'])) return $this->json(0,'请选择过期时间');
 
-        $reswhere=' batch_no ="'.$data['batch_no'].'" AND companyid<>0 ';
-        $res = (new CarCoupon())->table()->select('companyid')->where($reswhere)->one();
-        if(! empty($res) && $res['companyid'] != $data['company']) return $this->json(0,'此批优惠券已被其他公司占用');
+
+        $reswhere=' batch_no ="'.$data['batch_no'].'"';
+        $res = (new CarCoupon())->table()->select('*')->where($reswhere)->one();
+        if(! empty($res['companyid']) && $res['companyid'] != $data['company']) return $this->json(0,'此批优惠券已被其他公司占用');
+
+        //检测e代驾券的过期时间
+        if($res['coupon_type'] == 1 && $res['company'] == 0){
+            $edd = new Eddriving();
+            $gouqitime=strtotime($data['use_limit_time']);
+            $couponinfo = $edd->coupon_allinfo($res['coupon_sn'],'15802657270');
+            if(!$couponinfo)return $this->json(0,'系统出错！');
+            if(strtotime($couponinfo['binding_deadline']) < $gouqitime){
+                return $this->json(0,'此批代驾券的最后过期时间为'.$couponinfo['binding_deadline'].',无法满足要求');
+            }
+        }
+
         $where['batch_no']=$data['batch_no'];
         $where['coupon_type'] = $data['coupon_type']=='6'?'4':$data['coupon_type'];
         $where['amount']=$data['amount'];
         $where['status']='0';
         if($where['coupon_type'] == '2') $where['use_scene']=$data['scene'];
+
         $maxnum = (new CarCoupon())->table()->select('id')->where($where)->count();
 
         if(!$maxnum)return $this->json(0,'没有符合条件的数据');
@@ -1492,6 +1537,7 @@ class CouponController extends BController {
             if(!$authority)return $this->json(0, '您暂无权限发券');
             $province = substr($data['province'],-2);
             $company_id=$data['company'];
+            if($company_id)(new CarCompany)->browseNum($company_id);
             $gu_amount=$data['gu_amount'];
 
             $batch_nb=W::createNonceCapitalStr(8);
@@ -2539,7 +2585,10 @@ class CouponController extends BController {
         if(! empty($mobile))            $where['mobile'] = $mobile;
         if(! empty($coupon_batch_no))   $where['coupon_batch_no'] = $coupon_batch_no;
         if(! empty($batch_no))          $where['batch_no'] = $batch_no;
-        if(! empty($company_id))        $where['company_id'] = $company_id;
+        if(! empty($company_id)){
+            $where['company_id'] = $company_id;
+            (new CarCompany)->browseNum($company_id);
+        }
         if(! empty($city))              $where['city'] = $city;
         Yii::$app->session['sqlwhere'] = $request->get();
         return $where;
@@ -2621,12 +2670,14 @@ class CouponController extends BController {
                 array_push($val,$coupon_batch_no,$company_id,$c_time,$batch_no);
                 $val[0]=trim($val[0]);
                 $res=W::is_mobile($val[0]);
-                if(!empty($val[0]) && $res === true){
-                    $data_2[]=$val;
-                } elseif(!empty($val[0]) && $res !== true){
-                    $tmp['mobile'] = $val[0];
-                    $tmp['key']    = (int)$key+1;
-                    $data_1[]=$tmp;
+                if(!empty($val[0])){
+                    if($res === true){
+                        $data_2[]=$val;
+                    }else{
+                        $tmp['mobile'] = $val[0];
+                        $tmp['key']    = (int)$key+1;
+                        $data_1[]=$tmp;
+                    }
                 }
             }
             $arrlength=count($data_2);
@@ -2678,7 +2729,6 @@ class CouponController extends BController {
                 $fileds = ['mobile','city','coupon_batch_no','company_id','c_time','batch_no',];
                 $tablename='{{%car_mobile}}';
                 $msg=$this->insertDb($data,$fileds,$tablename);
-				print_r($msg);
             }
             $msg['url'] = Url::to(['coupon/mobilelist']);
             $res =  Yii::$app->cache->get('xxzmobile');
@@ -3608,6 +3658,129 @@ class CouponController extends BController {
         var_dump($i);
         return  true;
     }
+
+
+    protected function setGsCodeWhere(){
+        $request = Yii::$app->request;
+        $code = trim($request->get('code',null));
+        $batch_no = trim($request->get('coupon_batch_no',null));
+        $status = $request->get('status');
+        $start_time = $request->get('start_time',null);
+        $end_time = $request->get('end_time',null);
+        $where=' id<>0 ';
+        if(!empty($code)){
+            $where.=' AND  card_number ="'.$code.'"';
+        }
+        if(!empty($batch_no)){
+            $where.=' AND  coupon_batch_no ="'.$batch_no.'"';
+        }
+        if(!empty($status) || $status == '0'){
+            $where.=' AND  status ="'.$status.'"';
+        }
+        $where=$this->getTimeWhere($where,'c_time',$start_time,$end_time);
+
+        return $where;
+    }
+        /**
+         * 国寿电商券码列表
+         * @param 券码 $code  券码批号 $batch_no
+         * @return 列表 $json
+         * xxz
+         * 2020 1010
+         **/
+
+        public function actionGscodelist(){
+
+            $status = CarLifeCode::$status;
+            if (Yii::$app->request->isAjax) {
+                $model = new CarLifeCode();
+                $where=$this->setGsCodeWhere();
+                $res=$model->page_list('*',$where, ' id desc ');
+                $listrows=$res['rows'];
+                foreach ($res['rows'] as $k => $val) {
+                    $listrows[$k]['c_time'] = $this->handleTime($val['c_time']);
+                    $listrows[$k]['u_time'] = $this->handleTime($val['u_time']);
+                    $listrows[$k]['apply_time'] = $this->handleTime($val['apply_time']);
+                    $listrows[$k]['status'] = $status[$val['status']];
+                }
+                $res['rows']=$listrows;
+                return json_encode($res);
+            }
+            return $this->render('gscodelist',[
+                'status'=>$status
+            ]);
+
+        }
+    /**
+     * 批量导入国寿电商兑换码
+     * @param Excel文件
+     * @return 状态 1成功  >1 错误
+     * **/
+    public function actionLeadingscode() {
+        return $this->render('leadingscode');
+    }
+
+    public function actionExcutexlsgscode() {
+        set_time_limit(0);
+        if(Yii::$app->request->isPost){
+            $rootPath = Yii::$app->params['rootPath'];
+            $path = Yii::$app->request->post('path');
+            $path = $rootPath.$path;
+            if(!$path || !file_exists($path)) return $this->json(0,'文件不存在');
+            $file=substr($path, strrpos($path, '.')+1);
+            $data = CExcel::getExcel($file)->importExcel($path);
+            $c_time = time();
+            $data_1=[];//筛选重复
+            $data_2=[];
+            foreach ($data as $key=>$val){
+                array_push($val,'PQ33TG39YH',70,$c_time,'XIANXIA',2);
+                $val[0]=trim($val[0]);
+                $length=strlen($val[0]);
+                if(!empty($val[0]) && $length < 61 && ! in_array($val[0],$data_1)){
+                    array_push($data_1,$val[0]);
+                    $data_2[]=$val;
+                }
+            }
+            $arrlength=count($data_2);
+
+            if($arrlength == 0 && empty($data_2)){
+                unlink($path);
+                return $this->json(0,'数据不存在');
+
+            }
+            //分割数组并插入缓存
+            $result=$this->segmentationArr($data_2);
+            if(!$result)return $this->json(0,'数据写入缓存失败');
+            unset($data,$data_1,$data_2);
+            return $this->json(1,'成功',$result);
+        }
+        return '非法访问';
+    }
+
+//
+    public function actionBatchgscode(){
+        set_time_limit(0);
+        if(Yii::$app->request->isAjax){
+            ini_set('memory_limit','1024M');
+            $data = Yii::$app->request->post();
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($data['num'] >= $data['xxzmaxnum']){
+                $msg['status'] = 0;
+                $msg['error'] = '非法调用';
+            }else{
+                $fileds = ['card_number','coupon_batch_no','company_id','c_time','batch_no','is_online'];
+                $tablename='{{%car_life_code}}';
+                $msg=$this->insertDb($data,$fileds,$tablename);
+            }
+            $msg['url'] = Url::to(['coupon/gscodelist']);
+
+            return $msg;
+        }
+        return '非法访问';
+    }
+
+
+
 
         //下载优惠券导入模板
         function actionDexceldriving() {

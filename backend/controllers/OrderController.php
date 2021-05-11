@@ -30,7 +30,7 @@ use common\models\CarEtcorder;
 
 class OrderController extends BController {
 
-    private  $downpagesize=2000;//导出数据最大条数
+    private  $downpagesize=10000;//导出数据最大条数
     private  $cacheTime=7200;
     private  $maxInsertNum=1000;
 
@@ -60,6 +60,7 @@ class OrderController extends BController {
         $s_time = $request->get('s_time',null);
         $e_time = $request->get('e_time',null);
         $c_amount = intval($request->get('c_amount'));
+        $batch_no = trim($request->get('batch_no',null));
         $where=' id<>0 ';
         if(!empty($mobile)){
             $where.=' AND  mobile ="'.$mobile.'"';
@@ -86,11 +87,22 @@ class OrderController extends BController {
         }
         if(! empty($companyid)){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         if($company_id == '1'){
             $where.=' AND  company_id = 0 ';
         }elseif ($company_id == '2'){
             $where.=' AND  company_id = 1 ';
+        }
+        if(! empty($batch_no)){
+            $couponids = (new CarCoupon())->table()->select('id')->where(['batch_no'=>$batch_no,'coupon_type'=>1])->all();
+            if(!empty($couponids)){
+                $couponids = array_column($couponids,'id');
+                $idsstr = implode(',',$couponids);
+                $where.=' AND  coupon_id IN ('.$idsstr.')';
+            }else{
+                $where.=' AND  coupon_id IN (-1)';
+            }
         }
         if(! empty($c_amount)){
             $couponids = (new CarCoupon())->table()->select('id')->where(['amount'=>$c_amount,'coupon_type'=>1])->all();
@@ -100,7 +112,6 @@ class OrderController extends BController {
                 $where.=' AND  coupon_id IN ('.$idsstr.')';
             }
         }
-
         $where=$this->getTimeWhere($where,'start_time',$start_time,$end_time);
         $where=$this->getTimeWhere($where,'end_time',$s_time,$e_time);
 
@@ -130,6 +141,12 @@ class OrderController extends BController {
             $companynames=[];
             if($companys)foreach ($companys as $key=>$val){$companynames[$val['id']]=$val['name'];}
 
+
+            //券码批号显示
+            $couponid=array_column($listrows,'coupon_id');
+            $couponids=(new CarCoupon())->table()->select(['id','batch_no'])->where(['id'=>$couponid])->all();
+            $batchall = array_column($couponids,'batch_no','id');
+
             foreach ($res['rows'] as $k => $val) {
                 $listrows[$k]['c_time'] = !empty($val['c_time'])?date("Y-m-d H:i:s",$val['c_time']):'--';
                 $listrows[$k]['start_time'] = !empty($val['start_time'])?date("Y-m-d H:i:s",$val['start_time']):'--';
@@ -138,6 +155,7 @@ class OrderController extends BController {
                 $listrows[$k]['nickname'] = !empty($val['uid'])?$nicknamearr[$val['uid']]:'--';
                 $listrows[$k]['companyid'] = !empty($listrows[$k]['companyid'])?$companynames[$listrows[$k]['companyid']]:'--';
                 $listrows[$k]['company_id'] = $driving_company[$val['company_id']];
+                $listrows[$k]['batch_no'] = $batchall[$val['coupon_id']];
 
             }
             $res['rows']=$listrows;
@@ -169,6 +187,7 @@ class OrderController extends BController {
         $s_time = $request->get('s_time',null);
         $e_time = $request->get('e_time',null);
         $c_amount = intval($request->get('c_amount'));
+        $batch_no = trim($request->get('batch_no',null));
         $where = $this->setDaicarWhere();
         $cot = (new CarSubstituteDriving())->table()->select("count(id) as cot")->where($where)->one();
         $total = $cot['cot'];
@@ -194,7 +213,8 @@ class OrderController extends BController {
                     'end_time' => $end_time,
                     's_time' => $s_time,
                     'e_time' => $e_time,
-                    'c_amount' => $c_amount
+                    'c_amount' => $c_amount,
+                    'batch_no' => $batch_no
                 ]),
 
                 'name' => $title,
@@ -219,7 +239,8 @@ class OrderController extends BController {
                         'end_time' => $end_time,
                         's_time' => $s_time,
                         'e_time' => $e_time,
-                        'c_amount' => $c_amount
+                        'c_amount' => $c_amount,
+                        'batch_no' => $batch_no
                     ]),
                     'name' => $title . $i,
                 ];
@@ -320,6 +341,7 @@ class OrderController extends BController {
         }
         if(!empty($companyid)){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
 
 
@@ -521,6 +543,7 @@ class OrderController extends BController {
         }
         if(!empty($companyid)){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         if(! empty($start_time) && empty($end_time)){
             $s_time=date("YmdHis",strtotime($start_time));
@@ -727,6 +750,7 @@ class OrderController extends BController {
         }
         if(!empty($companyid)){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         if(!empty($oil_company)){
             $where.=' AND  company_id ="'.$oil_company.'"';
@@ -979,6 +1003,7 @@ class OrderController extends BController {
         }
         if(!empty($companyid) ){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
 
         if(! empty($start_time) && empty($end_time)){
@@ -1202,6 +1227,7 @@ class OrderController extends BController {
         }
         if(!empty($companyid) ){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         if(!empty($coupon_sn) ){
             $couponid=(new CarCoupon())->table()->select(['id'])->where(['coupon_sn'=>$coupon_sn])->one();
@@ -1426,6 +1452,8 @@ class OrderController extends BController {
         $e_time = $request->get('e_time',null);
         $coupon_batch_no = trim($request->get('coupon_batch_no',null));
         $city = trim($request->get('city',null));
+        $c_start_time = $request->get('c_start_time',null);
+        $c_end_time = $request->get('c_end_time',null);
         $where=' id<>0 ';
         if(!empty($orderid)){
             $where.=' AND  outOrderNo ="'.$orderid.'"';
@@ -1437,8 +1465,13 @@ class OrderController extends BController {
             $couponid=(new CarCoupon())->table()->select(['id'])->where(['coupon_sn'=>$coupon_sn])->one();
             $where.=' AND  couponid ="'.$couponid['id'].'"';
         }
-        if(!empty($coupon_batch_no) ){
-            $couponid=(new CarCoupon())->table()->select(['id'])->where(['batch_no'=>$coupon_batch_no])->all();
+
+        $cwhere = 'id<>0';
+        if(!empty($coupon_batch_no))$cwhere .= ' AND batch_no="'.$coupon_batch_no.'"';
+        $ctwhere=$this->getTimeWhere($cwhere,'c_time',$c_start_time,$c_end_time);
+       
+        if($ctwhere != 'id<>0'){
+            $couponid =(new CarCoupon())->table()->select(['id'])->where($ctwhere)->all();
             if($couponid){
                 $couponids = array_column($couponid,'id');
                 $couponidsstr = implode(',',$couponids);
@@ -1457,6 +1490,7 @@ class OrderController extends BController {
         }
         if(!empty($companyid) ){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         if(!empty($company_id) ){
             $where.=' AND  company_id ="'.$company_id.'"';
@@ -1547,6 +1581,8 @@ class OrderController extends BController {
         $e_time = $request->get('e_time',null);
         $coupon_batch_no = trim($request->get('coupon_batch_no',null));
         $city = trim($request->get('city',null));
+        $c_start_time = $request->get('c_start_time',null);
+        $c_end_time = $request->get('c_end_time',null);
         $model = new WashOrder();
         $where=$this->setDianWashWhere();
         $cot = $model->table()->select("count(id) as cot")->where($where)->one();
@@ -1574,7 +1610,9 @@ class OrderController extends BController {
                     's_time' => $s_time,
                     'e_time' => $e_time,
                     'coupon_batch_no' => $coupon_batch_no,
-                    'city'=>$city
+                    'city'=>$city,
+                    'c_start_time' => $c_start_time,
+                    'c_end_time'=>$c_end_time
                 ]),
 
                 'name' => $title,
@@ -1600,7 +1638,9 @@ class OrderController extends BController {
                         's_time' => $s_time,
                         'e_time' => $e_time,
                         'coupon_batch_no' => $coupon_batch_no,
-                        'city'=>$city
+                        'city'=>$city,
+                        'c_start_time' => $c_start_time,
+                        'c_end_time'=>$c_end_time
                     ]),
                     'name' => $title . $i,
                 ];
@@ -1710,6 +1750,7 @@ class OrderController extends BController {
         }
         if(!empty($companyid) ){
             $where.=' AND  companyid ="'.$companyid.'"';
+            (new CarCompany)->browseNum($companyid);
         }
         if(!empty($coupon_sn) ){
             $couponid=(new CarCoupon())->table()->select(['id'])->where(['coupon_sn'=>$coupon_sn])->one();
@@ -2028,6 +2069,8 @@ class OrderController extends BController {
         $end_time = $request->get('end_time',null);
         $s_time = $request->get('s_time',null);
         $e_time = $request->get('e_time',null);
+        $service_text = $request->get('service_text',null);
+        $store_name = $request->get('store_name',null);
         $where=' id<>0 ';
         if(!empty($coupon_code)){
             $where.=' AND  coupon_code ="'.$coupon_code.'"';
@@ -2047,6 +2090,13 @@ class OrderController extends BController {
         if(!empty($companyid)){
             $where.=' AND  company_id ="'.$companyid.'"';
         }
+        if(!empty($service_text)){
+            $where.=' AND  product_name ="'.$service_text.'"';
+        }
+        if(!empty($store_name)){
+            $where.=' AND  store_name ="'.$store_name.'"';
+        }
+
         $where=$this->getTimeWhere($where,'c_time',$start_time,$end_time);
         $where=$this->getTimeWhere($where,'s_time',$s_time,$e_time);
         return $where;
@@ -2058,6 +2108,7 @@ class OrderController extends BController {
 
         $statusarr=CarWashPinganhcz::$order_status;
         $pcoupon_status=CarWashPinganhcz::$pcoupon_status;
+        $service_text =CarWashPinganhcz::$service_text;
         //公司名称
         $companys=(new CarCompany())->getCompany(['id','name']);
         $companynames=array_column($companys,'name','id');
@@ -2080,8 +2131,9 @@ class OrderController extends BController {
             return json_encode($res);
         }
         return      $this->render ( 'pinganorlist',[
-            'status'=>$statusarr,
-            'companys'=>$companys
+            'status'       =>$statusarr,
+            'companys'     =>$companys,
+            'service_text' =>$service_text
         ] );
     }
 
@@ -2100,6 +2152,9 @@ class OrderController extends BController {
         $end_time = $request->get('end_time',null);
         $s_time = $request->get('s_time',null);
         $e_time = $request->get('e_time',null);
+        $service_text = $request->get('service_text',null);
+        $store_name = $request->get('store_name',null);
+
         $model = new CarWashPinganhcz();
         $where=$this->setPinganorderWhere();
         $cot = $model->table()->select("count(id) as cot")->where($where)->one();
@@ -2123,7 +2178,9 @@ class OrderController extends BController {
                     'start_time' => $start_time,
                     'end_time' => $end_time,
                     's_time' => $s_time,
-                    'e_time' => $e_time
+                    'e_time' => $e_time,
+                    'service_text' => $service_text,
+                    'store_name' => $store_name
                 ]),
 
                 'name' => $title,
@@ -2145,7 +2202,8 @@ class OrderController extends BController {
                         'start_time' => $start_time,
                         'end_time' => $end_time,
                         's_time' => $s_time,
-                        'e_time' => $e_time
+                        'e_time' => $e_time,
+                        'store_name' => $store_name
                     ]),
                     'name' => $title . $i,
                 ];
@@ -2256,6 +2314,34 @@ class OrderController extends BController {
         }
         return      $this->render ( 'wangdianlist');
     }
+
+
+    //网点名称编辑
+    public function actionCouponedit() {
+        $couponmodel = new CarCoupon();
+        $where = ['id'=>intval($_REQUEST ['id'])];
+        $data = $couponmodel->table()->select('*')->where($where)->one();
+        if (Yii::$app->request->isPost) {
+            $arr = Yii::$app->request->post();
+            $arr['use_limit_time']=strtotime($arr['use_limit_time']);
+            if(!empty($arr['mobile'])){
+                $res_m=W::is_mobile($arr['mobile']);
+                if(!$res_m) return '手机号码错误';
+            }
+            $arr['use_scene'] = $arr['coupon_type']=='2'?$arr['use_scene']:'0';
+            $arr['u_time'] = time();
+            $couponmodel->myUpdate($arr, $where);
+            $this->redirect('index.html');
+        }
+        $coupon_type=CarCoupon::$coupon_type;
+        $coupon_status=CarCoupon::$coupon_status;
+        $coupon_faulttype=CarCoupon::$coupon_faulttype;
+        return $this->render('couponedit',
+            [
+                'data' => $data
+            ]
+        );
+    }
     public function actionLeadinwangdian() {
 
         return $this->render('leadinwangdian');
@@ -2278,18 +2364,30 @@ class OrderController extends BController {
             $data_2=[];
             $companyid = 50;
             $tmp = null;
-            $shopall = (new Car_wash_pinganhcz_shop())->select('outlet_id',[])->all();
-            $shopall = array_column($shopall,'outlet_id');
-            foreach ($data as $key=>$val){
-                array_push($val,$c_time,$companyid);
-                $val[0]=trim($val[0]);
-                $val[1]=trim($val[1]);
-                if(!empty($val[0]) && !empty($val[1]) && !in_array($val[0],$shopall)){
-                    $data_2[]=$val;
-                }
-            }
-            $arrlength=count($data_2);
+            $Model = new Car_wash_pinganhcz_shop();
+            $shopallold = $Model->select('outlet_id,store_name',[])->all();
+            $shopall = array_column($shopallold,'outlet_id');
 
+            //构造数组
+            $db = Yii::$app->db;
+            $transaction = $db->beginTransaction();
+            try{
+                foreach ($data as $key=>$val){
+                    array_push($val,$c_time,$companyid);
+                    $val[0]=trim($val[0]);
+                    $val[1]=trim($val[1]);
+                    if(!empty($val[0]) && !empty($val[1])){
+                        if(!in_array($val[0],$shopall)){
+                            $data_2[]=$val;
+                        }
+                    }
+                }
+                $transaction->commit();
+            }catch (\Exception $e){
+                $transaction->rollBack();
+            }
+
+            $arrlength=count($data_2);
             if($arrlength == 0 && empty($data_2)){
                 unlink($path);
                 return $this->json(0,'数据不存在或全为重复数据');
@@ -2390,6 +2488,9 @@ class OrderController extends BController {
         $status = $request->get('status');
         $start_time = $request->get('start_time',null);
         $end_time = $request->get('end_time',null);
+        $s_time = $request->get('s_time',null);
+        $e_time = $request->get('e_time',null);
+        $shop_name = $request->get('shop_name',null);
         $where=' id<>0 ';
         if(!empty($ticket_id)){
             $where.=' AND  ticket_id ="'.$ticket_id.'"';
@@ -2409,7 +2510,12 @@ class OrderController extends BController {
         if(!empty($status) || $status == '0'){
             $where.=' AND  status ="'.$status.'"';
         }
-        $where=$this->getTimeWhere($where,'c_time',$start_time,$end_time);
+        if(!empty($shop_name)){
+            $where.=' AND  shop_name ="'.$shop_name.'"';
+        }
+
+        $where=$this->getTimeWhere($where,'c_time',$s_time,$e_time);
+        $where=$this->getTimeWhere($where,'u_time',$start_time,$end_time);
         return $where;
 
     }
@@ -2426,14 +2532,21 @@ class OrderController extends BController {
         if (Yii::$app->request->isAjax) {
             $model = new Car_wash_order_taibao();
             $where=$this->setTaibaoOrderWhere();
-            $field=['id','ticket_id','apply_name','unit_code','apply_phone','car_rental_vehicle_no','point_time','service_type','reason','address','consumer_code','encrypt_code','status','c_time','u_time','equity_status'];
+            $field=['id','ticket_id','apply_name','unit_code','apply_phone','car_rental_vehicle_no','point_time','service_type','reason','address','consumer_code','encrypt_code','status','c_time','u_time','equity_status','shop_name'];
             $res=$model->page_list($field,$where);
             $listrows=$res['rows'];
             foreach ($listrows as $k => $val) {
                 $listrows[$k]['c_time']=$this->handleTime($val['c_time']);
+                $listrows[$k]['u_time']= $val['status']==2 ? $this->handleTime($val['u_time']) : "--";
                 $listrows[$k]['status'] = $statusarr[$val['status']];
                 $listrows[$k]['service_type'] = $service_text[$val['service_type']];
                 $listrows[$k]['equity_status'] = $equity_status[$val['equity_status']];
+                $address = explode(' ',$val['address']);
+                $listrows[$k]['addressdesc']  = $address[3];
+                unset($address[3]);
+                $address = implode(' ',$address);
+                $listrows[$k]['address']  = $address;
+
             }
             $res['rows']=$listrows;
             return json_encode($res);
@@ -2459,6 +2572,9 @@ class OrderController extends BController {
         $status = $request->get('status');
         $start_time = $request->get('start_time',null);
         $end_time = $request->get('end_time',null);
+        $s_time = $request->get('s_time',null);
+        $e_time = $request->get('e_time',null);
+        $shop_name = $request->get('shop_name',null);
         $model = new Car_wash_order_taibao();
         $where=$this->setTaibaoOrderWhere();
         $total = $model->table()->select("count(id) as cot")->where($where)->count();
@@ -2479,8 +2595,10 @@ class OrderController extends BController {
                     'encrypt_code' => $encrypt_code,
                     'status' => $status,
                     'start_time' => $start_time,
-                    'end_time' => $end_time
-
+                    'end_time' => $end_time,
+                    's_time' => $s_time,
+                    'e_time' => $e_time,
+                    'shop_name' => $shop_name
                 ]),
 
                 'name' => $title,
@@ -2500,7 +2618,10 @@ class OrderController extends BController {
                         'encrypt_code' => $encrypt_code,
                         'status' => $status,
                         'start_time' => $start_time,
-                        'end_time' => $end_time
+                        'end_time' => $end_time,
+                        's_time' => $s_time,
+                        'e_time' => $e_time,
+                        'shop_name' => $shop_name
                     ]),
                     'name' => $title . $i,
                 ];
@@ -2525,12 +2646,12 @@ class OrderController extends BController {
         $where=$this->setTaibaoOrderWhere();
         $pagesize = $this->downpagesize;
         $page = $request->get('page',1);
-        $field=['id','ticket_id','branch_code','unit_code','apply_name','apply_phone','car_rental_vehicle_no','point_time','service_type','reason','address','consumer_code','encrypt_code','status','c_time','u_time'];
+        $field=['id','ticket_id','branch_code','unit_code','apply_name','apply_phone','car_rental_vehicle_no','point_time','u_time','service_type','reason','address','consumer_code','encrypt_code','status','c_time'];
         $list = $model->table()->select($field)->where($where)
             ->page($page,$pagesize)
             ->orderBy('id desc')
             ->all();
-        $str   = ['编号','太保订单号',['分公司代码','string'],['中支公司代码','string'],'客户姓名',['客户电话','string'],'订单车牌号','预约时间','服务类型','取消原因','地址','盛大核销二维码','洗车凭证','状态','创建时间','更新时间'];
+        $str   = ['编号','太保订单号',['分公司代码','string'],['中支公司代码','string'],'客户姓名',['客户电话','string'],'订单车牌号','预约时间','订单完成时间','服务类型','取消原因','地址','盛大核销二维码','洗车凭证','状态','创建时间'];
         $tmp   = null;
         $index = 1;
         foreach ($list as $e){
@@ -2542,6 +2663,7 @@ class OrderController extends BController {
             $tmp['apply_phone'] = $e['apply_phone'];
             $tmp['car_rental_vehicle_no'] = $e['car_rental_vehicle_no'] ;
             $tmp['point_time'] = $e['point_time'];
+            $tmp['u_time'] = $e['status']==2 ? $this->handleTime($e['u_time']):'--' ;
             $tmp['service_type'] = $service_text[$e['service_type']];
             $tmp['reason'] = $e['reason'];
             $tmp['address'] = $e['address'];
@@ -2549,7 +2671,7 @@ class OrderController extends BController {
             $tmp['encrypt_code'] = $e['encrypt_code'];
             $tmp['status'] = $statusarr[$e['status']];
             $tmp['c_time'] = $this->handleTime($e['c_time']);
-            $tmp['u_time'] = $this->handleTime($e['u_time']);
+
             $data[] = $tmp;
             $index++;
         }

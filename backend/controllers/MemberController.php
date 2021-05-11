@@ -59,6 +59,7 @@ class MemberController extends  BController {
     {
         $member = new Fans();
         if(Yii::$app->request->isAjax){
+            $request = Yii::$app->request;
             $where=" id<>0 ";
             $pageSize = intval ( $_GET ['limit'] ) ? intval ( $_GET ['limit'] ) : 10;
             $offset = intval ( $_GET ['pageNumber'] )  > 1? intval ( $_GET ['pageNumber'] ) - 1 : 0;
@@ -79,6 +80,12 @@ class MemberController extends  BController {
             if ($_REQUEST['card']) {
                 $where .= ' and pid="' . $_REQUEST['card'] . '"';
             }
+            //添加时间搜索许雄泽20101030修改
+            $s_time = $request->get('s_time',null);
+            $e_time = $request->get('e_time',null);
+            $where=$this->getTimeWhere($where,'subscribe_time',$s_time,$e_time);
+
+
             $row = $member->getData('*', 'all', $where, $order, $limit);
             $a = $member->find()->createCommand()->getRawSql();
             $pids = W::createKeyStr($row, 'pid');
@@ -252,6 +259,10 @@ class MemberController extends  BController {
             if($status || $status == '0'){
                 $where .= " AND status = '".$status."'" ;
             }
+            //添加时间搜索许雄泽20101030修改
+            $s_time = $request->get('s_time',null);
+            $e_time = $request->get('e_time',null);
+            $where=$this->getTimeWhere($where,'c_time',$s_time,$e_time);
             $res = $model->page_list("*",$where);
             $list = $res['rows'];
             if($list){
@@ -374,7 +385,8 @@ class MemberController extends  BController {
             $data = (new FansAccount())->select("*",['id' => $id])->one();
         }
         $level = FansAccount::$level;
-        return $this->render('editvip',['data' => $data,'level' => $level]);
+        $acstatus = FansAccount::$userstatus;
+        return $this->render('editvip',['data' => $data,'level' => $level,'status'=>$acstatus]);
     }
     /**
      * 绑定车牌列表查询条件

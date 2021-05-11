@@ -97,6 +97,17 @@ use yii\helpers\Url;
             </div>
         </div>
 
+        <div class="form-group aiqiyi_bindid" >
+            <label for="inputPassword3" class="col-sm-2 control-label">爱奇艺类型</label>
+            <div class="col-sm-3">
+                <select id="bindid" name="bindid"  placeholder="滴滴代驾权益类型"  class="form-control">
+                    <?php foreach ($aiqiyi_coupon_types as $key => $val):?>
+                        <option value="<?=$key?>"><?=$val['name']?></option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">激活后多少天有效</label>
             <div class="col-sm-3">
@@ -167,7 +178,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
             alert('优惠券名称不能为空');
             return false;
         }
-        if(coupon_type != 5 && coupon_type != 1){
+        if(coupon_type != 5 && coupon_type != 1 && coupon_type != 11){
             if(isNaN(amount) || amount == '' || amount == null ){
                 alert('优惠券面额不是一个数字');
                 return false;
@@ -237,6 +248,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
     $('.wash_xxz').hide();
     $('.xxz_amount').hide();
     $('.ins_xxz').hide();
+    $('.aiqiyi_bindid').hide();
      function changescene(_this) {
          var typeval=$(_this).val();
          if(typeval=='1'){
@@ -247,7 +259,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
              $('.wash_xxz').hide();
              $('.xxz_bindid').show();
              $('.ins_xxz').hide();
-
+             $('.aiqiyi_bindid').hide();
          }else if(typeval=='2'){
              $('.uprescue').show();
              $('.oil_xxz').hide();
@@ -256,6 +268,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
              $('.wash_xxz').hide();
              $('.xxz_bindid').hide();
              $('.ins_xxz').hide();
+             $('.aiqiyi_bindid').hide();
          }else if(typeval=='5'){
              $('.uprescue').hide();
              $('.oil_xxz').show();
@@ -264,6 +277,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
              $('.wash_xxz').hide();
              $('.xxz_bindid').hide();
              $('.ins_xxz').hide();
+             $('.aiqiyi_bindid').hide();
          }else if(typeval=='4'){
              $('.upcompany').hide();
              $('.oil_xxz').hide();
@@ -272,6 +286,7 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
              $('.wash_xxz').show();
              $('.xxz_bindid').hide();
              $('.ins_xxz').hide();
+             $('.aiqiyi_bindid').hide();
          }else if(typeval=='7'){
              $('.upcompany').hide();
              $('.oil_xxz').hide();
@@ -280,13 +295,27 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
              $('.wash_xxz').hide();
              $('.xxz_bindid').hide();
              $('.ins_xxz').show();
-         }else{
+             $('.aiqiyi_bindid').hide();
+         }else if(typeval=='10'){
              $('.upcompany').hide();
              $('.oil_xxz').hide();
              $('.uprescue').hide();
              $('.xxz_amount').show();
              $('.wash_xxz').hide();
              $('.xxz_bindid').hide();
+             $('.aiqiyi_bindid').hide();
+         }else if(typeval=='11'){
+             $('.upcompany').hide();
+             $('.oil_xxz').hide();
+             $('.ins_xxz').hide();
+             $('.uprescue').hide();
+             $('.xxz_amount').show();
+             $('.wash_xxz').hide();
+             $('.xxz_bindid').hide();
+             $('.aiqiyi_bindid').show();
+         }else{
+
          }
+
      }
 </script>

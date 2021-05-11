@@ -66,7 +66,7 @@ use yii\helpers\Url;
             <a href="#" class="no-login"><img src="/frontend/web/drivingH5/img/btn-3.png"></a>
             <?php else:?>
             <a href="<?php echo Url::to(['drivingh5/accoupon'])?>"><img src="/frontend/web/drivingH5/img/btn-1.png"></a>
-            <a href="<?php echo Url::to(['caruser/coupon'])?>"><img src="/frontend/web/drivingH5/img/btn-2.png"></a>
+            <a href="<?php echo Url::to(['webcaruser/coupon'])?>"><img src="/frontend/web/drivingH5/img/btn-2.png"></a>
             <a href="javascript:;" class="driving-service"><img src="/frontend/web/drivingH5/img/btn-3.png"></a>
         <?php endif;?>
     </div>
@@ -137,12 +137,10 @@ use yii\helpers\Url;
             <div class="commom-input-list">
                 <ul class="commom-input-ul">
                     <li>
-                        <i>手机号</i>
-                        <input type="tel" name="mobile" pattern="[0-9]*" >
+                        <input type="tel" name="mobile" pattern="[0-9]*" placeholder="手机号" >
                     </li>
                     <li>
-                        <i>验证码</i>
-                        <input type="text" name="code">
+                        <input type="text" name="code" placeholder="短信验证码">
                         <button type="button" class="btn send-code " id="J_GetCode">获取验证码</button>
                     </li>
                 </ul>

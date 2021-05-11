@@ -20,6 +20,8 @@ use common\models\Car_paternalor;
 use common\components\NoLogin;
 use common\models\CarMobile;
 use common\models\CarFace;
+use common\models\FansAccount;
+use common\models\CarSubstituteDriving;
 use GuzzleHttp\Client;
 use common\components\AESUtil;
 use common\components\CyxAES;
@@ -28,7 +30,9 @@ use common\components\Encrypt3Des;
 use common\components\Openssl;
 use common\models\Car_wash_pinganhcz_shop;
 use common\components\Pinganhcznew;
-
+use common\components\Eddriving;
+use common\models\WashShopShandongTaibao;
+use common\components\ShengDaCarWash;
 
 class TestController extends PController
 {
@@ -511,19 +515,22 @@ class TestController extends PController
 //        {"sourceCode":"WHCXWY","orgSource":"WHCXWY","order":"WHCXWYDIS20200305092330545512",
 //            "phoneNum":"15802657270","randStr":"DIS20200305092330545512","carType":"03",
 //            "endTime":"2020-03-31","activityType":"5221"}
+//        {"sourceCode":"SZDHXC","orgSource":"SZDHXC","order":"SZDHXCW20200727172633590012",
+//            "phoneNum":"15802657270","randStr":"W20200727172633590012","carType":"03",
+//            "endTime":"2020-07-31","activityType":"1036"}
         $sourceApp = Yii::$app->params['shengda_sourceApp_new'];
         $time = time();
         $now = $time+86400*7;
         $str = 'DIS'.$time.rand(10000,99999);
         $param = [
-            'sourceCode' => $sourceApp,
-            'orgSource' => $sourceApp,
-            'order' =>$str ,
-            'phoneNum' => '1829983524',
-            'randStr' => $str,
+            'sourceCode' => 'SZDHXC',
+            'orgSource' => 'SZDHXC',
+            'order' =>'SZDHXCW20200727172633'.$str ,
+            'phoneNum' => '15802657270',
+            'randStr' => 'W20200727172633'.$str ,
             'carType' => '03',
-            'endTime' => '2020-03-31',
-            'activityType' => '5221'
+            'endTime' => '2020-11-30',
+            'activityType' => '5044'
         ];
         $washObj = new ShengDaCarNewApi();
         $result = $washObj->receiveOrder($param);
@@ -544,10 +551,10 @@ class TestController extends PController
 //            'longitude' => '114.310000',
 //            'latitude' => '30.520000',
             'serviceId' => '5044',
-            'cityNumber' =>'620400',
-            'areaNumber' => '620403',
+            'cityNumber' =>'440600',
+            'areaNumber'=> '440605',
             'pageNo' => '1',
-            'pageSize' => '20'
+            'pageSize' => '50'
 
         ];
         $washObj = new ShengDaCarNewApi();
@@ -557,7 +564,7 @@ class TestController extends PController
         $resultJson = $washObj->decrypt($resultarr['encryptJsonStr']);// ($resultarr['encryptJsonStr'],'|',true);
         $resultdata = explode('|',$resultJson);
         $shoparr = json_decode( $resultdata[0],true);
-        var_dump($resultdata[0]);
+        var_dump($resultdata);
     }
     public function actionDisce(){
 
@@ -695,7 +702,7 @@ class TestController extends PController
         foreach ($list as $key=>$val){
             //从平安查询卡券详情
 
-            $res = $pingAn->couponDetail($coupon,$val['outlet_id']);
+            $res = $pingAn->couponDetail($coupon,$val['outlet_id'],$val['third_outlet_no']);
             $str = $res;
             $res = json_decode($res,true);
             if($res['data']['code'] == 200){
@@ -709,4 +716,140 @@ class TestController extends PController
         var_dump($str);
         var_dump($index.'--'.$shopNo);
     }
+
+    public function actionPantest()
+    {
+        $coupon = Yii::$app->request->get('code');
+        $outlet_id = Yii::$app->request->get('shopid');
+        $pingAn = new Pinganhcznew();
+        $info = (new Car_wash_pinganhcz_shop())->select('company_id,outlet_id,third_outlet_no',['outlet_id'=>$outlet_id])->one();
+        $res = $pingAn->couponDetail($coupon,$outlet_id,$info['third_outlet_no']);
+
+        var_dump($res);
+    }
+    public function actionDaitest()
+    {
+        $mobile = Yii::$app->request->get('a');
+        $edd = new Eddriving();
+        $res = $edd->checkCouponAll($mobile,2);
+//        if(in_array('416161812771',$res['code'])){
+//            var_dump($res['limitTime']['416161812771']);
+//        }else{
+//            var_dump('000');
+//        }
+        var_dump($res);
+    }
+
+    public function actionDaitest1()
+    {
+        $sn = Yii::$app->request->get('a');
+        $edd = new Eddriving();
+        $res = $edd->coupon_allinfo($sn,'15899967878');
+//        if(in_array('416161812771',$res['code'])){
+//            var_dump($res['limitTime']['416161812771']);
+//        }else{
+//            var_dump('000');
+//        }
+        var_dump($res);
+    }
+
+    /**
+     * 取消盛大订单
+     * @param $washOrder
+     * @return mixed
+     * @throws Exception
+     */
+    private function cancelShengDaOrder($washOrder)
+    {
+        $sourceApp = Yii::$app->params['shengda_sourceApp'];
+        $param = [
+            'source' => $sourceApp,
+            'order' => $washOrder['encrypt_code'],
+            'refundStatus'=>2
+        ];
+
+        $washObj = new ShengDaCarWash();
+        $result = $washObj->cancelOrder($param);
+        $encryp= strstr($result['encryptJsonStr'],'|',true);
+        $resultCode = json_decode($encryp,true);
+        if(!$resultCode){
+            throw new \Exception('接口连接失败');
+        }
+        return $resultCode;
+    }
+
+    public  function actionCancel()
+    {
+        $washOrder['encrypt_code']='SZDHFEFG3894560079';
+        $res = $this->cancelShengDaOrder($washOrder);
+        var_dump($res['resultCode']);
+    }
+
+
+    //获取指定内的时间 指定开始和结束的时间戳
+    public  function actionGetEndTime()
+    {
+        $time = Yii::$app->request->get('t');
+        $t = $time?$time:time();
+        //指定日期开始时间戳
+        $start = mktime(0,0,0,date("m",$t),date("d",$t),date("Y",$t));
+        //指定日期结束时间戳
+        $end = mktime(23,59,59,date("m",$t),date("d",$t),date("Y",$t));
+        var_dump($start.'--'.$end);
+    }
+
+
+    //获取指定内的时间 指定开始和结束的时间戳
+    public  function actionLsign()
+    {
+
+//        $user['uid'] = 47208;
+//        $res = $this->riskManagement($user);
+
+        var_dump(strtotime(date('Y-m-d')));
+    }
+
+
+    private function riskManagement($user){
+        $riskmsg=[
+            'status'=> 0,
+            'msg' => '未风控'
+        ] ;
+        $account=(new FansAccount())->select('status',['uid'=>$user['uid']])->one();
+        if($account['status'] == 0){
+            $riskmsg['status'] = 1;
+            $riskmsg['msg'] = '鉴于之前的违规操作，此账号不可核销卡券';
+        }
+        $daiModel = new CarSubstituteDriving();
+        $now = time();
+        $map2 = ['between','start_time',strtotime(date('Y-m-d 00:00:00',$now)),strtotime(date('Y-m-d 23:59:59',$now))];
+        $riskstatus = [0,101,102,201,301,302,303,304,501];
+        $conductobj = $daiModel->table()->where(['uid' => $user['uid']])->andWhere(['status'=>$riskstatus]);
+        $conduct = $conductobj->andWhere($map2)->count();
+        //每人每天最多呼叫1次代驾，针对分控名单
+        if($conduct >= CarSubstituteDriving::DAY_LIMIT && $account['status'] == 2){
+            $riskmsg['status'] = 1;
+            $riskmsg['msg'] = '您已进入风控名单，每天最多叫'.CarSubstituteDriving::DAY_LIMIT.'次代驾';
+        }
+
+        $mapmonth = ['date_month'=>date('Ym')];
+        $mobthconduct = $daiModel->table()
+            ->where(['uid' => $user['uid']])
+            ->andWhere(['status'=>$riskstatus])
+            ->andWhere($mapmonth)
+            ->count();
+        $riskmsg['status'] = 1;
+        $riskmsg['msg'] = $mobthconduct;
+        ;
+        return $riskmsg;
+        //每人每月最多呼叫10次代驾，针对所有用户
+        if($mobthconduct >= CarSubstituteDriving::MONTH_LIMIT ){
+            $riskmsg['status'] = 1;
+            $riskmsg['msg'] = '您本月呼叫的代驾次数过多，请下月再来！';
+        }
+
+        return $riskmsg;
+    }
 }
+
+

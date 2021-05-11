@@ -1,7 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
+ * 国寿电商对接控制器
+ * User: 许雄泽
  * Date: 2019/12/3 0003
  * Time: 上午 10:41
  */
@@ -211,6 +211,11 @@ class ApploginlifeController extends PController
         $trans->commit();
         return $tmp;
     }
+    /**
+      * 20210127 许雄泽 修改
+      * 180天有效期，同时改为非月卡
+      *
+     **/
     protected function couponArray($model,$companyid,$mobile,$batch)
     {
         $tmp = [];
@@ -219,7 +224,7 @@ class ApploginlifeController extends PController
         $tmp['coupon_type'] = 4;
         $tmp['name'] = '2次洗车服务';
         $tmp['amount'] = 2;
-        $tmp['expire_days'] = '60';
+        $tmp['expire_days'] = 180;
         $tmp['c_time'] = $now;
         $tmp['coupon_sn'] = $coupon_sn;
         $tmp['mobile'] = $mobile;
@@ -228,11 +233,12 @@ class ApploginlifeController extends PController
         $tmp['companyid'] = $companyid;
         $tmp['active_time'] = $now;
         $tmp['company'] = 2;
-        $tmp['is_mensal']  = 1;
+        $tmp['is_mensal']  = 0;
         $tmp['status']  = 1;
-        $amount = (int)$tmp['amount'];
-        $endDate = strtotime("+{$amount} month", strtotime(date("Ym") . '01000000')) - 1;
+        $endDate = $now + $tmp['expire_days']*3600*24;
         $tmp['use_limit_time'] = $endDate;
+        //如果是3月1号前激活过期时间就是8月31号
+        if($now < 1614528000)$tmp['use_limit_time'] = 1630425599;
         return $tmp;
     }
     protected function lifeCodeData($data)

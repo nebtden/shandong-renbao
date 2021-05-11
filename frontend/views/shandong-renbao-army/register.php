@@ -12,7 +12,9 @@
     <div class="pop1_cont3">
         <div class="pop1-con1">
             <img src="/frontend/web/shandong-renbao-army/images/jt.png" alt="箭头">
-            <p>邀请好友一起来抽奖</p>
+            <p>分享成功后的奖品将匹配到您的</p>
+                <p>山东人保财险公众号账户</p>
+                <p>请尽快登录领取</p>
         </div>
     </div>
 </div>

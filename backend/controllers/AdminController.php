@@ -154,7 +154,7 @@ class AdminController extends BController {
             $arr=array(
                 'password'=>$password
             );
-            $admin->myUpdate($arr,$where);
+            $admin->upData($arr,$where);
             echo  '密码更新成功！' ;
             exit;
         }

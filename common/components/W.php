@@ -852,6 +852,7 @@ class W extends Component
             '';
         } else {
             if (mb_substr_count($content, "\n") && !(preg_match('/<br\s?\/?>/iUs', $content))) {
+
                 $content = str_replace("\n", '<br/>', $content);
             }
         }

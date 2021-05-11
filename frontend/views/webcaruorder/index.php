@@ -39,7 +39,7 @@ use common\models\Car_paternalor;
                                         <span>位置：<?= $val['faultaddress'] ?></span>
                                     <?php elseif($val['order_type']==2): ?>
                                         <span>起止：<?= $val['departure'].'-'.$val['destination'] ?></span>
-                                    <?php elseif ($val['order_type']==4): ?>
+                                    <?php elseif ($val['order_type']==4 || $val['order_type'] == 10 ): ?>
                                         <span>次数：<?= floatval($val['coupon_amount']) ?></span>
                                     <?php else: ?>
                                         <?php if($val['order_type']!=INSPECTION): ?>
@@ -78,7 +78,7 @@ use common\models\Car_paternalor;
                                         <span>位置：<?= $val['faultaddress'] ?></span>
                                     <?php elseif($val['order_type']==2): ?>
                                         <span>起止：<?= $val['departure'].'-'.$val['destination'] ?></span>
-                                    <?php elseif ($val['order_type']==4): ?>
+                                    <?php elseif ($val['order_type']==4 || $val['order_type'] == 10): ?>
                                         <span>次数：<?= floatval($val['coupon_amount']) ?></span>
                                     <?php else: ?>
                                         <?php if($val['order_type']!=INSPECTION): ?>
@@ -105,7 +105,7 @@ use common\models\Car_paternalor;
                                 <i><?php  echo  Car_paternalor::$type[$val['order_type']]?></i>
                                 <span><?php echo date("Y.m.d H:i:s", $val['c_time']); ?></span>
                                 <span>使用：<?php  echo  $val['coupon_name']; ?></span>
-                                <?php if ($val['order_type']==4): ?>
+                                <?php if ($val['order_type']==4 || $val['order_type'] == 10): ?>
                                     <span>次数：<?= floatval($val['coupon_amount']) ?></span>
                                 <?php elseif($val['order_type']!=INSPECTION): ?>
                                     <span>金额：<?= floatval($val['coupon_amount']) ?></span>
@@ -133,7 +133,7 @@ use common\models\Car_paternalor;
                                     <span>位置：<?= $val['faultaddress'] ?></span>
                                 <?php elseif($val['order_type']==2): ?>
                                     <span>起止：<?= $val['departure'].'-'.$val['destination'] ?></span>
-                                <?php elseif ($val['order_type']==4): ?>
+                                <?php elseif ($val['order_type']==4 || $val['order_type'] == 10): ?>
                                     <span>次数：<?= floatval($val['coupon_amount']) ?></span>
                                 <?php else: ?>
                                     <?php if($val['order_type']!=INSPECTION): ?>

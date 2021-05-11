@@ -71,21 +71,13 @@ use yii\helpers\Url;
 <script src="/frontend/web/cloudcarv2/js/ydui.js"></script>
 <script>
     var isSubmit = false;
-    //验证兑换码格式，姓名+2019+保单号后六位
-    var testCode = function(m){
-        var reg = /^[\u4e00-\u9fa5]{2,5}2019\d{6}$/;
-        return reg.test(m);
-    };
+
     $(document).on('click','.commom-submit>a',function(){
         //防止重复提交
         if(isSubmit){
             return false;
         }
         var code = $('input[name=code]').val();
-        if(!testCode(code)){
-            YDUI.dialog.toast('兑换码格式不正确','none',1500);
-            return false;
-        }
         isSubmit = true;
         YDUI.dialog.loading.open('正在提交');
         $.post(

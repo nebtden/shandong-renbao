@@ -105,13 +105,15 @@ function queryParams(params) {
     var opt5 = $("#status").val();
     var opt6 = $("#start_time").val();
     var opt7 = $("#end_time").val();
-    var opt8 = $("#companyid").val();
+    var opt8 = $("#companyid").attr('data-id');
     var opt9 = $("#shopName").val();
     var opt10 = $("#company_id").val();
     var opt11 = $("#s_time").val();
     var opt12 = $("#e_time").val();
     var opt13 = $("#coupon_batch_no").val();
     var opt14 = $("#city").val();
+    var opt15 = $("#c_start_time").val();
+    var opt16 = $("#c_end_time").val();
     return {
         pageSize: params.limit,
         pageNumber: params.pageNumber,
@@ -130,7 +132,9 @@ function queryParams(params) {
         s_time:opt11,
         e_time:opt12,
         coupon_batch_no:opt13,
-        city:opt14
+        city:opt14,
+        c_start_time:opt15,
+        c_end_time:opt16
     };
 }
 
@@ -171,13 +175,15 @@ $('#sousuo').click(function(){
     var opt5 = $("#status").val();
     var opt6 = $("#start_time").val();
     var opt7 = $("#end_time").val();
-    var opt8 = $("#companyid").val();
+    var opt8 = $("#companyid").attr('data-id');
     var opt9 = $("#shopName").val();
     var opt10 = $("#company_id").val();
     var opt11 = $("#s_time").val();
     var opt12 = $("#e_time").val();
     var opt13 = $("#coupon_batch_no").val();
     var opt14 = $("#city").val();
+    var opt15 = $("#c_start_time").val();
+    var opt16 = $("#c_end_time").val();
     $('.table').bootstrapTable('refresh',{query:{
         orderid:opt1,
         mobile:opt2,
@@ -192,7 +198,9 @@ $('#sousuo').click(function(){
         s_time:opt11,
         e_time:opt12,
         coupon_batch_no:opt13,
-        city:opt14
+        city:opt14,
+        c_start_time:opt15,
+        c_end_time:opt16
     }},function(row){
         console.log(row);
     });

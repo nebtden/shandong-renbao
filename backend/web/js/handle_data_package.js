@@ -101,7 +101,7 @@ function queryParams(params) {
     var opt2 = $("#batch_nb").val();
     var opt3 = $("#package_sn").val();
     var opt4 = $("#user_id").val();
-    var opt5 = $("#companyid").val();
+    var opt5 = $("#companyid").attr('data-id');
     var opt6 = $("#mobile").val();
     var opt7 = $("#start_time").val();
     var opt8 = $("#end_time").val();
@@ -170,7 +170,7 @@ $('#sousuo').click(function(){
     var opt2 = $("#batch_nb").val();
     var opt3 = $("#package_sn").val();
     var opt4 = $("#user_id").val();
-    var opt5 = $("#companyid").val();
+    var opt5 = $("#companyid").attr('data-id');
     var opt6 = $("#mobile").val();
     var opt7 = $("#start_time").val();
     var opt8 = $("#end_time").val();
@@ -178,6 +178,7 @@ $('#sousuo').click(function(){
     var opt10 = $("#e_time").val();
     var opt11 = $("#c_batch_no").val();
     var opt12 = $("#package_pwd").val();
+
     if(opt11){
         if(opt11.length != 8 && opt11.length != 10){
             alert('不存在此优惠券批号');

@@ -373,11 +373,7 @@ class Pinganhcznew
      */
     public function redemption($params,$couponDetail)
     {
-        $savePath = Yii::$app->getBasePath() . '/web/log/pinganhcz_new/' . date('Y-m') . '/';
-        if (!is_dir($savePath)) {
-            mkdir($savePath, 0777, true);
-            chmod($savePath,0777);
-        }
+
         $url = '/open/vassPartner/appsvr/property/api/new/partner/redemption';
         $data = [
             'couponNo' => $couponDetail['coupon_code'],
@@ -387,6 +383,7 @@ class Pinganhcznew
             'timestamp' => (string)sprintf('%.0f', microtime(true)*1000)
         ];
         $data = json_encode($data);
+        $datalog = $data;
         $openSsl = new Openssl($this->key,'','AES-128-ECB');
         $data = $openSsl->encrypt($data);
         $responData = [
@@ -396,14 +393,7 @@ class Pinganhcznew
         $responData = json_encode($responData);
         $res = $this->httpPost($url,'',$responData);
 
-        $f = fopen($savePath . 1 . '_' . date('Ymd') . ".txt", 'a+');
-        fwrite($f, '$data:' . \GuzzleHttp\json_encode($data) . "\n");
-        fwrite($f, 'url:' . Yii::$app->request->queryString . "\n");
-        fwrite($f, 'res:' . $res . "\n");
-        fwrite($f, 'c_time:' . date('Y-m-d H:i:s') . "\n");
-        fwrite($f, "===========================================\n");
-        fclose($f);
-        $this->log(500,'平安接口返回信息',$data,$res);
+        $this->log(500,'平安接口返回信息',$datalog.'--'.$data,$res);
         return $res;
     }
 

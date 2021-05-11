@@ -106,10 +106,11 @@ function queryParams(params) {
     var opt7 = $("#start_time").val();
     var opt8 = $("#end_time").val();
     var opt9 = $("#companyid").val();
-    var opt10 = $("#company_id").val();
+    var opt10 = $("#companyid").attr('data-id');
     var opt11 = $("#s_time").val();
     var opt12 = $("#e_time").val();
     var opt13 = $("#c_amount").val();
+    var opt14 = $("#batch_no").val();
     return {
         pageSize: params.limit,
         pageNumber: params.pageNumber,
@@ -127,7 +128,8 @@ function queryParams(params) {
         company_id:opt10,
         s_time:opt11,
         e_time:opt12,
-        c_amount:opt13
+        c_amount:opt13,
+        batch_no:opt14
     };
 }
 
@@ -169,12 +171,14 @@ $('#sousuo').click(function(){
     var opt6 = $("#uid").val();
     var opt7 = $("#start_time").val();
     var opt8 = $("#end_time").val();
-    var opt9 = $("#companyid").val();
+    var opt9 = $("#companyid").attr('data-id');
     var opt10 = $("#company_id").val();
     var opt11 = $("#s_time").val();
     var opt12 = $("#e_time").val();
     var opt13 = $("#c_amount").val();
+    var opt14 = $("#batch_no").val();
     $('.table').bootstrapTable('refresh',{query:{
+        pageNumber: 1,
         mobile:opt1,
         coupon_sn:opt2,
         orderid:opt3,
@@ -187,7 +191,8 @@ $('#sousuo').click(function(){
         company_id:opt10,
         s_time:opt11,
         e_time:opt12,
-        c_amount:opt13
+        c_amount:opt13,
+        batch_no:opt14
     }},function(row){
         console.log(row);
     });
