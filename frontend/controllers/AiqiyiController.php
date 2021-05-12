@@ -58,6 +58,7 @@ class AiqiyiController extends PController {
                 throw new \Exception('优惠券不存在，请检查');
             }
             (new CarCoupon())->myUpdate(['status'=>2],['id'=>$coupon['id']]);
+            $bindid = $coupon->bindid;
 
             //生成订单
             $aiqiyi_params = \Yii::$app->params['aiqiyi'];
@@ -73,7 +74,7 @@ class AiqiyiController extends PController {
             $model->c_time = time();
             $model->save();
 
-            $result  = $aiqiyi_components->sendOrder(1,$account,$order_no,1);
+            $result  = $aiqiyi_components->sendOrder($bindid,$account,$order_no,1);
             $model->code = $result['code'];
             if($result['code']=='Q00304'  or  $result['code']=='Q00308'  or $result['code']=='Q00407'){
 

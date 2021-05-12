@@ -102,7 +102,7 @@ use yii\helpers\Url;
             <div class="col-sm-3">
                 <select id="bindid" name="bindid"  placeholder="滴滴代驾权益类型"  class="form-control">
                     <?php foreach ($aiqiyi_coupon_types as $key => $val):?>
-                        <option value="<?=$key?>"><?=$val['name']?></option>
+                        <option value="<?=$val['product_id']?>"><?=$val['name']?></option>
                     <?php endforeach;?>
                 </select>
             </div>
