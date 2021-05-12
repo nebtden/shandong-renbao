@@ -147,6 +147,11 @@ class CarCoupon extends AlxgBase
             'showkey'=>'disinfection',
             'showtext'=>'臭氧杀菌兑换券详情（面额，数量）'
         ],
+        '11' => [
+            'name'=>'爱奇艺充值',
+            'showkey'=>'disinfection',
+            'showtext'=>'爱奇艺充值（面额，数量）'
+        ],
 
 
     ];
@@ -282,6 +287,7 @@ class CarCoupon extends AlxgBase
             }
         }
         $list = array_merge($list, $lose_expire);
+
         return $list;
     }
 
@@ -501,6 +507,18 @@ class CarCoupon extends AlxgBase
                 $info['show_coupon_short'] = '全额';
                 $info['show_coupon_desc'] = '仅用于对加油卡充值时所产生的消费抵扣';
                 $info['show_coupon_style'] = 'jiayou';
+                break;
+            case 11:
+                $info['show_coupon_type_text'] = '爱奇艺';
+                $hasuse = '';
+                if($coupon['status'] < 2){
+                    $url =Url::to(['aiqiyi/index','coupon_id'=>$coupon['id']]);
+                    $info['show_coupon_url'] = $url;
+                }
+                $info['show_coupon_name'] = '<div class="number-wrapper"><span><em>' . floatval($coupon['amount']) . '</em>元</span>'.$hasuse.'</div>';
+                $info['show_coupon_short'] = '全额';
+                $info['show_coupon_desc'] = '可用于爱奇艺账号续费';
+                $info['show_coupon_style'] = 'aiqiyi';
                 break;
             case INSPECTION:
                 $info['show_coupon_type_text'] = '年检券';

@@ -789,6 +789,9 @@
 .card-list-ul>li.service-daibu-car>.title{
     background-color: #f57591;
 }
+.card-list-ul>li.service-aiqiyi>.title{
+    background-color: #3598fe;
+}
 .card-list-ul>li.service-daibu-car>.content>.up>.right>.btn {
     background-color: #f57591;
 }
@@ -853,6 +856,9 @@
     background-color: #3598fe;
 }
 .card-list-ul>li.service-daijia>.content>.up>.right>.btn:active{
+    background-color: #3598fe;
+}
+.card-list-ul>li.service-aiqiyi>.content>.up>.right>.btn{
     background-color: #3598fe;
 }
 

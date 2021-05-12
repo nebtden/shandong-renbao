@@ -42,6 +42,7 @@ class CaruserController extends CloudcarController
         INSPECTION => 'service-year-testing',
         SEGWAY => 'service-daibu-car',
         10 => 'service-disinfect',
+        11 => 'service-aiqiyi',
     ];
 
     public function beforeAction($action = null)
@@ -304,6 +305,7 @@ class CaruserController extends CloudcarController
         $user = $this->isLogin();
         $list = (new CarCoupon())->get_user_bind_coupon_list($user['uid']);
         $use_text = (new Car_coupon_explain())->get_use_text();
+
         return $this->render('coupon', ['list' => $list, 'use_text' => $use_text]);
     }
 

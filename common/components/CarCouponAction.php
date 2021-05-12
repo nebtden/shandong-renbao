@@ -214,6 +214,7 @@ class CarCouponAction extends Component
         $this->get_package();
 
         if (!$this->is_valid_package()) return false;
+
         if (!$this->set_package_used()) return false;
         return $this->doCoupon();
     }
@@ -317,6 +318,8 @@ class CarCouponAction extends Component
                 $this->activeEtcCoupon($cp);
             }elseif ($cp['type'] == 10) {
                 $this->activeWashCarCoupon($cp);
+            }elseif ($cp['type'] == 11) {
+                $this->activeAiqiyiCoupon($cp);
             }
         }
         $this->write_log();
@@ -458,6 +461,54 @@ class CarCouponAction extends Component
                 $r = $this->CCmodel->myUpdate($val);
                 if (!$r) {
                     $this->set_log('OilCoupon', $val);
+                    continue;
+                }
+                $this->coupons[] = $val;
+            }
+        } catch (\Exception $e) {
+            $trans->rollBack();
+        }
+        $trans->commit();
+    }
+
+
+    /**
+     * 油卡激活
+     * @param array $coupon
+     */
+    protected function activeAiqiyiCoupon($coupon = [])
+    {
+        $map = [
+            'uid' => 0,
+            'coupon_type' => $coupon['type'],
+            'amount' => $coupon['amount'],
+            'status' => 0,
+        ];
+        if (isset($coupon['batch_no']) && $coupon['batch_no']) $map['batch_no'] = $coupon['batch_no'];
+
+        $sql = $this->CCmodel->table()->where($map)->limit((int)$coupon['num'])->getLastSql();
+//        $sql .= ' FOR UPDATE';
+        $db = Yii::$app->db;
+        $now = time();
+        $trans = $db->beginTransaction();
+        try {
+            $list = $db->createCommand($sql)->queryAll();
+            if (!$list) $this->set_log('AiqiyiCoupon', '未找到相应的未激活卡券');
+            if (count($list) < $coupon['num']) $this->set_log('AiqiyiCoupon', '卡券不足，缺' . ($coupon['num'] - count($list)) . '张');
+            foreach ($list as $val) {
+                $val['status'] = 1;
+                $val['uid'] = $this->user['uid'];
+                $val['active_time'] = $now;
+                $val['mobile'] = $this->user['mobile'];
+                $val['package_id'] = $this->package['id'];
+                $val['companyid'] = $this->package['companyid'];
+                if ($val['expire_days'] > 0) {
+                    //如果这个字段大于0，表示过期时间为激活后多少天失效
+                    $val['use_limit_time'] = $now + $val['expire_days'] * 24 * 3600;
+                }
+                $r = $this->CCmodel->myUpdate($val);
+                if (!$r) {
+                    $this->set_log('AiqiyiCoupon', $val);
                     continue;
                 }
                 $this->coupons[] = $val;

@@ -53,6 +53,8 @@ use frontend\controllers\CaruserController;
         <li><a href="javascript:;" data-inner-nav="5">加油</a></li>
         <li><a href="javascript:;" data-inner-nav="7">年检</a></li>
         <li><a href="javascript:;" data-inner-nav="10">杀菌</a></li>
+
+        <li><a href="javascript:;" data-inner-nav="11">爱奇艺</a></li>
         <li><a href="javascript:;" data-inner-nav="3">其他</a></li>
     </ul>
     <div class="tab-panel tab-panel-outer" style="
@@ -76,7 +78,8 @@ use frontend\controllers\CaruserController;
                                         <?php case 2:?>
                                             <span>包年</span>
                                             <?php break;?>
-                                        <?php case (4 || 10):?>
+                                        <?php case 4 :?>
+                                        <?php case 10 :?>
                                             <span>剩余<?= intval($val['show_coupon_left']) ?>次</span>
                                             <?php break;?>
                                         <?php case INSPECTION:?>
@@ -85,7 +88,9 @@ use frontend\controllers\CaruserController;
                                             <span><?= intval($val['amount']) ?>次</span>
                                             <?php break;?>
 
-
+                                       <?php case 11:?>
+                                        <span><?= intval($val['amount']) ?>次</span>
+                                        <?php break;?>
                                         <?php default:?>
                                             <span>￥<?= $val['amount'] ?></span>
                                             <?php break;?>
@@ -125,6 +130,7 @@ use frontend\controllers\CaruserController;
                                                     <a class="btn" href="javascript:;">已使用</a>
                                                 <?php }?>
                                             <?php elseif ($val['status']==3):?>
+                                                <?=      $val['status']  ?>
                                                 <a class="btn " href="javascript:;">已失效</a>
                                             <?php endif; ?>
                                         </div>
