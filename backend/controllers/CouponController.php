@@ -347,6 +347,8 @@ class CouponController extends BController {
                 $xxz_company=$data['ins_company'];
             }else if($data['coupon_type']=='10'){
                 $xxz_company=2;
+            }else if($data['coupon_type']=='11'){
+                $bindid=$data['bindid'];
             }
 
             $data['c_time'] = time();

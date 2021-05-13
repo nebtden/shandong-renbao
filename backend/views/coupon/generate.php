@@ -100,7 +100,7 @@ use yii\helpers\Url;
         <div class="form-group aiqiyi_bindid" >
             <label for="inputPassword3" class="col-sm-2 control-label">爱奇艺类型</label>
             <div class="col-sm-3">
-                <select id="bindid" name="bindid"  placeholder="滴滴代驾权益类型"  class="form-control">
+                <select id="bindid2" name="bindid2"  placeholder="滴滴代驾权益类型"  class="form-control">
                     <?php foreach ($aiqiyi_coupon_types as $key => $val):?>
                         <option value="<?=$val['product_id']?>"><?=$val['name']?></option>
                     <?php endforeach;?>
@@ -165,6 +165,9 @@ position: fixed;width: 100%; height: 100%; left: 0;top: 0;background: #333;opaci
             is_mensal=$("#is_mensal").val(),
             ins_company=$("#ins_company").val()
             ;
+        if(coupon_type==11){
+            bindid=$("#bindid2").val();
+        }
         if(generate_num == '' ){
             alert('生成数量不能为空');
             return false;
