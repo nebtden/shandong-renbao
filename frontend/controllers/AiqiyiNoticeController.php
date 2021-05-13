@@ -23,7 +23,7 @@ class AiqiyiNoticeController extends PController {
         //请求写入日志
         //写入日志
         $url = 'aiqiyi-notice/index.html';
-        (new DianDian())->requestlog($url, \GuzzleHttp\json_encode($request), '', 'aiqiyi-return', '', 'aiqiyi-return');
+        (new DianDian())->requestlog($url, \GuzzleHttp\json_encode($post), '', 'aiqiyi-return', '', 'aiqiyi-return');
 
         try{
             //检测订单状态
