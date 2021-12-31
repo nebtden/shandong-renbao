@@ -512,7 +512,7 @@ class CarCoupon extends AlxgBase
                 $info['show_coupon_type_text'] = '爱奇艺';
                 $hasuse = '';
                 if($coupon['status'] < 2){
-                    $url =Url::to(['aiqiyi/index','coupon_id'=>$coupon['id']]);
+                    $url =Url::to(['wakejin/index','coupon_id'=>$coupon['id']]);
                     $info['show_coupon_url'] = $url;
                 }
                 $info['show_coupon_name'] = '<div class="number-wrapper"><span><em>' . floatval($coupon['amount']) . '</em>元</span>'.$hasuse.'</div>';

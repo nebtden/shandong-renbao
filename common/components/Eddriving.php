@@ -199,7 +199,15 @@ class Eddriving
         $data = $this->get_sign($data);
         $url = $this->host . self::COUNPON_BIND;
         $res = W::http_post($url, $data);
+        $savePath = Yii::$app->getBasePath() . '/web/log/requestlog/' . date('Y-m') . '/';
+        $f = fopen($savePath.'test' . '_' . date('Ymd') . ".txt", 'a+');
+        fwrite($f, 'eddriving:' . $res . "\n");
+        fwrite($f, 'c_time:' . date('Y-m-d H:i:s') . "\n");
+        fwrite($f, "===========================================\n");
+        fclose($f);
         $res = json_decode($res, true);
+
+
 
         $this->errCode = $res['code'];
         $this->errMsg = $res['message'];

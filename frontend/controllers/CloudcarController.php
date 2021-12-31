@@ -35,7 +35,7 @@ class CloudcarController extends FController
         //更新最后的时间
         $user = $this->isLogin();
         $obj = FansAccount::find()->where(['uid' => $user['uid']])->one();
-        $obj->u_time = time();
+        //$obj->u_time = time();
 //        $obj->save();
 
         $this->getLayout();
@@ -57,7 +57,10 @@ class CloudcarController extends FController
     protected function isLogin()
     {
         //如果是web端传入，判断session['wx_user_auth']是否为web用户，否则重新设置
-        if($this->is_web && Yii::$app->session['wx_user_auth']['nickname'] != $this->is_web){
+        if($this->is_web &&  Yii::$app->session['wx_user_auth']['nickname'] != $this->is_web){
+            $this->autoLogin();
+        }else{
+            //张珍临时增加
             $this->autoLogin();
         }
         $user_auth = Yii::$app->session['wx_user_auth'];

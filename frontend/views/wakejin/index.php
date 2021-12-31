@@ -16,7 +16,7 @@ use yii\helpers\Url;
         <li class="shiyou zhongshiyou">
             <i class="icon-cloudCar2-querenqiahao"></i>
             <em>请确认账号</em>
-            <input type="text" name="account_repeat" placeholder="再次输入爱奇艺账号" value="">
+            <input type="text" name="account_repeat" placeholder="再次输入爱奇艺账号!" value="">
         </li>
 
     </ul>
@@ -60,7 +60,7 @@ use yii\helpers\Url;
             isSubmit = false;
             YDUI.dialog.loading.close();
             if (json.status === 1) {
-                YDUI.dialog.toast('充值成功', 'success', 1000, function () {
+                YDUI.dialog.toast('提交成功，请过段时间刷新', 'success', 1000, function () {
                     window.location.href = json.url;
                 });
             } else {

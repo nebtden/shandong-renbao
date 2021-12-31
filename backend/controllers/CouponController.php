@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\components\Aiqiyi;
+use common\models\AiqiyiType;
 use common\models\CarLifeCode;
 use yii;
 use yii\helpers\Url;
@@ -289,17 +290,19 @@ class CouponController extends BController {
 
 
     public function actionGenerate() {
+
         $request = Yii::$app->request;
         $coupon_type=CarCoupon::$coupon_type;
         $coupon_faulttype=CarCoupon::$coupon_faulttype;
         $oil_type=CarCoupon::$oil_xxz;
         $oil_company=CarCoupon::$oil_company;
         $wash_company=CarCoupon::$wash_company;
-        $aiqiyi_coupon_types = Aiqiyi::$types;
+        $aiqiyi_coupon_types = AiqiyiType::find()->all();
 
         $driving_coupon_type=Yii::$app->params['driving_coupon_type'] ;
         $driving_coupon_amount=Yii::$app->params['driving_coupon_amount'];
         $ins_company=CarCoupon::$ins_company;
+
         if($request->isPost) {
             if(!Yii::$app->session ['UID'])return $this->json(0, '登录超时，请重新登陆');
             $authority = $this->getUserAuthority(Yii::$app->session ['UID']) ;

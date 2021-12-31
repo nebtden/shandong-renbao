@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\components\Aiqiyi;
+use common\models\AiqiyiType;
 use common\models\CarCoupon;
 use common\models\CarUseroilcard;
 use frontend\util\PController;
@@ -58,7 +59,7 @@ class AiqiyiController extends PController {
                 throw new \Exception('优惠券不存在，请检查');
             }
             (new CarCoupon())->myUpdate(['status'=>2],['id'=>$coupon['id']]);
-            $bindid = $coupon->bindid;
+            $bindid = $coupon['bindid'];
 
             //生成订单
             $aiqiyi_params = \Yii::$app->params['aiqiyi'];
@@ -76,8 +77,8 @@ class AiqiyiController extends PController {
 
             $result  = $aiqiyi_components->sendOrder($bindid,$account,$order_no,1);
             $model->code = $result['code'];
-            if($result['code']=='Q00304'  or  $result['code']=='Q00308'  or $result['code']=='Q00407'){
-
+            if(in_array($result['code'],['Q00304','Q00308','Q00407','Q00307'])){
+                (new CarCoupon())->myUpdate(['status'=>1],['id'=>$coupon['id']]);
             }elseif($result['code']=='A00000'){
                 $model->status = 2;
                 $model->startTime = $result['startTime'];
@@ -90,7 +91,7 @@ class AiqiyiController extends PController {
 
 
             $model->save();
-            return $this->json(1,'',[],'/frontend/web/aiqiyi/detail.html?id='.$model->id);
+            return $this->json(1,'提交成功，请等待',[],'/frontend/web/aiqiyi/detail.html?id='.$model->id);
 
         }catch (\Exception $exception){
 
@@ -98,6 +99,25 @@ class AiqiyiController extends PController {
         }
 
 
+    }
+
+    public function actionSimon(){
+
+//        $model =  \common\models\Aiqiyi::findOne(1);
+//        echo $model->uid;
+//        die();
+
+        $list = Aiqiyi::$types;
+        foreach ($list as $key=>$value){
+            $type = new AiqiyiType();
+
+            $type->id = $key;
+            $type->name = $value['name'];
+            $type->price = $value['price'];
+            $type->product_id = $value['product_id'];
+            $type->old_name = $value['old_name'];
+            $type->save();
+        }
     }
 
 

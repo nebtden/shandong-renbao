@@ -5,7 +5,9 @@ namespace common\components;
 use common\models\AiqiyiType;
 use GuzzleHttp\Client;
 
-class Aiqiyi
+//挖金客  爱奇艺对接平台
+
+class WakeJin
 {
 
 

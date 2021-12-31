@@ -50,7 +50,7 @@ class DidiController extends CloudcarController
             $model = new CarSubstituteDriving();
             $didi_info = $model->table()->where("company_id = 1 and status in (-2,0,301,302,303) and uid = ".$user['uid'])->one();
             if($didi_info && $didi_info['status'] != '-2'){
-                throw new \Exception('您有正在进行中的代驾订单，暂不能发起新的代驾服务。');
+                //throw new \Exception('您有正在进行中的代驾订单，暂不能发起新的代驾服务。');
             }
 
 

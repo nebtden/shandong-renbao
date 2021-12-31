@@ -120,7 +120,7 @@ use frontend\controllers\CaruserController;
                                                 <?php elseif(($val['coupon_type']==4 || $val['coupon_type']==10) && $val['w_status']==2 && $val['is_mensal']==1):?>
                                                     <a class="btn " href="javascript:;">本月已使用</a>
                                                 <?php else: ?>
-                                                    <a class="btn wash-click"  data-url="<?= $val['show_coupon_url'] ?>" href="javascript:;">使用</a>
+                                                    <a class="btn "  data-url="<?= $val['show_coupon_url'] ?>" href="<?= $val['show_coupon_url'] ?>">使用</a>
                                                 <?php endif;?>
 
                                             <?php elseif ($val['status']==2):?>

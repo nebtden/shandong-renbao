@@ -12,7 +12,7 @@ use yii\helpers\Url;
                 提交成功
                 <span></span>
             <?php else: ?>
-            <p>等待系统确认</p>
+            <p>等待系统确认!</p>
             <br>
             <span style="font-size: 0.25rem">注：提交成功后，一般半分钟内刷新此页面即可充值成功，如果仍没成功，请联系客服</span>
             <?php endif; ?>
