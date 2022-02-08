@@ -29,28 +29,34 @@ class QueueController extends Controller
     public function actionActive(){
         $time = time();
         //过去二十分钟登录的，查一次，
-        $old_time = $time-15*60;
+        $old_time = $time-60*60*60*24;
 
         $users = FansAccount::find()
             ->select('tpy_fans_account.mobile,tpy_fans_account.uid,tpy_car_mobile.coupon_batch_no,tpy_car_mobile.id')
             ->rightJoin('tpy_car_mobile','tpy_car_mobile.mobile=tpy_fans_account.mobile')
-            ->where(['>','tpy_fans_account.u_time', $old_time])
-            ->andWhere(['<=','tpy_fans_account.u_time', time()])
-			->andWhere(['=','tpy_fans_account.is_web', 0])
-            ->andWhere(['tpy_car_mobile.uid'=>0])
-            ->asArray()->all();
+			//->where(['tpy_car_mobile.uid'=>141157])->asArray()->all();
+             ->where(['>','tpy_fans_account.u_time', $old_time])
+             ->andWhere(['<=','tpy_fans_account.u_time', time()])
+			 ->andWhere(['=','tpy_fans_account.is_web', 0])
+             ->andWhere(['tpy_car_mobile.uid'=>0])
+             ->andWhere(['>=','tpy_car_mobile.c_time',1638288000])
+
+             ->asArray()->all();
         $carmobile = new CarMobile();
         $package = new CarCouponPackage();
 
-        foreach ($users as $user){
+        foreach ($users as $key=>$user){
             try{
                 $mobile = $user['mobile'];
+                echo $mobile;
+                echo '\n';
                 //对这个优惠券包，进行激活
                 $user['mobile'] = $mobile;
                 //对这个批次中的优惠券，取最近一条记录，进行激活
                 $package_info = $package->table()->where(
                     [
                         'uid' => 0,
+                        'status' => 1,
                         'batch_nb' => $user['coupon_batch_no']
                     ]
                 )->one();
@@ -63,6 +69,7 @@ class QueueController extends Controller
                 $data['uid'] = $user['uid'];
                 $data['u_time'] = time();
                 $data['package_id'] = $package_info['id'];
+                $data['remark'] = 'queue active'.$key;
                 $carmobile->myUpdate($data, ['id' => $user['id']]);
                 $result = $this->activateByPackage($user,$package_info);
                 //对于没有成功使用优惠券的，记录相关日志
@@ -118,6 +125,7 @@ class QueueController extends Controller
             }
             if ($cp['type'] == 1) {
                 $this->activeEcarCoupon($cp,$user,$package_info);
+                
             } elseif ($cp['type'] == 2) {
                 $this->activeSaveCarCoupon($cp,$user,$package_info);
             } elseif ($cp['type'] == 3) {
@@ -276,6 +284,15 @@ class QueueController extends Controller
         $abnormal = [];
         foreach ($list as $val) {
             if($val['company']==0){
+                echo '$val[company]';
+                echo $val['company'];
+
+                echo '--coupon_id--';
+                echo $val['id'];
+                echo '--';
+                //先更新卡券
+                (new CarCoupon())->myUpdate(['status'=>4,'remark'=>'console'],['id'=>$val['id']]);
+
                 $r = $this->EddrApi->coupon_bind($val['coupon_sn'], $user['mobile']);
                 if ($r === false) {
                     return false;
@@ -286,12 +303,25 @@ class QueueController extends Controller
                 $val['bonusid'] = $r['bonusid'];
                 $val['mobile'] = $user['mobile'];
                 $val['status'] = 1;//将卡券改为已激活状态
+                $val['package_id'] = $package_info['id'];
+                $val['companyid'] = $package_info['companyid'];
+
+                (new CarCoupon())->myUpdate($val,['id'=>$val['id']]);
+                /*$savePath = Yii::$app->getBasePath() . '/web/log/queue/' . date('Y-m') . '/';
+                $f = fopen($savePath.'test' . '_' . date('Ymd') . ".txt", 'a+');
+                fwrite($f, 'val:' . json_encode($val) . "\n");
+                fwrite($f, 'c_time:' . date('Y-m-d H:i:s') . "\n");
+                fwrite($f, "===========================================\n");
+                fclose($f);*/
                 //这里主要获得过期时间
                 $r = $this->EddrApi->coupon_allinfo($val['coupon_sn'], $user['mobile']);
+//                $val = [];
                 if ($r === false) {
                     //没有查到的情况下，默认过期时间为绑定后20天
                     $expire = 0;
-                    if (!$val['expire_days']) $val['expire_days'] = 20;
+                    if (!$val['expire_days']) {
+                        $val['expire_days'] = 20;
+                    }
                     $val['use_limit_time'] = $now + $val['expire_days'] * 24 * 3600;
                 } else {
                     $val['bindsn'] = $r['bind_info']['sn'];
@@ -303,12 +333,9 @@ class QueueController extends Controller
                         $val['use_limit_time'] = strtotime($r['endDate']);
                     }
                 }
-                $val['package_id'] = $package_info['id'];
-                $val['companyid'] = $package_info['companyid'];
-                $r = $this->CCmodel->myUpdate($val);
-                if (!$r) {
-                    return false;
-                }
+
+                (new CarCoupon())->myUpdate($val,['id'=>$val['id']]);
+
             }
             if($val['company']==1){
                 $val['active_time'] = $now;

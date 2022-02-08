@@ -158,7 +158,7 @@ class WakejinController extends CloudcarController {
             $data['username'] = $wakejin_params['username'];
             $data['secretkey'] = $wakejin_params['secretkey'];
             //每个优惠券的code不一样
-            $data['pcode'] = $coupon['code'];  //  ['recharge_IQYZCHJYK';
+            $data['pcode'] = 'recharge_'.$coupon['bindid'];  //  ['recharge_IQYZCHJYK';
             $data['requestid'] = $order_no;
             $data['telphone'] =  \Yii::$app->session['wx_user_auth']['mobile'];
             $data['recharge_no'] = $account;
@@ -173,13 +173,14 @@ class WakejinController extends CloudcarController {
 
             $model->code = $result['retcode'];
             $model->s_time = time();
-            if(in_array($result['code'],['0000'])){
-                $model->status = 2;
+            $model->status = 2;
+            if(in_array($result['retcode'],['0000'])){
+
             }else{
-                $model->status = 3;
+                //$model->status = 3;
                 //如果没使用成功，则可以继续使用
 
-                (new CarCoupon())->myUpdate(['status'=>1],['id'=>$coupon['id']]);
+                //(new CarCoupon())->myUpdate(['status'=>1],['id'=>$coupon['id']]);
 
             }
 
