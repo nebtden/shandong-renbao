@@ -16,12 +16,12 @@ use yii\helpers\Url;
     .layui-layer-rim{ font-size: 14px;}
 </style>
 <div class="page-header am-fl am-cf">
-    <h4>太保推送记录管理 <small>&nbsp;/&nbsp;列表页面</small></h4>
+    <h4>tb推送记录管理 <small>&nbsp;/&nbsp;列表页面</small></h4>
 </div>
 <div id="toolbar" class="btn-group">
     <form class="form-inline">
 
-        <div class="form-group"><input type="text" id="ticket_id" name="ticket_id"  class="form-control"  placeholder="太保订单号"></div>
+        <div class="form-group"><input type="text" id="ticket_id" name="ticket_id"  class="form-control"  placeholder="订单号"></div>
         <div class="form-group"><input type="text" id="apply_name" name="apply_name"  class="form-control"  placeholder="客户姓名"></div>
         <div class="form-group"><input type="text" id="apply_phone" name="apply_phone"  class="form-control"  placeholder="客户电话"></div>
         <div class="form-group"><input type="text" id="car_no" name="car_no"  class="form-control"  placeholder="车牌号"></div>
@@ -61,7 +61,7 @@ use yii\helpers\Url;
     <tr>
 <!--        <th data-field="state" data-checkbox="true"></th>-->
         <th data-field="id" class="table-check" >编号</th>
-        <th data-field="ticket_id">太保订单号</th>
+        <th data-field="ticket_id">订单号</th>
         <th data-field="apply_name">客户姓名</th>
         <th data-field="apply_phone">客户电话</th>
         <th data-field="car_rental_vehicle_no">车牌号</th>

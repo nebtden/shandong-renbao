@@ -206,7 +206,7 @@ class CarCoupon extends AlxgBase
         '0' => '途虎洗车',
         '1' => '典典洗车',
         '2' => '盛大洗车',
-        '3' => '自营洗车'
+
     ];
 
 
@@ -217,7 +217,6 @@ class CarCoupon extends AlxgBase
     ];
     public static $driving_company = [
         '0' => 'e代驾',
-        '1' => '滴滴代驾'
     ];
 
     //代驾券或代步券面值

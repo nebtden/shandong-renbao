@@ -94,7 +94,7 @@ class BController extends BaseController {
                 //'代步车订单管理' => array('url' => 'order/segorderlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '平安洗车订单管理' => array('url' => 'order/pinganorlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
                 '平安洗车网点管理' => array('url' => 'order/wangdianlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
-                '太保推送记录管理' => array('url' => 'order/taibaoorlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
+                'tb推送记录管理' => array('url' => 'order/taibaoorlist', 'class' => 'glyphicon glyphicon-shopping-cart'),
             )
         ),
 

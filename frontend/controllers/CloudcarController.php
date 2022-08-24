@@ -33,10 +33,8 @@ class CloudcarController extends FController
         if (!$this->isLogin()) $this->autoLogin();
 
         //更新最后的时间
-        $user = $this->isLogin();
-        $obj = FansAccount::find()->where(['uid' => $user['uid']])->one();
-        //$obj->u_time = time();
-//        $obj->save();
+        $this->isLogin();
+
 
         $this->getLayout();
         return true;
@@ -75,12 +73,20 @@ class CloudcarController extends FController
         if($this->is_web){
             $mobile=Yii::$app->session['xxz_mobile'];
             $user = (new AlxgBase('fans_account', 'id'))->table()->select("id,uid,pid")->where(['mobile'=>$mobile,'is_web' => 1])->one();
+            $obj = FansAccount::find()->where(['uid' => $user['uid']])->one();
+            $obj->u_time = time();
+            $obj->save();
         } else {
             $openid = Yii::$app->session['openid'];
             $user = (new AlxgBase('fans', 'id'))->table()->select("id,nickname,headimgurl,sex,pid,sid")->where(['openid' => $openid, 'token' => $token])->one();
             $user_ans_account = (new AlxgBase('fans_account', 'id'))->table()->select("mobile")->where(['uid' => $user['id']])->one();
+            $obj = FansAccount::find()->where(['uid' => $user['id']])->one();
+            $obj->u_time = time();
+            $obj->save();
         }
+
         if ($user) {
+
             $user_auth = [
                 'uid' => $this->is_web?$user['uid']:$user['id'],      //web端用fans_account表中uid，微信端用fans表中id,
                 'nickname' => $user['nickname']?:$mobile,

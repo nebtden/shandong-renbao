@@ -109,20 +109,20 @@ class DidiController extends CloudcarController
                 'url' => $url,
                 'booking_type' => '',
             ];
-            if($didi_info){
-                $dataup=[
-                    'm_id' => $mData['id'],
-                    'orderid' => $mData['order_no'],
-                    'booking_id' => $result['token'],
-                    'order_id' => $result['pid'],
-                    'url' => $url,
-                    'status' => '0'
-                ];
-                $obj->myUpdate($dataup,['id'=>$didi_info['id']]);
-            }else{
-                $id = $obj->myInsert($data);
-            }
+//            if($didi_info){
+//                $dataup=[
+//                    'm_id' => $mData['id'],
+//                    'orderid' => $mData['order_no'],
+//                    'booking_id' => $result['token'],
+//                    'order_id' => $result['pid'],
+//                    'url' => $url,
+//                    'status' => '0'
+//                ];
+//                $obj->myUpdate($dataup,['id'=>$didi_info['id']]);
+//            }else{
 
+           // }
+            $id = $obj->myInsert($data);
 
             $trans->commit();
 

@@ -2536,6 +2536,8 @@ class OrderController extends BController {
             $res=$model->page_list($field,$where);
             $listrows=$res['rows'];
             foreach ($listrows as $k => $val) {
+                $listrows[$k]['ticket_id'] = substr($listrows[$k]['ticket_id'],0,5).'****'. substr($listrows[$k]['ticket_id'],-5,5);
+                $listrows[$k]['apply_phone'] = substr($listrows[$k]['apply_phone'],0,4).'****'. substr($listrows[$k]['apply_phone'],-5,5);
                 $listrows[$k]['c_time']=$this->handleTime($val['c_time']);
                 $listrows[$k]['u_time']= $val['status']==2 ? $this->handleTime($val['u_time']) : "--";
                 $listrows[$k]['status'] = $statusarr[$val['status']];
@@ -2579,7 +2581,7 @@ class OrderController extends BController {
         $where=$this->setTaibaoOrderWhere();
         $total = $model->table()->select("count(id) as cot")->where($where)->count();
         if(!$total) return $this->json(0,'没有数据');
-        $title = '太保洗车推送记录-';
+        $title = 'tb洗车推送记录-';
         $pagesize = $this->downpagesize;
         $data = [];
         if($total < $pagesize){

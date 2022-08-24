@@ -33,7 +33,8 @@ class AiqiyiController extends Controller
     {
         $list = \common\models\Aiqiyi::find()->where([
             'status'=>3,
-            'id'=>1042,
+            'code'=>'9995',
+            //'id'=>488,
         ])->asArray()->all();
         foreach ($list as $value){
             $this->send($value);
@@ -81,22 +82,25 @@ class AiqiyiController extends Controller
         $result = $client->request('POST', $url,['form_params' =>$data] );
         $return_data = $result->getBody()->getContents();
         $return_array = \GuzzleHttp\json_decode($return_data,true);
+        echo '-----$return_data------';
+
 
         //写入日志
-        (new DianDian())->requestlog($url, \GuzzleHttp\json_encode($data), $return_data, 'aiqiyi', $return_array['code'], 'aiqiyi');
+        (new DianDian())->requestlog($url, \GuzzleHttp\json_encode($data), $return_data, 'aiqiyi', $return_array['retcode'], 'aiqiyi');
 
 
-         $model->code = $return_array['code'];
+         $model->code = $return_array['retcode'];
         echo '--code--';
-        echo $return_array['code'];
-        if(in_array($return_array['code'],['0000'])){
+        echo $return_array['retcode'];
+        if(in_array($return_array['retcode'],['0000'])){
             $model->status = 2;
-            $model->startTime = $result['startTime'];
-            $model->deadline = $result['deadline'];
+            $model->code = '0000';
+
             $model->s_time = time();
             //(new CarCoupon())->myUpdate(['status'=>2],['id'=>$coupon['id']]);
         }else{
             $model->status = 3;
+            $model->code = $return_array['retcode'];
         }
 
 

@@ -35,11 +35,11 @@ class QueueController extends Controller
             ->select('tpy_fans_account.mobile,tpy_fans_account.uid,tpy_car_mobile.coupon_batch_no,tpy_car_mobile.id')
             ->rightJoin('tpy_car_mobile','tpy_car_mobile.mobile=tpy_fans_account.mobile')
 			//->where(['tpy_car_mobile.uid'=>141157])->asArray()->all();
-             ->where(['>','tpy_fans_account.u_time', $old_time])
-             ->andWhere(['<=','tpy_fans_account.u_time', time()])
+//             ->where(['>','tpy_fans_account.u_time', $old_time])
+//             ->andWhere(['<=','tpy_fans_account.u_time', time()])
 			 ->andWhere(['=','tpy_fans_account.is_web', 0])
              ->andWhere(['tpy_car_mobile.uid'=>0])
-             ->andWhere(['>=','tpy_car_mobile.c_time',1638288000])
+             ->andWhere(['>=','tpy_car_mobile.c_time',1628288000])
 
              ->asArray()->all();
         $carmobile = new CarMobile();

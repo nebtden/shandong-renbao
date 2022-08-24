@@ -173,11 +173,11 @@ class WakejinController extends CloudcarController {
 
             $model->code = $result['retcode'];
             $model->s_time = time();
-            $model->status = 2;
-            if(in_array($result['retcode'],['0000'])){
 
+            if(in_array($result['retcode'],['0000'])){
+                $model->status = 2;
             }else{
-                //$model->status = 3;
+                 $model->status = 3;
                 //如果没使用成功，则可以继续使用
 
                 //(new CarCoupon())->myUpdate(['status'=>1],['id'=>$coupon['id']]);

@@ -3652,7 +3652,7 @@ class CouponController extends BController {
 
         $command = $connection->createCommand($sql);
         $info = $command->queryall();
-        $content = '尊敬的客户：因春节和疫情期间过期的洗车次数和已激活未使用的洗车次数已补充到原卡号，可正常使用。详情咨询：服务热线 4006171981';
+        $content = '尊敬的客户：因春节和疫情期间过期的洗车次数和已激活未使用的洗车次数已补充到原卡号，可正常使用。详情咨询：服务热线 4006789821';
         $i = 0;
 //        if($info){
 //            foreach ($info as $key => $val){

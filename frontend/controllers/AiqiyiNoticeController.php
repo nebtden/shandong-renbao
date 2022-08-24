@@ -41,7 +41,7 @@ class AiqiyiNoticeController extends PController {
             $aiqiyi_params = \Yii::$app->params['aiqiyi'];
             $check_sign = $aiqiyi->make_sign($post,$aiqiyi_params['key']);
             if($check_sign!=$sign){
-//               throw new \Exception('系统错误');
+ //               throw new \Exception('系统错误');
             }
 
             if($status==1){

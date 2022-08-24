@@ -382,7 +382,7 @@ class NoticeController extends PController
             } catch (\Exception $e) {
                 $transaction->rollBack();
                 $err['code'] = '400001';
-                $err['msg'] = '系统异常';
+                $err['msg'] = '系统异常-';
             }
         } else {
             $err['code'] = '400006';

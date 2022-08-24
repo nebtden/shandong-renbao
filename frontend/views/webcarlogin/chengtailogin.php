@@ -80,7 +80,7 @@ use yii\helpers\Url;
           6.春节期间，全国合作洗车店将暂停提供洗车服务；
         </span>
             <span>
-          7.本服务最终解释权归诚泰财产保险股份有限公司所有，详情请咨询:4006171981。
+          7.本服务最终解释权归诚泰财产保险股份有限公司所有，详情请咨询:4006789821。
         </span>
         </div>
         <a href="javascript:popHide();" title="点击关闭" class="btn close"></a>

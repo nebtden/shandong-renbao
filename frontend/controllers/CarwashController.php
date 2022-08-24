@@ -100,14 +100,14 @@ class CarwashController extends CloudcarController
             if($order['status']== 1){
                 $data['url'] = Url::to(['carwash/shoplist','couponId'=>$order['couponId'],'company'=>$order['company_id']]);
             }elseif($order['status']==2) {
-                $data['status'] = 0;
+                $data['status'] = 1;
                 $data['msg'] = '每天只能使用一次洗车服务！';
             }
 
         }else{
             $order = (new Car_tuhunotice())->table()->where(['uid'=>$this->uid])->andWhere(['between','c_time',$startDay,$endDay])->one();
             if($order){
-                $data['status'] = 0;
+                $data['status'] = 1;
                 $data['msg'] = '每天只能使用一次洗车服务！';
             }
         }
@@ -117,7 +117,7 @@ class CarwashController extends CloudcarController
             $data['msg'] = '当前还有进行中的订单，请完成后再试！';
         }
 
-       return $data;
+        return $data;
     }
 
     /**
@@ -139,7 +139,7 @@ class CarwashController extends CloudcarController
             $footer = 'hidden';
             $this->site_title = '中国人寿综合服务平台';
         }
-       
+
         $is_weixin = $this->is_weixin();
         return $this->render('shoplist',compact('is_weixin','couponId','company','alxg_sign','province','footer'));
     }
@@ -194,7 +194,7 @@ class CarwashController extends CloudcarController
                     }
                     break;
             }
-			
+
             return $this->json($this->status,$this->msg,$data);
         }
         return '非法请求';
@@ -280,7 +280,7 @@ class CarwashController extends CloudcarController
             if(!$res['data']['list']){
                 throw new \Exception('没有该区域门店数据');
             }
-			
+
             //通过百度地图api将经纬度转换省市区
             $address = BaiduMap::geocoder($postData['lat'],$postData['lng']);
             $location = (new Car_washarea())->getLocation($address);
@@ -296,7 +296,7 @@ class CarwashController extends CloudcarController
             $this->status = 0;
             $this->msg = $e->getMessage();
         }
-		
+
 
         return $data;
     }
@@ -1334,31 +1334,31 @@ class CarwashController extends CloudcarController
                     throw new \Exception('服务码已使用');
                     break;
                 case 'SUCCESS':
-                        $washOrder['status'] = ORDER_CANCEL;
-                        $washOrder['s_time'] = time();
-                        $r = $orderModel -> myUpdate($washOrder);
-                        if($washOrder['companyid'] == Yii::$app->params['national_life']['companyid']){
-                            $couponinfo = (new CarCoupon())->table()->select('coupon_sn')->where(['id'=>$washOrder['couponId']])->one();
-                            $datags = [
-                                'num' => $washOrder['id'],
-                                'order_id' => $washOrder['outOrderNo'],
-                                'cdkey' => $couponinfo['coupon_sn'],
-                                'mobile' => $washOrder['mobile'],
-                                'shop_name' => $washOrder['shopName'],
-                                'service_name' => $washOrder['serviceName'],
-                                'certificate' => $washOrder['consumerCode'],
-                                'status' => WashOrder::$status_text['-1'],
-                                'create_time' => date("Y-m-d H:i:s",$washOrder['c_time']),
-                                'update_time' => date("Y-m-d H:i:s",$washOrder['s_time']),
-                            ];
-                            $objgs = new NationalLife();
-                            $objgs->notice($datags);
-                        }
-                        $couponObj = new CarCouponAction($user);
-                        $useCoupon = $couponObj->unuseCoupon($washOrder['couponId']);
-                        if($useCoupon == false){
-                            throw new \Exception('卡券恢复失败');
-                        }
+                    $washOrder['status'] = ORDER_CANCEL;
+                    $washOrder['s_time'] = time();
+                    $r = $orderModel -> myUpdate($washOrder);
+                    if($washOrder['companyid'] == Yii::$app->params['national_life']['companyid']){
+                        $couponinfo = (new CarCoupon())->table()->select('coupon_sn')->where(['id'=>$washOrder['couponId']])->one();
+                        $datags = [
+                            'num' => $washOrder['id'],
+                            'order_id' => $washOrder['outOrderNo'],
+                            'cdkey' => $couponinfo['coupon_sn'],
+                            'mobile' => $washOrder['mobile'],
+                            'shop_name' => $washOrder['shopName'],
+                            'service_name' => $washOrder['serviceName'],
+                            'certificate' => $washOrder['consumerCode'],
+                            'status' => WashOrder::$status_text['-1'],
+                            'create_time' => date("Y-m-d H:i:s",$washOrder['c_time']),
+                            'update_time' => date("Y-m-d H:i:s",$washOrder['s_time']),
+                        ];
+                        $objgs = new NationalLife();
+                        $objgs->notice($datags);
+                    }
+                    $couponObj = new CarCouponAction($user);
+                    $useCoupon = $couponObj->unuseCoupon($washOrder['couponId']);
+                    if($useCoupon == false){
+                        throw new \Exception('卡券恢复失败');
+                    }
                     break;
             }
             $trans->commit();
